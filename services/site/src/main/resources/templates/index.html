@@ -109,39 +109,9 @@
                             </form>
                         </div>
 
-                        <div class="tabs__content">
+                        <div class="tabs__content active">
                             <div id="register-form" class="reg">
-                                <div class="form-group">
-                                    <input type="text" name="reg-username" id="reg-username" tabindex="1" class="form-control" placeholder="ФИО" data-minlength="6"
-                                           data-error="Заполните поле" required>
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" name="reg-email" id="reg-email" tabindex="1" class="form-control" placeholder="Email адрес"
-                                           data-error="Адрес email не корректный" required>
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" name="reg-password" id="reg-password" tabindex="2" class="form-control"
-                                           placeholder="Пароль"
-                                           data-minlength="6"
-                                           data-error="Заполните поле пароль" required>
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" name="reg-confirm-password" id="reg-confirm-password" tabindex="2"
-                                           class="form-control" placeholder="Подтвердить"
-                                           data-minlength="6"
-                                           data-error="Заполните поле подтверждение"
-                                           data-match="#reg-password" data-match-error="Пароли не совпадают" required>
-                                    <div class="help-block with-errors"></div>
-                                </div>
-                                <div class="form-group check">
-                                    <input type="checkbox" class="checkbox" id="reg-privacy" required name="reg-privacy"/>
-                                    <label  for="reg-privacy"><span class="txt">Я прочитал и принимаю условия пользовательского
-                                            соглашения</span></label>
-                                </div>
-                                <input type="button" name="register-submit" id="register-submit" tabindex="4" onclick="return registration('#register-form');" class="form-control btn btn-send" value="Зарегистрироваться">
+                                <a th:href="@{https://t.me/checkdev_bot?start=true}">Регистрация через телеграм бота</a>
                             </div>
                         </div>
                     </div>

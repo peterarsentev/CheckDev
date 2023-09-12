@@ -1,0 +1,41 @@
+package ru.checkdev.notification.telegram.action;
+
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.checkdev.notification.telegram.action.Action;
+
+import java.util.List;
+
+/**
+ * 3. Мидл
+ * Класс реализует вывод доступных команд телеграмм бота
+ *
+ * @author Dmitry Stepanov, user Dmitry
+ * @since 12.09.2023
+ */
+public class InfoAction implements Action {
+    private final List<String> actions;
+
+    public InfoAction(List<String> actions) {
+        this.actions = actions;
+    }
+
+    @Override
+    public BotApiMethod handle(Update update) {
+        var msg = update.getMessage();
+        var chatId = msg.getChatId().toString();
+        String sl = System.lineSeparator();
+        var out = new StringBuilder();
+        out.append("Выберите действие:").append(sl);
+        for (String action : actions) {
+            out.append(action).append(sl);
+        }
+        return new SendMessage(chatId, out.toString());
+    }
+
+    @Override
+    public BotApiMethod callback(Update update) {
+        return handle(update);
+    }
+}
