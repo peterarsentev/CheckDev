@@ -1,10 +1,11 @@
 package ru.checkdev.notification.telegram.action;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.checkdev.notification.domain.Person;
+import ru.checkdev.notification.domain.PersonDTO;
 import ru.checkdev.notification.telegram.config.TgConfig;
 import ru.checkdev.notification.telegram.service.TgAuthCallWebClint;
 
@@ -16,10 +17,12 @@ import ru.checkdev.notification.telegram.service.TgAuthCallWebClint;
  * @since 12.09.2023
  */
 @AllArgsConstructor
+@Slf4j
 public class RegAction implements Action {
+    private static final String ERROR_OBJECT = "error";
     private final TgConfig tgConfig = new TgConfig();
-    private TgAuthCallWebClint authCallWebClint;
-    private String urlSiteAuth;
+    private final TgAuthCallWebClint authCallWebClint;
+    private final String urlSiteAuth;
     private final String urlAuthRegistration = "/registration";
 
     @Override
@@ -39,18 +42,22 @@ public class RegAction implements Action {
         var sl = System.lineSeparator();
         if (tgConfig.isEmail(email)) {
             var password = tgConfig.getPassword();
-            var person = new Person(email, email, password, true);
-            authCallWebClint.doPost(urlAuthRegistration, person);
-            text = "Вы зарегистрированы: " + sl
-                   + "Логин: " + email + sl
-                   + "Пароль: " + password + sl
-                   + urlSiteAuth;
+            var person = new PersonDTO(email, password, true);
+            var result = authCallWebClint.doPost(urlAuthRegistration, person).block();
+            var mapObject = tgConfig.getObjectToMap(result);
+            if (!mapObject.containsKey(ERROR_OBJECT)) {
+                text = "Вы зарегистрированы: " + sl
+                       + "Логин: " + email + sl
+                       + "Пароль: " + password + sl
+                       + urlSiteAuth;
+            } else {
+                text = "Ошибка регистрации: " + mapObject.get(ERROR_OBJECT);
+            }
         } else {
             text = "Email: " + email + " не корректный." + sl
                    + "попробуйте снова." + sl
                    + "/new";
         }
-        // userRepository.save(new User(email));
         return new SendMessage(chatId, text);
     }
 }

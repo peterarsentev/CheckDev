@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-import ru.checkdev.notification.domain.Person;
+import ru.checkdev.notification.domain.PersonDTO;
 
 /**
  * 3. Мидл
@@ -26,33 +26,29 @@ public class TgAuthCallWebClint {
      * @param url URL http
      * @return Mono<Person>
      */
-    public Mono<Person> doGet(String url) {
-        Mono<Person> personMono = webClient
+    public Mono<PersonDTO> doGet(String url) {
+        return webClient
                 .get()
                 .uri(url)
                 .retrieve()
-                .bodyToMono(Person.class)
+                .bodyToMono(PersonDTO.class)
                 .doOnError(err -> log.error("API not found: {}", err.getMessage()));
-        personMono.subscribe();
-        return personMono;
     }
 
     /**
      * Метод POST
      *
-     * @param url    URL http
-     * @param person Body Person.class
+     * @param url       URL http
+     * @param personDTO Body PersonDTO.class
      * @return Mono<Person>
      */
-    public Mono<Person> doPost(String url, Person person) {
-        Mono<Person> personMono = webClient
+    public Mono<Object> doPost(String url, PersonDTO personDTO) {
+        return webClient
                 .post()
                 .uri(url)
-                .body(Mono.just(person), Person.class)
+                .body(Mono.just(personDTO), Object.class)
                 .retrieve()
-                .bodyToMono(Person.class)
+                .bodyToMono(Object.class)
                 .doOnError(err -> log.error("API not found: {}", err.getMessage()));
-        personMono.subscribe();
-        return personMono;
     }
 }

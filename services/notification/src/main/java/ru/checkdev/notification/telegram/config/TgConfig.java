@@ -1,5 +1,8 @@
 package ru.checkdev.notification.telegram.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,6 +15,8 @@ import java.util.regex.Pattern;
  * @since 12.09.2023
  */
 public class TgConfig {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*\\.\\w{2,4}");
     private final String prefix = "tg/";
     private final int passSize = 8;
 
@@ -22,8 +27,7 @@ public class TgConfig {
      * @return boolean
      */
     public boolean isEmail(String email) {
-        Pattern pattern = Pattern.compile("\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*\\.\\w{2,4}");
-        Matcher matcher = pattern.matcher(email);
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
         return matcher.matches();
     }
 
@@ -35,5 +39,15 @@ public class TgConfig {
     public String getPassword() {
         String password = prefix + UUID.randomUUID();
         return password.substring(0, passSize);
+    }
+
+    /**
+     * Метод преобразовывает Object в карту Map<String,String>
+     *
+     * @param object Object or Person(Auth)
+     * @return Map
+     */
+    public Map<String, String> getObjectToMap(Object object) {
+        return MAPPER.convertValue(object, Map.class);
     }
 }
