@@ -23,6 +23,8 @@
 <body>
 <div th:insert="fragments/header :: header"></div>
 <div class="container">
+    <div class="card"
+         th:insert="fragments/breadcrumbs :: breadcrumbs(breadcrumbs=${session.breadcrumbs})"></div>
     <div class="row pt-2" th:if="${canManage}">
         <div class="col-sm">
         </div>

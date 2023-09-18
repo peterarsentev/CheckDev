@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<body>
+<div th:fragment="breadcrumbs">
+    <nav>
+        <ol class="breadcrumb">
+            <li th:each="breadcrumb, stat : ${breadcrumbs}">
+                <a th:if="${stat.last}" th:text="${breadcrumb.name}"></a>
+                <span th:unless="${stat.last}">
+                    <a th:href="${breadcrumb.url}" th:text="${breadcrumb.name}"></a>
+                </span>
+            </li>
+        </ol>
+    </nav>
+</div>
+</body>
+</html>
