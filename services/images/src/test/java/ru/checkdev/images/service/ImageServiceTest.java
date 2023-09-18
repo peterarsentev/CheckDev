@@ -31,7 +31,9 @@ public class ImageServiceTest {
 	
 	@Test
 	public void whenGetByIdShouldReturnCorrectObject() {
-		Image image = this.imageRepository.save(new Image("testFileName","testDescription",new byte[] {1,2,3}));
+		Image image = this.imageRepository.save(new Image("testFileName",
+				"testDescription",
+				new byte[] {1, 2, 3}));
 		Image result = this.imageService.getById(image.getId());
 		assertThat(result, is(image));
 	}

@@ -16,14 +16,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ImageDomainTest {
 
 	@Test
-	public void ImageDefaultCreationTest() {
+	public void imageDefaultCreationTest() {
 		Image image = new Image();
 		assertNotNull(image);
 	}
 	
 	@Test
-	public void ImageCreationTest() {
-		Image image = new Image("testFileName","testDescription", new byte[] {1,2,3});
+	public void imageCreationTest() {
+		Image image = new Image("testFileName",
+				"testDescription",
+				new byte[] {1, 2, 3});
 		assertNotNull(image);
 	}
 

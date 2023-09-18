@@ -67,7 +67,7 @@ public class NotificationServiceTest {
         NotificationService subscribe = new NotificationService(
         "http://localhost:9920", "96GcWB8a",
         "http://localhost:9900", "9dfs23vd2", null);
-        Map<String,Object> keys = new HashMap<>();
+        Map<String, Object> keys = new HashMap<>();
         keys.put("subject", vacancy.getName());
         keys.put("body", vacancy.getDescription());
         Notify notify = new Notify("lotnikroman@ya.ru", keys, Notify.Type.RESULT_OF_INTERVIEW.name());

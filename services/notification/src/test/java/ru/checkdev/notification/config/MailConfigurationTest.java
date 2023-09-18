@@ -21,12 +21,12 @@ public class MailConfigurationTest {
 
         new MailConfiguration().send(
                 "Регистрация на Job4j",
-                "Добрый день.<br/>" +
-                        "Для активации учетной записи перейдите по ссылке <a href='http://job4j.ru/'>Job4j.ru</a><br/>" +
-                        "C уважением, Команда Job4j<br/><br/>" +
-                "Это письмо было отправлено на адрес arsentev.pert@gmail.com, " +
-                        "так как Вы подписаны на рассылку о сервисе Job4j. <br/>" +
-                        "Вы можете отказаться от нее <a href='http://job4j.ru/unsubscribe?notificationId='>отписаться</a>.",
+                "Добрый день.<br/>"
+                       + "Для активации учетной записи перейдите по ссылке <a href='http://job4j.ru/'>Job4j.ru</a><br/>"
+                       + "C уважением, Команда Job4j<br/><br/>"
+               + "Это письмо было отправлено на адрес arsentev.pert@gmail.com, "
+                       + "так как Вы подписаны на рассылку о сервисе Job4j. <br/>"
+                       + "Вы можете отказаться от нее <a href='http://job4j.ru/unsubscribe?notificationId='>отписаться</a>.",
                 "arsentev.pert@gmail.com",
                 config
         );

@@ -23,7 +23,7 @@ public class CategoriesControl {
         var token = (String) req.getSession().getAttribute("token");
         model.addAttribute("categories", categoriesService.getAll(token));
         var userInfo = authService.userInfo(token);
-        model.addAttribute("userInfo",userInfo);
+        model.addAttribute("userInfo", userInfo);
         var canManage = userInfo.getRoles().stream()
                 .anyMatch(role -> role.getValue().equals("ROLE_ADMIN"));
         model.addAttribute("canManage", canManage);

@@ -28,21 +28,21 @@ public class TemplateServiceTest {
 	
 	@Test
 	public void whenGetAllTemplatesReturnContainsValue() {
-		Template template = this.templateService.save(new Template("TestSubject","TestBody"));
+		Template template = this.templateService.save(new Template("TestSubject", "TestBody"));
 		List<Template> result = this.templateService.findAll();
 		assertTrue(result.contains(template));
 	}
 	
 	@Test
 	public void requestByIDReturnCorrectValue() {
-		Template template = this.templateService.save(new Template("TestSubjectByID","TestBodyByID"));
+		Template template = this.templateService.save(new Template("TestSubjectByID", "TestBodyByID"));
 		Template result = this.templateService.getById(template.getId());
 		assertTrue(result.equals(template));
 	}
 	
 	@Test
 	public void whenDeleteTemplateItIsNotExist() {
-		Template template = this.templateService.save(new Template("TestSubjectForDelete","TestBodyForDelete"));
+		Template template = this.templateService.save(new Template("TestSubjectForDelete", "TestBodyForDelete"));
 		this.templateService.delete(template.getId());
 		List<Template> result = this.templateService.findAll();
 		assertFalse(result.contains(template));

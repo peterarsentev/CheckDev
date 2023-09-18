@@ -32,8 +32,8 @@ public class JobServiceTest {
     @Test
     public void whenCreateDicThenPathShouldExic() {
         File file = new File("C:\\tmp\\students\\\\job4j\\");
-        if(file.mkdirs()) {
-
+        if (file.mkdirs()) {
+            System.out.println(String.format("Folder %s is created", file.getAbsoluteFile()));
         } else {
             System.out.println(String.format("Folder %s could not created", file.getAbsoluteFile()));
         }

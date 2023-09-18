@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Entity(name = "job")
 public class Job {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -21,8 +22,8 @@ public class Job {
     private String cron;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name="job_id", updatable = false)
-    @OrderBy(value="pos")
+    @JoinColumn(name = "job_id", updatable = false)
+    @OrderBy(value = "pos")
     private List<Task> tasks;
 
     public Job() {
@@ -66,8 +67,12 @@ public class Job {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Job job = (Job) o;
 

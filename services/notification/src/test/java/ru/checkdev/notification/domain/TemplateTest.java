@@ -27,13 +27,13 @@ public class TemplateTest {
 	
 	@Test
 	public void whenFieldsConstructorNotNull() {
-		Template template = new Template("TestSubject","TestBody");
+		Template template = new Template("TestSubject", "TestBody");
 		assertNotNull(template);
 	}
 	
 	@Test
 	public void whenIDSetandGetEquals() {
-		Template template = new Template("TestSubject","TestBody");
+		Template template = new Template("TestSubject", "TestBody");
 		template.setId(1);
 		assertThat(1, is(template.getId()));
 	}
@@ -42,14 +42,14 @@ public class TemplateTest {
 	
 	@Test
 	public void whenSubjectTypeSetandGetEquals() {
-		Template template = new Template("TestSubject","TestBody");
+		Template template = new Template("TestSubject", "TestBody");
 		template.setSubject("NewSubject");
 		assertThat("NewSubject", is(template.getSubject()));
 	}
 	
 	@Test
 	public void whenBodyTypeSetandGetEquals() {
-		Template template = new Template("TestSubject","TestBody");
+		Template template = new Template("TestSubject", "TestBody");
 		template.setBody("NewBody");
 		assertThat("NewBody", is(template.getBody()));
 	}

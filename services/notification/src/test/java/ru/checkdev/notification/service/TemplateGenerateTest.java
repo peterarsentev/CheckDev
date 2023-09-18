@@ -26,10 +26,9 @@ public class TemplateGenerateTest {
         data.add(Arrays.asList("name", "email"));
         model.put("interviews", data);
         String result = generator.generate(
-                "<#list interviews as interview>" +
-                        "<#list interview as value>${value} </#list>" +
-                        "</#list>"
-                , model
+                "<#list interviews as interview>"
+                       + "<#list interview as value>${value} </#list>"
+                       + "</#list>", model
         );
 
         assertThat(result, is("name email name email "));
@@ -43,10 +42,9 @@ public class TemplateGenerateTest {
         data.put("name", "email");
         model.put("interviews", data);
         String result = generator.generate(
-                "<#list interviews?keys as key>" +
-                        "${interviews[key]}" +
-                        "</#list>"
-                , model
+                "<#list interviews?keys as key>"
+                       + "${interviews[key]}"
+                       + "</#list>", model
         );
 
         assertThat(result, is("email"));
