@@ -37,8 +37,7 @@
                         <div class="col-3">
                             <!--Photo view-->
                             <div class="mb-3">
-                                <img th:if="${not #lists.isEmpty(photo)}"
-                                     th:src="@{'data:image/jpeg;base64,'+ ${photo}}" class="w-100"
+                                <img th:src="@{http://localhost:9900/img(id=*{photo.id})}" class="w-100"
                                      alt="No image">
                             </div>
                             <!--Photo load-->
