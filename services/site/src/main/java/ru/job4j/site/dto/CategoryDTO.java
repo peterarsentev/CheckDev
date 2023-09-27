@@ -11,9 +11,9 @@ public class CategoryDTO {
     private int id;
     private String name;
     private int total;
+    private int topicsSize;
 
     public CategoryDTO(int id, String name) {
-        this.id = id;
-        this.name = name;
+        this(id, name, 0, 0);
     }
 }

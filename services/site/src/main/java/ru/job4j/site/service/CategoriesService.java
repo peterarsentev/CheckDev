@@ -41,18 +41,11 @@ public class CategoriesService {
                 token, mapper.writeValueAsString(categoryId));
     }
 
-    public List<Category> getAllWithTopics(TopicsService topicsService) throws JsonProcessingException {
+    public List<CategoryDTO> getAllWithTopics(TopicsService topicsService) throws JsonProcessingException {
         var categoriesDTO = getAll();
-        var result = new ArrayList<Category>();
-        for (CategoryDTO categoryDTO : categoriesDTO) {
-            var category = new Category(
-                    categoryDTO.getId(),
-                    categoryDTO.getName(),
-                    categoryDTO.getTotal(),
-                    new ArrayList<>());
-            category.getTopics().addAll(topicsService.getByCategory(category.getId()));
-            result.add(category);
+        for (var categoryDTO : categoriesDTO) {
+            categoryDTO.setTopicsSize(topicsService.getByCategory(categoryDTO.getId()).size());
         }
-        return result;
+        return categoriesDTO;
     }
 }

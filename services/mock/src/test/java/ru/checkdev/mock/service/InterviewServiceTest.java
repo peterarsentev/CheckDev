@@ -1,9 +1,12 @@
 package ru.checkdev.mock.service;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.context.junit4.SpringRunner;
 import ru.checkdev.mock.Application;
 import ru.checkdev.mock.domain.Interview;
 import ru.checkdev.mock.repository.InterviewRepository;
@@ -16,6 +19,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @SpringBootTest(classes = Application.class)
+@RunWith(SpringRunner.class)
 class InterviewServiceTest {
 
     @MockBean

@@ -1,17 +1,22 @@
 package ru.job4j.site.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Map;
 
 @AllArgsConstructor
+@Slf4j
 public class RestAuthCall {
     private final String url;
 
@@ -26,6 +31,16 @@ public class RestAuthCall {
 
     public String get(String token) {
         var restTemplate = new RestTemplate();
+        restTemplate.setErrorHandler(
+                new DefaultResponseErrorHandler() {
+                    @Override
+                    public void handleError(ClientHttpResponse response) throws IOException {
+                        if (response.getStatusCode().value() != 401) {
+                            log.error("Call: " + url, response.getStatusText());
+                        }
+                    }
+                }
+        );
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("Authorization", "Bearer " + token);
