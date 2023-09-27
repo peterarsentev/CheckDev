@@ -3,6 +3,7 @@ package ru.job4j.site.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,10 +13,12 @@ import org.springframework.ui.ConcurrentModel;
 import ru.job4j.site.SiteApplication;
 import ru.job4j.site.domain.Breadcrumb;
 import ru.job4j.site.dto.CategoryDTO;
-import ru.job4j.site.dto.TopicDTO;
+import ru.job4j.site.service.AuthService;
 import ru.job4j.site.service.CategoriesService;
 import ru.job4j.site.service.TopicsService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -40,6 +43,10 @@ class IndexControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private CategoriesService categoriesService;
+
+    @MockBean
+    private AuthService authService;
+
     @MockBean
     private TopicsService topicsService;
 
@@ -47,7 +54,7 @@ class IndexControllerTest {
 
     @BeforeEach
     void initTest() {
-        this.indexController = new IndexController(categoriesService, topicsService);
+        this.indexController = new IndexController(categoriesService, topicsService, authService);
     }
 
     @Test
@@ -60,29 +67,22 @@ class IndexControllerTest {
 
     @Test
     void whenGetIndexPageExpectModelAttributeThenOk() throws JsonProcessingException {
-        var topicDTO1 = new TopicDTO();
-        topicDTO1.setId(1);
-        topicDTO1.setName("topic1");
-        var topicDTO2 = new TopicDTO();
-        topicDTO2.setId(2);
-        topicDTO2.setName("topic2");
-        var cat1 = new CategoryDTO(1, "name1");
-        var cat2 = new CategoryDTO(2, "name2");
-        var listCat = List.of(cat1, cat2);
-        when(topicsService.getByCategory(cat1.getId())).thenReturn(List.of(topicDTO1));
-        when(topicsService.getByCategory(cat2.getId())).thenReturn(List.of(topicDTO2));
-        when(categoriesService.getAllWithTopics(topicsService)).thenReturn(listCat);
-        var listBread = List.of(new Breadcrumb("Главная", "/"),
-                new Breadcrumb("Категории", "/categories/"));
+        var catDTO1 = new CategoryDTO(1, "name1");
+        var catDTO2 = new CategoryDTO(2, "name2");
+        var listCatDTO = List.of(catDTO1, catDTO2);
+        when(categoriesService.getAll()).thenReturn(listCatDTO);
+        when(categoriesService.getAllWithTopics(topicsService)).thenReturn(listCatDTO);
+        var listBread = List.of(new Breadcrumb("Главная", "/"));
         var model = new ConcurrentModel();
-
-        var view = indexController.getIndexPage(model);
+        var req = Mockito.mock(HttpServletRequest.class);
+        when(req.getSession()).thenReturn(Mockito.mock(HttpSession.class));
+        var view = indexController.getIndexPage(model, req);
         var actualCategories = model.getAttribute("categories");
         var actualBreadCrumbs = model.getAttribute("breadcrumbs");
         var actualUserInfo = model.getAttribute("userInfo");
 
         assertThat(view).isEqualTo("index");
-        assertThat(actualCategories).usingRecursiveComparison().isEqualTo(listCat);
+        assertThat(actualCategories).usingRecursiveComparison().isEqualTo(listCatDTO);
         assertThat(actualBreadCrumbs).usingRecursiveComparison().isEqualTo(listBread);
         assertThat(actualUserInfo).isNull();
     }
