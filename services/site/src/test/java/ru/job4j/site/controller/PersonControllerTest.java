@@ -9,7 +9,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.site.dto.PersonDTO;
 import ru.job4j.site.service.PersonService;
+import ru.job4j.site.service.PhotoServices;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,6 +31,8 @@ class PersonControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private PersonService personService;
+    @MockBean
+    private PhotoServices photoServices;
 
     @Test
     void whenGetViewPersonThenReturnPersonViewPage() throws Exception {
@@ -38,6 +42,7 @@ class PersonControllerTest {
         person.setUsername("username");
         person.setEmail("email");
         when(personService.getPerson(token)).thenReturn(person);
+        when(photoServices.getPhotoById(anyString())).thenReturn("");
         this.mockMvc.perform(get("/persons/")
                         .sessionAttr("token", token))
                 .andDo(print())
@@ -62,6 +67,7 @@ class PersonControllerTest {
         person.setUsername("username");
         person.setEmail("email");
         when(personService.getPerson(token)).thenReturn(person);
+        when(photoServices.getPhotoById(anyString())).thenReturn("");
         this.mockMvc.perform(get("/persons/edit")
                         .sessionAttr("token", token))
                 .andDo(print())
@@ -86,6 +92,7 @@ class PersonControllerTest {
         person.setUsername("username");
         person.setEmail("email");
         when(personService.getPerson(token)).thenReturn(person);
+        when(photoServices.getPhotoById(anyString())).thenReturn("");
         this.mockMvc.perform(post("/persons/edit")
                         .accept(MediaType.MULTIPART_FORM_DATA)
                         .requestAttr("personDTO", person)

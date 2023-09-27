@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.site.dto.PersonDTO;
 import ru.job4j.site.service.PersonService;
+import ru.job4j.site.service.PhotoServices;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -27,6 +31,7 @@ import static ru.job4j.site.controller.RequestResponseTools.getToken;
 @Slf4j
 public class PersonController {
     private final PersonService personService;
+    private final PhotoServices photoServices;
 
     /**
      * Метод GET отображения страницы для просмотра данных пользователя.
@@ -46,6 +51,7 @@ public class PersonController {
             return "redirect:/";
         }
         model.addAttribute("personDto", personDTO);
+        model.addAttribute("photo", getPhotoByPersonDTO(personDTO));
         return "/persons/personView";
     }
 
@@ -68,6 +74,7 @@ public class PersonController {
                 "Редактирование", "/edit"
         );
         model.addAttribute("personDto", personDTO);
+        model.addAttribute("photo", getPhotoByPersonDTO(personDTO));
         return "/persons/personEdit";
     }
 
@@ -86,6 +93,14 @@ public class PersonController {
             log.error("API post method error: {}", e.getMessage());
         }
         return "redirect:/";
+    }
+
+    private String getPhotoByPersonDTO(PersonDTO personDTO) {
+        String result = "";
+        if (personDTO.getPhoto() != null && personDTO.getPhoto().getId() > 0) {
+            result = photoServices.getPhotoById(String.valueOf(personDTO.getPhoto().getId()));
+        }
+        return result;
     }
 
 

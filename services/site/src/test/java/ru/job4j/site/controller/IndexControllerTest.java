@@ -11,8 +11,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.ConcurrentModel;
 import ru.job4j.site.SiteApplication;
 import ru.job4j.site.domain.Breadcrumb;
-import ru.job4j.site.dto.CategoryDTO;
+import ru.job4j.site.domain.Category;
+import ru.job4j.site.dto.TopicDTO;
 import ru.job4j.site.service.CategoriesService;
+import ru.job4j.site.service.TopicsService;
 
 import java.util.List;
 
@@ -38,12 +40,14 @@ class IndexControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private CategoriesService categoriesService;
+    @MockBean
+    private TopicsService topicsService;
 
     private IndexController indexController;
 
     @BeforeEach
     void initTest() {
-        this.indexController = new IndexController(categoriesService);
+        this.indexController = new IndexController(categoriesService, topicsService);
     }
 
     @Test
@@ -56,10 +60,18 @@ class IndexControllerTest {
 
     @Test
     void whenGetIndexPageExpectModelAttributeThenOk() throws JsonProcessingException {
-        var catDTO1 = new CategoryDTO(1, "name1");
-        var catDTO2 = new CategoryDTO(2, "name2");
-        var listCatDTO = List.of(catDTO1, catDTO2);
-        when(categoriesService.getAll()).thenReturn(listCatDTO);
+        var topicDTO1 = new TopicDTO();
+        topicDTO1.setId(1);
+        topicDTO1.setName("topic1");
+        var topicDTO2 = new TopicDTO();
+        topicDTO2.setId(2);
+        topicDTO2.setName("topic2");
+        var cat1 = new Category(1, "name1", 1, List.of(topicDTO1));
+        var cat2 = new Category(2, "name2", 2, List.of(topicDTO2));
+        var listCat = List.of(cat1, cat2);
+        when(topicsService.getByCategory(cat1.getId())).thenReturn(List.of(topicDTO1));
+        when(topicsService.getByCategory(cat2.getId())).thenReturn(List.of(topicDTO2));
+        when(categoriesService.getAllWithTopics(topicsService)).thenReturn(listCat);
         var listBread = List.of(new Breadcrumb("Главная", "/"),
                 new Breadcrumb("Категории", "/categories/"));
         var model = new ConcurrentModel();
@@ -70,7 +82,7 @@ class IndexControllerTest {
         var actualUserInfo = model.getAttribute("userInfo");
 
         assertThat(view).isEqualTo("index");
-        assertThat(actualCategories).usingRecursiveComparison().isEqualTo(listCatDTO);
+        assertThat(actualCategories).usingRecursiveComparison().isEqualTo(listCat);
         assertThat(actualBreadCrumbs).usingRecursiveComparison().isEqualTo(listBread);
         assertThat(actualUserInfo).isNull();
     }

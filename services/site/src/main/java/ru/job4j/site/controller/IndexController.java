@@ -23,12 +23,6 @@ public class IndexController {
                 "Категории", "/categories/"
         );
         model.addAttribute("categories", categoriesService.getAllWithTopics(topicsService));
-        String errorMessage = null;
-        if (error != null) {
-            errorMessage = "Email or Password is incorrect !!";
-        }
-        model.addAttribute("errorMessage", errorMessage);
-        model.addAttribute("userInfo", getUserInfo(request));
         return "index";
     }
 }

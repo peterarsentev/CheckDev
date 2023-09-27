@@ -36,7 +36,8 @@
                 <div class="row mb-3">
                     <div class="col-3">
                         <div class="mb-3">
-                            <img th:src="@{http://localhost:9900/img(id=*{personDto.photo.id})}" class="w-100"
+                            <img th:if="${not #lists.isEmpty(photo)}"
+                                 th:src="@{'data:image/jpeg;base64,'+ ${photo}}" class="w-100"
                                  alt="No image">
                         </div>
                     </div>

@@ -2,13 +2,12 @@ package ru.job4j.site.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.job4j.site.dto.ProfileDTO;
@@ -107,5 +106,24 @@ public class WebClientAuthCall {
                 .retrieve()
                 .toEntityList(ProfileDTO.class)
                 .doOnError(err -> log.error("API not found: {}", err.getMessage()));
+    }
+
+    /**
+     * Метод обрабатывает запрос get получения изображения из сервиса Auth
+     *
+     * @param url img URL
+     * @param id  img ID
+     * @return Mono<ResponseEntity < ByteArrayResource>>
+     */
+    public Mono<ResponseEntity<ByteArrayResource>> doGetPhoto(String url, String id) {
+        return webClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(url)
+                        .queryParam("id", id)
+                        .build())
+                .retrieve()
+                .toEntity(ByteArrayResource.class)
+                .doOnError(err -> log.error("API {} not found: {}", url, id));
     }
 }
