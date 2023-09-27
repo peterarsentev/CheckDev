@@ -2,6 +2,7 @@ package ru.job4j.site.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 public class LoginControl {
     private final AuthService authService;
 
@@ -30,6 +32,7 @@ public class LoginControl {
         if (error != null) {
             errorMessage = "Email or Password is incorrect !!";
         }
+        model.addAttribute("authPing", authService.getPing());
         model.addAttribute("errorMessage", errorMessage);
         return "login";
     }
