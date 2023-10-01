@@ -19,4 +19,9 @@ public class CategoriesControl {
     public List<Category> getAll() {
         return categoryService.getAll();
     }
+
+    @GetMapping("/most_pop")
+    public List<Category> getMostPopular() {
+        return categoryService.getMostPopular();
+    }
 }

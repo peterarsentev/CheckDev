@@ -22,7 +22,7 @@ public class IndexController {
                 "Главная", "/",
                 "Категории", "/categories/"
         );
-        model.addAttribute("categories", categoriesService.getAllWithTopics(topicsService));
+        model.addAttribute("categories", categoriesService.getMostPopAllWithTopics(topicsService));
         return "index";
     }
 }
