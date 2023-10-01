@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="../../static/img/favorite.png">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="../../static/img/favorite.png" rel="icon" type="image/png">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-    <meta name="description" content="Обучение и трудоустройство Java-программистов от Junior до Senior">
-    <meta name="author" content="Job4j.ru">
+    <meta content="Обучение и трудоустройство Java-программистов от Junior до Senior" name="description">
+    <meta content="Job4j.ru" name="author">
     <title>Обучение и трудоустройство Java-программистов от Junior до Senior</title>
 
     <!-- Required meta tags -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" rel="stylesheet">
     <!-- Bootstrap 5.3.2 CSS -->
-    <link th:href="@{/css_bootstrap_5_3_2/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css_bootstrap_5_3_2/bootstrap.min.css}">
     <script th:href="@{/js_bootstrap_5_3_2/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js_bootstrap_5_3_2/popper.min.js}"></script>
     <script th:src="@{/js_bootstrap_5_3_2/bootstrap.min.js}"></script>
@@ -35,7 +35,11 @@
                 <div class="row mb-3">
                     <div class="col-3">
                         <div class="mb-3">
-                            <img th:src="@{http://localhost:9900/img(id=*{personDto.photo.id})}" class="w-100"
+
+                            <i th:if="${photoId<0}"
+                               class="fas fa-image" style="font-size: 3em;"></i>
+                            <img th:if="${photoId>0}"
+                                 th:src="@{/photo/{id}(id=${photoId})}" class="w-100"
                                  alt="No image">
                         </div>
                     </div>

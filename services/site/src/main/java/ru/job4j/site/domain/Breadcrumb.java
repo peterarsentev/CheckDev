@@ -13,7 +13,7 @@ public class Breadcrumb {
     public Breadcrumb(String name, String url) {
         this.name = name;
         this.url = url;
-     }
+    }
 
     @Override
     public boolean equals(Object o) {

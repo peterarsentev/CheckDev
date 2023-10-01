@@ -3,11 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="../static/img/favorite.png">
+
+    <!-- favicon -->
+    <link rel="icon" type="image/svg+xml" href="/img/icons/svg/check-double-solid.svg">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-    <meta name="description" content="Обучение и трудоустройство Java-программистов от Junior до Senior">
-    <meta name="author" content="Job4j.ru">
+    <meta content="Обучение и трудоустройство Java-программистов от Junior до Senior" name="description">
+    <meta content="Job4j.ru" name="author">
     <title>Check Dev</title>
 
     <!-- Required meta tags -->
@@ -24,8 +27,6 @@
 <body>
 <div th:insert="fragments/header :: header"></div>
 <div class="container">
-    <div class="card"
-         th:insert="fragments/breadcrumbs :: breadcrumbs(breadcrumbs=${breadcrumbs})"></div>
     <div class="row pt-2" th:if="${canManage}">
         <div class="col-sm">
         </div>

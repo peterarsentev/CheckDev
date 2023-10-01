@@ -1,10 +1,9 @@
 package ru.checkdev.notification.domain;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
-
- *
  * @author Petr Arsentev (parsentev@yandex.ru)
  * @version $Id$
  * @since 0.1
@@ -46,7 +45,7 @@ public class Notify {
 
         Notify notify = (Notify) o;
 
-        return template != null ? template.equals(notify.template) : notify.template == null;
+        return Objects.equals(template, notify.template);
     }
 
     @Override

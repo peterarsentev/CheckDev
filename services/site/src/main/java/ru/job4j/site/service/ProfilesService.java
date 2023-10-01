@@ -21,9 +21,8 @@ import java.util.Optional;
 @AllArgsConstructor
 @Slf4j
 public class ProfilesService {
-    private final WebClientAuthCall webClientAuthCall;
     private static final String URL_PROFILES = "/profiles/";
-
+    private final WebClientAuthCall webClientAuthCall;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**

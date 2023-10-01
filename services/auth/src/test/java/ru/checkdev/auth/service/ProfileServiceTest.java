@@ -28,15 +28,15 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProfileServiceTest {
+    private static final int ID_OK = 1;
     @MockBean
     private PersonRepository personRepository;
     @Autowired
     private ProfileService profileService;
-    private ProfileDTO profileDTO1 = new ProfileDTO(
+    private final ProfileDTO profileDTO1 = new ProfileDTO(
             1, "name1", "experience1", 1, null, null);
-    private ProfileDTO profileDTO2 = new ProfileDTO(
+    private final ProfileDTO profileDTO2 = new ProfileDTO(
             2, "name2", "experience2", 2, null, null);
-    private static final int ID_OK = 1;
 
     @Test
     public void whenFindByIDThenReturnOptionalProfileDTO() {

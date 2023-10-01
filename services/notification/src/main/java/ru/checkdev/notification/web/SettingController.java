@@ -8,8 +8,6 @@ import ru.checkdev.notification.service.SettingService;
 import java.util.List;
 
 /**
-
- *
  * @author Petr Arsentev (parsentev@yandex.ru)
  * @version $Id$
  * @since 0.1

@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author parsentev
@@ -27,6 +28,7 @@ public class PersonServiceTest {
 
     @Autowired
     private PersonRepository persons;
+
     @After
     @Test
     public void whenRegDuplicatePersonThenResultEmpty() {
@@ -46,6 +48,6 @@ public class PersonServiceTest {
     @Test
     public void whenSelectAllPersonsThenListContainTestRecord() {
         List<Person> personList = this.service.getAll();
-        assertTrue(personList.size()>0);
+        assertTrue(personList.size() > 0);
     }
 }

@@ -2,17 +2,19 @@ package ru.job4j.site.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.site.dto.PersonDTO;
 import ru.job4j.site.service.PersonService;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -29,6 +31,8 @@ class PersonControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private PersonService personService;
+    @Value("${server.site.maxSizeLoadFile}")
+    private String maxSizeFile;
 
     @Test
     void whenGetViewPersonThenReturnPersonViewPage() throws Exception {
@@ -85,13 +89,46 @@ class PersonControllerTest {
         person.setId(1);
         person.setUsername("username");
         person.setEmail("email");
+        var fileSize = new byte[(Integer.parseInt(maxSizeFile) * 1024) / 10];
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "file.jpeg",
+                MediaType.IMAGE_JPEG_VALUE,
+                fileSize
+        );
         when(personService.getPerson(token)).thenReturn(person);
-        this.mockMvc.perform(post("/persons/edit")
+        this.mockMvc.perform(multipart("/persons/edit")
+                        .file(file)
                         .accept(MediaType.MULTIPART_FORM_DATA)
                         .requestAttr("personDTO", person)
                         .sessionAttr("token", token))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
+    }
+
+    @Test
+    void whenPostUpdatePersonThenRedirectErrorMessage() throws Exception {
+        var token = "123";
+        var person = new PersonDTO();
+        person.setId(1);
+        person.setUsername("username");
+        person.setEmail("email");
+        var fileSize = new byte[Integer.parseInt(maxSizeFile) * 1024 * 10];
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "file.jpeg",
+                MediaType.IMAGE_JPEG_VALUE,
+                fileSize
+        );
+        when(personService.getPerson(token)).thenReturn(person);
+        this.mockMvc.perform(multipart("/persons/edit")
+                        .file(file)
+                        .accept(MediaType.MULTIPART_FORM_DATA)
+                        .requestAttr("personDTO", person)
+                        .sessionAttr("token", token))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/persons/edit?error=true"));
     }
 }

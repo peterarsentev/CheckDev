@@ -1,9 +1,9 @@
 package ru.checkdev.auth.domain;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
- *
  * @author Petr Arsentev (parsentev@yandex.ru)
  * @version $Id$
  * @since 0.1
@@ -43,10 +43,6 @@ public class Notify {
         this.keys = keys;
     }
 
-    public enum Type {
-        REG, FORGOT, ORDER
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,12 +50,16 @@ public class Notify {
 
         Notify notify = (Notify) o;
 
-        return template != null ? template.equals(notify.template) : notify.template == null;
+        return Objects.equals(template, notify.template);
     }
 
     @Override
     public int hashCode() {
         return template != null ? template.hashCode() : 0;
+    }
+
+    public enum Type {
+        REG, FORGOT, ORDER
     }
 
 }

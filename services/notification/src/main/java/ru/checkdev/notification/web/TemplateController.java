@@ -4,16 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.checkdev.notification.domain.Template;
 import ru.checkdev.notification.domain.Notify;
+import ru.checkdev.notification.domain.Template;
 import ru.checkdev.notification.service.NotificationService;
 import ru.checkdev.notification.service.TemplateService;
 
 import java.util.List;
 
 /**
-
- *
  * @author Petr Arsentev (parsentev@yandex.ru)
  * @version $Id$
  * @since 0.1

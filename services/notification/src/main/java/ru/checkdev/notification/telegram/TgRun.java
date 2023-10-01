@@ -1,6 +1,5 @@
 package ru.checkdev.notification.telegram;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -26,13 +25,13 @@ import java.util.Map;
  */
 @Component
 public class TgRun {
+    private final TgAuthCallWebClint tgAuthCallWebClint;
     @Value("${tg.username}")
     private String username;
     @Value("${tg.token}")
     private String token;
     @Value("${server.site.url.login}")
     private String urlSiteAuth;
-    private final TgAuthCallWebClint tgAuthCallWebClint;
 
     public TgRun(TgAuthCallWebClint tgAuthCallWebClint) {
         this.tgAuthCallWebClint = tgAuthCallWebClint;

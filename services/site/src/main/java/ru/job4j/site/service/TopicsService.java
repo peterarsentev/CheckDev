@@ -3,7 +3,6 @@ package ru.job4j.site.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.stereotype.Service;
 import ru.job4j.site.dto.CategoryDTO;
 import ru.job4j.site.dto.TopicDTO;
@@ -18,13 +17,15 @@ public class TopicsService {
     public List<TopicDTO> getByCategory(int id) throws JsonProcessingException {
         var text = new RestAuthCall("http://localhost:9902/topics/" + id).get();
         var mapper = new ObjectMapper();
-        return mapper.readValue(text, new TypeReference<>(){});
+        return mapper.readValue(text, new TypeReference<>() {
+        });
     }
 
     public TopicDTO getById(int id, String token) throws JsonProcessingException {
         var text = new RestAuthCall("http://localhost:9902/topic/" + id).get(token);
         var mapper = new ObjectMapper();
-        return mapper.readValue(text, new TypeReference<>(){});
+        return mapper.readValue(text, new TypeReference<>() {
+        });
     }
 
     public TopicDTO create(String token, TopicLiteDTO topicLite) throws JsonProcessingException {

@@ -14,8 +14,8 @@ import java.util.List;
  */
 @Service
 public class SettingService {
-    
-    private SettingRepository settings;
+
+    private final SettingRepository settings;
 
     @Autowired
     public SettingService(SettingRepository settings) {
@@ -25,11 +25,11 @@ public class SettingService {
     public List<Setting> findAll() {
         return Lists.newArrayList(this.settings.findAll());
     }
-    
+
     public Setting save(Setting setting) {
         return this.settings.save(setting);
     }
-    
+
     public Setting findByKey(Setting.Key key) {
         return this.settings.findByKey(key);
     }

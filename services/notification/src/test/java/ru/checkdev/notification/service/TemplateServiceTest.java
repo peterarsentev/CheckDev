@@ -3,21 +3,19 @@
  */
 package ru.checkdev.notification.service;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import ru.checkdev.notification.domain.Template;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * @author olegbelov
- *
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -37,7 +35,7 @@ public class TemplateServiceTest {
     public void requestByIDReturnCorrectValue() {
         Template template = this.templateService.save(new Template("TestSubjectByID", "TestBodyByID"));
         Template result = this.templateService.getById(template.getId());
-        assertTrue(result.equals(template));
+        assertEquals(result, template);
     }
 
     @Test

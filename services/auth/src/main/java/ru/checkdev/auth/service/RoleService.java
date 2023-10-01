@@ -9,7 +9,6 @@ import ru.checkdev.auth.repository.RoleRepository;
 import java.util.List;
 
 /**
- *
  * @author parsentev
  * @since 26.09.2016
  */

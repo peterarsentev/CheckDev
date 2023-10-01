@@ -18,9 +18,9 @@ public class TopicControl {
     public ResponseEntity<Topic> findById(@PathVariable int id) {
         var topic = topicService.findById(id);
         return topic.map(
-                    value -> new ResponseEntity<>(value, HttpStatus.OK)
-                ).orElseGet(
-                    () -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                value -> new ResponseEntity<>(value, HttpStatus.OK)
+        ).orElseGet(
+                () -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/")

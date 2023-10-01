@@ -3,7 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="../../static/img/favorite.png">
+
+    <!-- favicon -->
+    <link rel="icon" type="image/svg+xml" href="/img/icons/svg/check-double-solid.svg">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
     <meta name="description" content="Обучение и трудоустройство Java-программистов от Junior до Senior">
@@ -37,12 +40,19 @@
                         <div class="col-3">
                             <!--Photo view-->
                             <div class="mb-3">
-                                <img th:src="@{http://localhost:9900/img(id=*{photo.id})}" class="w-100"
+                                <img th:if="${photoId>0}"
+                                     th:src="@{/photo/{id}(id=${photoId})}" class="w-100"
                                      alt="No image">
                             </div>
                             <!--Photo load-->
                             <div class="mb-3">
-                                <input class="form-control form-control-sm w-100" type="file" id="formFile" name="file">
+                                <div th:if="${not #lists.isEmpty(errorMessage)}" class="alert alert-danger" role="alert">
+                                    <span th:text="${errorMessage}"></span>
+                                </div>
+                                <label for="formFile" class="form-label">фото формата jpeg, размер до 100KB.</label>
+                                <input class="form-control form-control-sm w-100"
+                                       type="file" accept="image/jpeg"
+                                       id="formFile" name="file">
                             </div>
                         </div>
                         <div class="col-9">
@@ -50,31 +60,31 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label"><b>ФИО</b></label>
                                 <input type="text" class="form-control" id="username" name="username"
-                                       th:field="*{username}"
-                                       placeholder="ФИО">
+                                       th:field="*{username}">
                             </div>
                             <!--Email-->
                             <div class="mb-3">
-                                <label for="email" class="form-label"><b>Email</b></label>
-                                <input type="email" class="form-control" id="email" name="username" th:field="*{email}"
-                                       placeholder="Email">
+                                <label class="form-label" for="email"><b>Email</b></label>
+                                <input class="form-control" id="email" name="username" placeholder="Email"
+                                       th:field="*{email}"
+                                       type="email">
                             </div>
                             <!--Experience-->
                             <div class="mb-3">
-                                <label for="experience" class="form-label"><b>Опыт</b></label>
+                                <label class="form-label" for="experience"><b>Опыт</b></label>
                                 <textarea class="form-control"
-                                          rows="5"
-                                          id="experience" name="experience" th:field="*{experience}"
-                                          placeholder="Опыт"></textarea>
+                                          id="experience"
+                                          name="experience" placeholder="Опыт" rows="5"
+                                          th:field="*{experience}"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="salary" class="form-label"><b>Ожидаемый доход</b></label>
-                                <input type="text" class="form-control" id="salary" name="salary" th:field="*{salary}">
+                                <label class="form-label" for="salary"><b>Ожидаемый доход</b></label>
+                                <input class="form-control" id="salary" name="salary" th:field="*{salary}" type="text">
                             </div>
                             <div class="mb-3">
                                 <label for="location"><b>Город</b></label>
-                                <input type="text" class="form-control" id="location" name="location"
-                                       th:field="*{location}" placeholder="Город">
+                                <input class="form-control" id="location" name="location" placeholder="Город"
+                                       th:field="*{location}" type="text">
                             </div>
                         </div>
                     </div>

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.checkdev.auth.domain.Photo;
 import ru.checkdev.auth.service.PhotoService;
 
-import java.io.*;
+import java.io.IOException;
 
 /**
  * .

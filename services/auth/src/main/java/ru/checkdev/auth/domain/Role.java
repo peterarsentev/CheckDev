@@ -1,9 +1,11 @@
 package ru.checkdev.auth.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
- *
  * @author parsentev
  * @since 25.09.2016
  */

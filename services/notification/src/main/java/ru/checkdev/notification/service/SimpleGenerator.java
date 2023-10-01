@@ -5,7 +5,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 
 import java.io.StringWriter;
-import java.util.*;
+import java.util.Map;
 
 /**
  * Class SimpleGenerator for replacing keys in line with values from keyMap.
@@ -17,7 +17,8 @@ import java.util.*;
 public class SimpleGenerator {
     /**
      * Method search keys in line and replace them with values.
-     * @param line line to search keys.
+     *
+     * @param line  line to search keys.
      * @param model map with keys and their values.
      * @return line with replaced keys.
      */

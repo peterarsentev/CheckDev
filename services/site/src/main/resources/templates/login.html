@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/png" href="../static/img/favorite.png">
+
+    <!-- favicon -->
+    <link rel="icon" type="image/svg+xml" href="/img/icons/svg/check-double-solid.svg">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
     <meta name="description" content="Обучение и трудоустройство Java-программистов от Junior до Senior">
@@ -14,6 +17,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700,400i,900|Open+Sans:300,400,600,700,800&amp;subset=cyrillic"
           rel="stylesheet">
+    <!-- fontawesome-free-5.15.4-web-->
+    <link th:href="@{/fontawesome-free-5.15.4-web/css/all.min.css}" rel="stylesheet">
     <!-- Bootstrap 5.3.2 CSS -->
     <link th:href="@{/css_bootstrap_5_3_2/bootstrap.min.css}" rel="stylesheet">
     <script th:href="@{/js_bootstrap_5_3_2/bootstrap.bundle.min.js}"></script>
@@ -41,13 +46,26 @@
                 </div>
                 <div class="form-group pb-3">
                     <label for="password">Пароль</label>
-                    <input type="password" class="form-control" id="password"
-                           name="password" placeholder="Password">
+                    <input class="form-control" id="password" name="password"
+                           placeholder="Password" type="password">
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-secondary">Войти</button>
+                    <button class="btn btn-secondary" type="submit">Войти</button>
                 </div>
             </form>
+            <div class="form-group">
+                <p class="text-center">Войти с помощью: </p>
+                <!--Telegram-->
+                <div th:if="${authPing}" class="form-group">
+                    <a th:href="@{https://t.me/checkdev_bot?start=true}">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="3em" viewBox="0 0 448 512">
+                            <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                            <style>svg{fill:#3e65a8}</style>
+                            <path d="M446.7 98.6l-67.6 318.8c-5.1 22.5-18.4 28.1-37.3 17.5l-103-75.9-49.7 47.8c-5.5 5.5-10.1 10.1-20.7 10.1l7.4-104.9 190.9-172.5c8.3-7.4-1.8-11.5-12.9-4.1L117.8 284 16.2 252.2c-22.1-6.9-22.5-22.1 4.6-32.7L418.2 66.4c18.4-6.9 34.5 4.1 28.5 32.2z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="col-sm">
         </div>

@@ -25,7 +25,8 @@ public class RestAuthCall {
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         return restTemplate.exchange(url, HttpMethod.GET,
-                new HttpEntity<>(headers), new ParameterizedTypeReference<String>() { }
+                new HttpEntity<>(headers), new ParameterizedTypeReference<String>() {
+                }
         ).getBody();
     }
 
@@ -45,7 +46,8 @@ public class RestAuthCall {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("Authorization", "Bearer " + token);
         return restTemplate.exchange(url, HttpMethod.GET,
-                new HttpEntity<>(headers), new ParameterizedTypeReference<String>() { }
+                new HttpEntity<>(headers), new ParameterizedTypeReference<String>() {
+                }
         ).getBody();
     }
 

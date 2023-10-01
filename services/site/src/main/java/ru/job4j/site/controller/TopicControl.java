@@ -42,7 +42,7 @@ public class TopicControl {
                 "Направления", "/categories/",
                 String.format("%s. Темы", categoryName),
                 String.format("/topics/%s/%d", categoryName, categoryId),
-                topic.getName(), String.format("/topic/%d/%d", categoryId, topicId));
+                topic.getName(), String.format("/topic/%s/%d/%d", categoryName, categoryId, topicId));
         return "/topic/details";
     }
 
@@ -71,19 +71,19 @@ public class TopicControl {
         return "redirect:/categories/";
     }
 
-    @GetMapping("/updateForm/{categoryName}/{categoryId}")
-    public String updateForm(@ModelAttribute(name = "id") int id,
-                             Model model,
+    @GetMapping("/updateForm/{categoryName}/{categoryId}/{topicId}")
+    public String updateForm(Model model,
                              HttpServletRequest req,
                              @PathVariable String categoryName,
-                             @PathVariable int categoryId)
+                             @PathVariable int categoryId,
+                             @PathVariable int topicId)
             throws JsonProcessingException {
         var topic = new TopicDTO();
         topic.setName("");
         var token = getToken(req);
         if (token != null) {
             var userInfo = authService.userInfo(token);
-            topic = topicsService.getById(id, token);
+            topic = topicsService.getById(topicId, token);
             RequestResponseTools.addAttrCanManage(model, userInfo);
             model.addAttribute("userInfo", userInfo);
         }
@@ -92,7 +92,8 @@ public class TopicControl {
                 "Главная", "/index",
                 "Направления", "/categories/",
                 "Темы", String.format("/topics/%s/%d", categoryName, categoryId),
-                "Редактировать тему", String.format("/topic/updateForm/%d", categoryId));
+                "Редактировать тему",
+                String.format("/topic/updateForm/%s/%d/%d", categoryName, categoryId, topicId));
         return "topic/updateForm";
     }
 

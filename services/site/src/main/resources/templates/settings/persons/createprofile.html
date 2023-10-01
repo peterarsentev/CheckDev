@@ -1,3 +1,4 @@
+
 <div class="row">
     <h2>Создать профиль пользователя.</h2>
     <div class="alert alert-danger" id="create_error" style="display: none;"></div>
@@ -11,32 +12,33 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="name">ФИО:</label>
-                    <input type="text" class="form-control" id="name" ng-model="person.username"
-                           data-minlength="6"
-                           data-error="Заполните поле" required>
+                    <input class="form-control" data-error="Заполните поле" data-minlength="6" id="name"
+                           ng-model="person.username"
+                           required type="text">
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="text" class="form-control" id="email" ng-model="person.email"
-                           data-minlength="6"
-                           data-error="Заполните поле" required>
+                    <input class="form-control" data-error="Заполните поле" data-minlength="6" id="email"
+                           ng-model="person.email"
+                           required type="text">
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group">
                     <label for="password">Пароль:</label>
-                    <input type="password" class="form-control" id="password" ng-model="person.password"
+                    <input class="form-control" data-error="Заполните поле пароль" data-minlength="6" id="password"
+                           ng-model="person.password"
                            placeholder="Пароль"
-                           data-minlength="6"
-                           data-error="Заполните поле пароль" required>
+                           required type="password">
                     <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group">
                     <label for="active">Активировать:</label>
-                    <input type="checkbox" id="active" ng-model="person.active" ng-true-value="{{true}}" ng-false-value="{{false}}">
+                    <input id="active" ng-false-value="{{false}}" ng-model="person.active" ng-true-value="{{true}}"
+                           type="checkbox">
                 </div>
-
-                <a href="#" class="btn btn-secondary" onclick="document.location.href = CONTEXT + 'settings/settings.html';">
+                <a class="btn btn-secondary" href="#"
+                   onclick="document.location.href = CONTEXT + 'settings/settings.html';">
                     Назад
                 </a>
                 <button class="btn btn-secondary float-right" ng-click="create(person)">Сохранить</button>

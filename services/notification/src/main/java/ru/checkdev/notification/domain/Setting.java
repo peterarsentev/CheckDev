@@ -3,8 +3,6 @@ package ru.checkdev.notification.domain;
 import javax.persistence.*;
 
 /**
-
- *
  * @author Petr Arsentev (parsentev@yandex.ru)
  * @version $Id$
  * @since 0.1

@@ -1,7 +1,9 @@
 package ru.checkdev.desc.web;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.checkdev.desc.domain.Category;
 import ru.checkdev.desc.service.CategoryService;
 
@@ -15,6 +17,6 @@ public class CategoriesControl {
 
     @GetMapping("/")
     public List<Category> getAll() {
-       return categoryService.getAll();
+        return categoryService.getAll();
     }
 }

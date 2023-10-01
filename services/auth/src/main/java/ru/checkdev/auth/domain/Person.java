@@ -170,16 +170,16 @@ public class Person {
         return roles;
     }
 
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     public String getSalary() {
         return salary;
     }
 
     public void setSalary(String salary) {
         this.salary = salary;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 
     public String getKey() {
@@ -194,16 +194,16 @@ public class Person {
         return active;
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public boolean isShow() {
         return show;
     }
 
     public void setShow(boolean show) {
         this.show = show;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public String getExperience() {

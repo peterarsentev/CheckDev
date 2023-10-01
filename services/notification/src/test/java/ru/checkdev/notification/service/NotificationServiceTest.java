@@ -1,13 +1,10 @@
 /**
- * 
+ *
  */
 package ru.checkdev.notification.service;
 
-import static org.hamcrest.core.Is.is;
-
 import org.junit.Ignore;
 import org.junit.Test;
-
 import ru.checkdev.notification.domain.Notify;
 
 
@@ -15,7 +12,7 @@ import ru.checkdev.notification.domain.Notify;
  * @author olegbelov
  *
  */
- @Ignore
+@Ignore
 public class NotificationServiceTest {
 
     @Test

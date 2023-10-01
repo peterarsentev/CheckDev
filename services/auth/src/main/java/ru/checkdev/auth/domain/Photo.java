@@ -2,8 +2,10 @@ package ru.checkdev.auth.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * @author Hincu Andrei on 27.05.2018.
@@ -41,7 +43,6 @@ public class Photo {
     public void setId(int id) {
         this.id = id;
     }
-
 
 
     public byte[] getPhoto() {

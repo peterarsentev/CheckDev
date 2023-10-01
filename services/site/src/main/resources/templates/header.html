@@ -2,32 +2,37 @@
     <div class="container">
         <div class="row">
             <div class="top-header__logo col-xl-3 col-lg-3 col-md-3">
-                <a id='index' href="{{log_url}}index.html">
-                    <img id='logo' src="{{log_url}}img/logo.png" alt="logo">
+                <a href="{{log_url}}index.html" id='index'>
+                    <img alt="logo" id='logo' src="{{log_url}}img/logo.png">
                 </a>
             </div>
             <div class="top-header__navigation col-xl-9 col-lg-9 col-md-9 float-right">
                 <ul class="navigation">
-                    <li class="navigation__item"><a href="#" onclick="return loadPage('index.html', '#/vacancies');">Вакансии</a></li>
-                    <li class="navigation__item"><a href="#" onclick="return loadPage('index.html', '#/resume');">Кандидаты</a></li>
-                    <li class="navigation__item"><a href="#" onclick="return loadPage('exams/exams.html', '');">Сертификаты</a></li>
+                    <li class="navigation__item"><a href="#" onclick="return loadPage('index.html', '#/vacancies');">Вакансии</a>
+                    </li>
+                    <li class="navigation__item"><a href="#" onclick="return loadPage('index.html', '#/resume');">Кандидаты</a>
+                    </li>
+                    <li class="navigation__item"><a href="#" onclick="return loadPage('exams/exams.html', '');">Сертификаты</a>
+                    </li>
                     <!--<li class="navigation__item"><a href="#">Как это работает</a></li>-->
 
                     <li class="navigation__item dropdown" id="logout-item" style="display: none;">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"  onclick="return false;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" onclick="return false;">
                             <i class="fa fa-user fa-fw"></i>
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
                             <a class="dropdown-item" href="#" onclick="return loadPage('index.html', '#/owner');">
                                 <i class="fa fa-list fa-fw"></i> Мои вакансии
                             </a>
                             <a class="dropdown-item" href="#" onclick="return loadPage('index.html', '#/taken');">
                                 <i class="fa fa-id-card fa-fw"></i> Пройденный интервью
                             </a>
-                            <a class="dropdown-item" href="#" onclick="document.location.href = CONTEXT + 'settings/settings.html';">
+                            <a class="dropdown-item" href="#"
+                               onclick="document.location.href = CONTEXT + 'settings/settings.html';">
                                 <i class="fa fa-user fa-fw"></i> <span id="user-info"></span>
                             </a>
-                            <a class="dropdown-item" href="#" onclick="document.location.href = CONTEXT + 'exams/exams.html';">
+                            <a class="dropdown-item" href="#"
+                               onclick="document.location.href = CONTEXT + 'exams/exams.html';">
                                 <i class="fa fa-certificate fa-fw"></i> Сертификаты
                             </a>
                             <a class="dropdown-item" href="#" onclick="return logout();">
@@ -35,7 +40,7 @@
                             </a>
                         </div>
                     </li>
-                    <li  class="navigation__item" id="login-item">
+                    <li class="navigation__item" id="login-item">
                         <a href="#">
                             Войти
                         </a>

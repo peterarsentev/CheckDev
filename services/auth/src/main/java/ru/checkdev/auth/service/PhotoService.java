@@ -13,7 +13,7 @@ import ru.checkdev.auth.repository.PhotoRepository;
 @Service
 public class PhotoService {
 
-    private PhotoRepository photoRepository;
+    private final PhotoRepository photoRepository;
 
     @Autowired
     public PhotoService(PhotoRepository photoRepository) {

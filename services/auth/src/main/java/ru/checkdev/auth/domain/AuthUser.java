@@ -7,12 +7,11 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- *
  * @author parsentev
  * @since 25.09.2016
  */
 public class AuthUser extends User {
-    private List<String> rules;
+    private final List<String> rules;
 
     public AuthUser(String username, String password, Collection<? extends GrantedAuthority> authorities, List<String> rules) {
         super(username, password, authorities);

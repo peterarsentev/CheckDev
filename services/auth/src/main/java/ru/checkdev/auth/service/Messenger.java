@@ -1,16 +1,15 @@
 package ru.checkdev.auth.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javax.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.checkdev.auth.domain.Notify;
 
+import javax.annotation.PreDestroy;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
- *
  * @author Petr Arsentev (parsentev@yandex.ru)
  * @version $Id$
  * @since 0.1

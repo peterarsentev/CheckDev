@@ -1,16 +1,17 @@
+
 <div class="container p-3">
     <div class="row" ng-show="loaded">
         <div class="col-md-12">
-            <a href="#/vacancy/update/" class="btn btn-secondary" data-toggle="tooltip"
+            <a class="btn btn-secondary" data-toggle="tooltip" href="#/vacancy/update/"
                title="Перейти на страницу с открытыми вакансиями">
                 Добавить вакансию</a>
-            <a href="#/teams" class="btn btn-secondary" data-toggle="tooltip"
+            <a class="btn btn-secondary" data-toggle="tooltip" href="#/teams"
                title="Перейти на страницу с открытыми вакансиями">Группы</a>
-            <a href="#/archive" class="btn btn-secondary" data-toggle="tooltip"
+            <a class="btn btn-secondary" data-toggle="tooltip" href="#/archive"
                title="Перейти на страницу с архивированными вакансиями">Архив</a>
-            <button class="btn btn-secondary" data-toggle="popover"
-                    title="Страница опубликованный вакансий"
-                    data-content="На этой странице находятся все опубликованные вакансии.">
+            <button class="btn btn-secondary" data-content="На этой странице находятся все опубликованные вакансии."
+                    data-toggle="popover"
+                    title="Страница опубликованный вакансий">
                 <span class="glyphicon glyphicon-question-sign" style="color:grey;"></span>
             </button>
         </div>
@@ -34,7 +35,6 @@
                         </h3>
                     </th>
                     <th class="cell-stat text-center hidden-xs hidden-sm">Создана</th>
-
                     <th class="text-center">Действия</th>
                 </tr>
                 </thead>
@@ -56,18 +56,18 @@
                     <td class="text-center">{{ data.created | date: 'dd.MM.yyyy'}}</td>
                     </td>
                     <td class="text-center">
-                        <a ng-href="#/vacancy/update/{{data.id}}" class="btn btn-link"
-                           data-toggle="tooltip"
+                        <a class="btn btn-link" data-toggle="tooltip"
+                           ng-href="#/vacancy/update/{{data.id}}"
                            title="Редактировать вакансию">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
-                        <a ng-href="#/vacancy/copy/{{data.id}}" class="btn btn-link"
-                           data-toggle="tooltip"
+                        <a class="btn btn-link" data-toggle="tooltip"
+                           ng-href="#/vacancy/copy/{{data.id}}"
                            title="Копировать вакансию">
                             <span class="glyphicon glyphicon-copy"></span>
 
                         </a>
-                        <button ng-click="archiveVacancy(data, false)" class="btn btn-link" data-toggle="tooltip"
+                        <button class="btn btn-link" data-toggle="tooltip" ng-click="archiveVacancy(data, false)"
                                 title="Разархивировать вакансию.">
                             <span class="glyphicon glyphicon-new-window"></span>
                         </button>

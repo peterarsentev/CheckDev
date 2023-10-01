@@ -3,19 +3,17 @@
  */
 package ru.checkdev.notification.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.common.collect.Lists;
-
 import ru.checkdev.notification.config.MailConfiguration;
 import ru.checkdev.notification.domain.Notify;
 import ru.checkdev.notification.domain.Template;
 import ru.checkdev.notification.repository.SettingRepository;
 import ru.checkdev.notification.repository.TemplateRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author olegbelov

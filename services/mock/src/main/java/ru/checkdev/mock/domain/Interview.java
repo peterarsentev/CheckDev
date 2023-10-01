@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity(name = "interview")
-@Table(name = "interview")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Builder(builderMethodName = "of")
@@ -22,20 +21,26 @@ public class Interview {
     private int id;
 
     @NotNull(message = "Title must be non null")
+    @JoinColumn(name="type_interview")
     private int typeInterview;
 
     @NotNull(message = "Title must be non null")
+    @JoinColumn(name="submitter_id")
     private int submitterId;
 
     @NotBlank(message = "Title must be not empty")
+    @JoinColumn(name="title")
     private String title;
 
     @NotBlank(message = "Title must be not empty")
+    @JoinColumn(name="description")
     private String description;
 
     @NotBlank(message = "Title must be not empty")
+    @JoinColumn(name="contact_by")
     private String contactBy;
 
     @NotBlank(message = "Title must be not empty")
+    @JoinColumn(name="approximate_date")
     private String approximateDate;
 }

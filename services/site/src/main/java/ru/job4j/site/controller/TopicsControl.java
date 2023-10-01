@@ -34,7 +34,8 @@ public class TopicsControl {
         RequestResponseTools.addAttrBreadcrumbs(model,
                 "Главная", "/index",
                 "Направления", "/categories/",
-                String.format("%s. Темы", categoryName), String.format("/topics/%d", categoryId));
+                String.format("%s. Темы", categoryName),
+                String.format("/topics/%s/%d", categoryName, categoryId));
         var token = getToken(req);
         if (token != null) {
             var userInfo = authService.userInfo(token);

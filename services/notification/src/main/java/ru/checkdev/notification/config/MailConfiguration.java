@@ -1,15 +1,15 @@
 package ru.checkdev.notification.config;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import net.sargue.mailgun.Configuration;
 import net.sargue.mailgun.Mail;
 import net.sargue.mailgun.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.checkdev.notification.domain.Setting;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MailConfiguration {
 

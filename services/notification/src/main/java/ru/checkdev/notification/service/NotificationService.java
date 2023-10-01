@@ -3,6 +3,7 @@ package ru.checkdev.notification.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.checkdev.notification.domain.Notify;
+
 import javax.annotation.PreDestroy;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -19,7 +20,7 @@ public class NotificationService {
     }
 
     public void put(final Notify notify) {
-       this.scheduler.execute(() -> this.templates.send(notify));
+        this.scheduler.execute(() -> this.templates.send(notify));
     }
 
     @PreDestroy

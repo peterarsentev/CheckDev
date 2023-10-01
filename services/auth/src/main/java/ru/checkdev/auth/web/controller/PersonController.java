@@ -15,11 +15,10 @@ import ru.checkdev.auth.domain.Person;
 import ru.checkdev.auth.service.PersonService;
 import ru.checkdev.auth.service.RoleService;
 
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
-
-import javax.servlet.ServletException;
 
 /**
  * @author parsentev

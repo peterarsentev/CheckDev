@@ -1,7 +1,6 @@
 package ru.checkdev.desc.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.lang.NonNullApi;
 import ru.checkdev.desc.domain.Topic;
 
 import java.util.List;

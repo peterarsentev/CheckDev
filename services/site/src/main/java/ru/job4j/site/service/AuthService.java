@@ -17,6 +17,8 @@ public class AuthService {
 
     @Value("${security.oauth2.tokenUri}")
     private String oauth2Token;
+    @Value("${server.auth.ping}")
+    private String authServicePing;
 
     public UserInfoDTO userInfo(String token) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -37,4 +39,21 @@ public class AuthService {
         }
         return result;
     }
+
+    /**
+     * Метод проверяет доступность сервера Auth.
+     *
+     * @return String body
+     */
+    public boolean getPing() {
+        var result = false;
+        try {
+            result = !new RestAuthCall(authServicePing).get().isEmpty();
+        } catch (Exception e) {
+            log.error("Get PING from API Auth error: {}", e.getMessage());
+        }
+        return result;
+    }
+
+
 }

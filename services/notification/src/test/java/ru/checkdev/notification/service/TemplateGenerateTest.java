@@ -3,7 +3,7 @@ package ru.checkdev.notification.service;
 import freemarker.template.TemplateException;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;

@@ -11,7 +11,6 @@ import java.security.Principal;
 import java.util.Optional;
 
 /**
- *
  * @author parsentev
  * @since 26.09.2016
  */
