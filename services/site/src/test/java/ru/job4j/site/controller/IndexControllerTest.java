@@ -71,7 +71,7 @@ class IndexControllerTest {
         var listCat = List.of(cat1, cat2);
         when(topicsService.getByCategory(cat1.getId())).thenReturn(List.of(topicDTO1));
         when(topicsService.getByCategory(cat2.getId())).thenReturn(List.of(topicDTO2));
-        when(categoriesService.getAllWithTopics(topicsService)).thenReturn(listCat);
+        when(categoriesService.getMostPopAllWithTopics(topicsService)).thenReturn(listCat);
         var listBread = List.of(new Breadcrumb("Главная", "/"),
                 new Breadcrumb("Категории", "/categories/"));
         var model = new ConcurrentModel();
