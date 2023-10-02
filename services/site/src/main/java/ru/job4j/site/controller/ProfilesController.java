@@ -62,7 +62,7 @@ public class ProfilesController {
     public String getAllProfiles(Model model) {
         RequestResponseTools.addAttrBreadcrumbs(model,
                 "Главная", "/",
-                "Профили", "/profiles"
+                "Профили", "/profiles/"
         );
         var profilesList = profilesService.getAllProfile(key);
         model.addAttribute("profiles", profilesList);
