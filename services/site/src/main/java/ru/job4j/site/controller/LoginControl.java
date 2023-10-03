@@ -51,6 +51,21 @@ public class LoginControl {
     }
 
     /**
+     * Метод GET отображения страницы регистрации.
+     *
+     * @param model Model
+     * @return String.
+     */
+    @GetMapping("/registration")
+    public String registration(Model model) {
+        RequestResponseTools.addAttrBreadcrumbs(model,
+                "Главная", "/",
+                "Регистрация", "/registration"
+        );
+        return "registration";
+    }
+
+    /**
      * Метод Get очищает сессию и осуществляет выход пользователя.
      *
      * @param request HttpServletRequest

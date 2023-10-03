@@ -9,9 +9,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.site.SiteApplication;
+import ru.job4j.site.domain.Breadcrumb;
 import ru.job4j.site.dto.CredentialDTO;
 import ru.job4j.site.service.AuthService;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -103,5 +105,15 @@ class LoginControlTest {
         String token = (String) request.getSession().getAttribute("token");
         assertThat(actualPage).isEqualTo("redirect:/");
         assertThat(token).isNull();
+    }
+
+    @Test
+    void whenGetRegistrationThenReturnRegistrationPage() throws Exception {
+        var breadcrumbs = List.of(new Breadcrumb("Главная", "/"), new Breadcrumb("Регистрация", "/registration"));
+        this.mockMvc.perform(get("/registration"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("breadcrumbs", breadcrumbs))
+                .andExpect(view().name("registration"));
     }
 }

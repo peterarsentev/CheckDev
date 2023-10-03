@@ -3,10 +3,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- favicon -->
-    <link rel="icon" type="image/svg+xml" href="/img/icons/svg/check-double-solid.svg">
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
     <meta name="description" content="Обучение и трудоустройство Java-программистов от Junior до Senior">
@@ -30,36 +26,28 @@
 
 <div th:insert="fragments/header :: header"></div>
 <div class="container">
-    <div class="row pt-5">
-        <div class="col-sm">
-        </div>
-        <div class="col-sm">
-            <div th:if="${not #lists.isEmpty(errorMessage)}" class="alert alert-danger" role="alert">
-                <span th:text="${errorMessage}"></span>
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="card mb-3" style="width: 35rem;">
+            <div class="card-header">
+                Как получить доступ?
             </div>
-            <form th:action="@{/signIn}" method="post">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email"
-                           name="email"
-                           aria-describedby="emailHelp" placeholder="Введите email">
-                </div>
-                <div class="form-group pb-3">
-                    <label for="password">Пароль</label>
-                    <input class="form-control" id="password" name="password"
-                           placeholder="Password" type="password">
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-secondary" type="submit">Войти</button>
-                </div>
-            </form>
-            <div class="form-group">
-                <div class="text-center">
-                    <a th:href="@{/registration}">Регистрация </a>
-                </div>
+            <div class="card-body">
+                <p class="card-text">В проекте CheckDev мы активно используем телеграм.</p>
+                <p class="card-text">
+                    Чтобы начать обучение, добавьте бота @checkdev_bot<br>
+                    Отправьте боту сообщение:
+                </p>
+                <h5 class="card-title">/new</h5>
+                <p class="card-text">
+                    Далее введите ваш email адрес.<br>
+                    Например, ivan.ivanov@gmail.com<br>
+                    Бот пришлет логин и пароль для входа в систему.
+                </p>
+                <p class="card-text">
+                    Успешной учебы, Команда CheckDev.
+                </p>
+                <a th:href="@{https://t.me/checkdev_bot?start=true}" class="btn btn-primary">Открыть телеграм бота</a>
             </div>
-        </div>
-        <div class="col-sm">
         </div>
     </div>
 </div>
