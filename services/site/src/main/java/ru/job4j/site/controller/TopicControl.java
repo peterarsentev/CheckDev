@@ -33,14 +33,17 @@ public class TopicControl {
             RequestResponseTools.addAttrCanManage(model, userInfo);
             topic = topicsService.getById(topicId, token);
         }
-        String categoryName = topic.getCategory().getName();
-        int categoryId = topic.getCategory().getId();
+        var category = topic.getCategory();
+        String categoryName = category != null ? category.getName() : "";
+        int categoryId = category != null ? category.getId() : 0;
+        String topicName = topic.getName();
         model.addAttribute("topic", topic);
         RequestResponseTools.addAttrBreadcrumbs(model,
                 "Главная", "/index",
                 "Категории", "/categories/",
-                String.format("%s. Темы", categoryName), String.format("/topics/%d", categoryId),
-                topic.getName(), String.format("/topic/%d", topicId));
+                String.format("%s. Темы", categoryName),
+                String.format("/topics/%d", categoryId),
+                topicName, String.format("/topic/%d", topicId));
         return "/topic/details";
     }
 
@@ -83,12 +86,14 @@ public class TopicControl {
             RequestResponseTools.addAttrCanManage(model, userInfo);
             model.addAttribute("userInfo", userInfo);
         }
+        var category = topic.getCategory();
+        String categoryName = category != null ? category.getName() : "";
+        int categoryId = category != null ? category.getId() : 0;
         model.addAttribute("topic", topic);
-        int categoryId = topic.getCategory().getId();
         RequestResponseTools.addAttrBreadcrumbs(model,
                 "Главная", "/index",
                 "Категории", "/categories/",
-                String.format("%s. Темы", topic.getCategory().getName()),
+                String.format("%s. Темы", categoryName),
                 String.format("/topics/%d", categoryId),
                 "Редактировать тему", String.format("/topic/updateForm/%d", topicId));
         return "topic/updateForm";

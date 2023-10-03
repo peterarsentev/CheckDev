@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.job4j.site.dto.TopicDTO;
 import ru.job4j.site.service.AuthService;
 import ru.job4j.site.service.CategoriesService;
 import ru.job4j.site.service.TopicsService;
@@ -30,7 +31,12 @@ public class TopicsControl {
         var topics = topicsService.getByCategory(categoryId);
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("topics", topics);
-        String categoryName = topics.isEmpty() ? "" : topics.get(0).getCategory().getName();
+        String categoryName = "";
+        if (!topics.isEmpty()) {
+            var topic = topics.get(0);
+            var category = topic.getCategory();
+            categoryName = category != null ? category.getName() : "";
+        }
         RequestResponseTools.addAttrBreadcrumbs(model,
                 "Главная", "/index",
                 "Категории", "/categories/",
