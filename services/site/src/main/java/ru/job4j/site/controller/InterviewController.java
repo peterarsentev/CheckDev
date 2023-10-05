@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.job4j.site.dto.InterviewDTO;
 import ru.job4j.site.dto.TopicDTO;
 import ru.job4j.site.service.AuthService;
@@ -25,14 +26,14 @@ public class InterviewController {
     private final InterviewService interviewService;
 
     @GetMapping("/createForm")
-    public String createForm(@ModelAttribute(name = "topicId") int topicId, Model model, HttpServletRequest req)
+    public String createForm(@ModelAttribute("topicId") int topicId,
+                             Model model, HttpServletRequest req)
             throws JsonProcessingException {
         var token = getToken(req);
         var topic = new TopicDTO();
         if (token != null) {
             var userInfo = authService.userInfo(token);
             model.addAttribute("userInfo", token);
-            RequestResponseTools.addAttrCanManage(model, userInfo);
             topic = topicsService.getById(topicId, token);
         }
         String categoryName = topic.getCategory().getName();
@@ -49,8 +50,16 @@ public class InterviewController {
     }
 
     @PostMapping("/create")
-    public String createInterview(@ModelAttribute InterviewDTO interviewDTO, HttpServletRequest req)
+    public String createInterview(@ModelAttribute InterviewDTO interviewDTO,
+                                  @ModelAttribute("topicId") int topicId,
+                                  Model model, HttpServletRequest req, RedirectAttributes redirectAttributes)
             throws JsonProcessingException {
+        if (interviewDTO.getApproximateDate().isEmpty()
+                || interviewDTO.getContactBy().isEmpty()) {
+            redirectAttributes.addFlashAttribute("topicId", topicId);
+            redirectAttributes.addFlashAttribute("error", "Заполните поле!");
+            return "redirect:/interview/createForm";
+        }
         var token = getToken(req);
         if (token != null) {
             var userInfo = authService.userInfo(token);
