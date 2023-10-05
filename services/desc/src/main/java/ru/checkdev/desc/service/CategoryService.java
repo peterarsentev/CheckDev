@@ -6,6 +6,7 @@ import ru.checkdev.desc.domain.Category;
 import ru.checkdev.desc.repository.CategoryRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,12 @@ public class CategoryService {
     public List<Category> getAll() {
         var list = new ArrayList<Category>();
         categoryRepository.findAllByOrderByTotalDesc().forEach(list::add);
+        return list;
+    }
+
+    public List<Category> getMostPopular() {
+        var list = new ArrayList<Category>();
+        categoryRepository.findMostPopular().forEach(list::add);
         return list;
     }
 

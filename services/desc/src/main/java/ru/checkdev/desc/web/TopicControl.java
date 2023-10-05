@@ -17,6 +17,7 @@ public class TopicControl {
     @GetMapping("/{id}")
     public ResponseEntity<Topic> findById(@PathVariable int id) {
         var topic = topicService.findById(id);
+        topicService.incrementTotal(id);
         return topic.map(
                 value -> new ResponseEntity<>(value, HttpStatus.OK)
         ).orElseGet(

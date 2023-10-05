@@ -14,14 +14,13 @@ import ru.job4j.site.service.TopicsService;
 @Slf4j
 public class IndexController {
     private final CategoriesService categoriesService;
-    private final TopicsService topicsService;
 
     @GetMapping({"/", "index"})
     public String getIndexPage(Model model) throws JsonProcessingException {
         RequestResponseTools.addAttrBreadcrumbs(model,
                 "Главная", "/"
         );
-        model.addAttribute("categories", categoriesService.getAllWithTopics(topicsService));
+        model.addAttribute("categories", categoriesService.getMostPopular());
         return "index";
     }
 }

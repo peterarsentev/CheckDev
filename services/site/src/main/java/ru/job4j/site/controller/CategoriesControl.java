@@ -20,11 +20,10 @@ import static ru.job4j.site.controller.RequestResponseTools.getToken;
 public class CategoriesControl {
     private final CategoriesService categoriesService;
     private final AuthService authService;
-    private final TopicsService topicsService;
 
     @GetMapping("/")
     public String categories(Model model, HttpServletRequest req) throws JsonProcessingException {
-        model.addAttribute("categories", categoriesService.getAllWithTopics(topicsService));
+        model.addAttribute("categories", categoriesService.getAllWithTopics());
         var token = getToken(req);
         if (token != null) {
             var userInfo = authService.userInfo(token);

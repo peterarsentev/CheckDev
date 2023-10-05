@@ -21,8 +21,8 @@ public class TopicsService {
         });
     }
 
-    public TopicDTO getById(int id, String token) throws JsonProcessingException {
-        var text = new RestAuthCall("http://localhost:9902/topic/" + id).get(token);
+    public TopicDTO getById(int id) throws JsonProcessingException {
+        var text = new RestAuthCall("http://localhost:9902/topic/" + id).get();
         var mapper = new ObjectMapper();
         return mapper.readValue(text, new TypeReference<>() {
         });

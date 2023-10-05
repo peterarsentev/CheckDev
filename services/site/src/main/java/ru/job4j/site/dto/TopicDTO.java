@@ -11,5 +11,6 @@ public class TopicDTO {
     private String text;
     private Calendar created;
     private Calendar updated;
+    private int total;
     private CategoryDTO category;
 }

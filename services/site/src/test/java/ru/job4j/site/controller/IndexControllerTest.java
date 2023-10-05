@@ -47,7 +47,7 @@ class IndexControllerTest {
 
     @BeforeEach
     void initTest() {
-        this.indexController = new IndexController(categoriesService, topicsService);
+        this.indexController = new IndexController(categoriesService);
     }
 
     @Test
@@ -71,7 +71,7 @@ class IndexControllerTest {
         var listCat = List.of(cat1, cat2);
         when(topicsService.getByCategory(cat1.getId())).thenReturn(List.of(topicDTO1));
         when(topicsService.getByCategory(cat2.getId())).thenReturn(List.of(topicDTO2));
-        when(categoriesService.getAllWithTopics(topicsService)).thenReturn(listCat);
+        when(categoriesService.getMostPopular()).thenReturn(listCat);
         var listBread = List.of(new Breadcrumb("Главная", "/"));
         var model = new ConcurrentModel();
 

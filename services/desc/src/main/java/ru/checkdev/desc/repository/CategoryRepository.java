@@ -6,10 +6,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.checkdev.desc.domain.Category;
+import ru.checkdev.desc.utility.Utility;
 
 public interface CategoryRepository extends CrudRepository<Category, Integer> {
-
     Iterable<Category> findAllByOrderByTotalDesc();
+
+    @Query(value = "SELECT * FROM cd_category ORDER BY total DESC LIMIT "
+            + Utility.LIMIT_MOST_POPULAR, nativeQuery = true)
+    Iterable<Category> findMostPopular();
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Modifying

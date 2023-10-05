@@ -7,10 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.site.dto.PersonDTO;
+import ru.job4j.site.service.ImageCompressorService;
 import ru.job4j.site.service.PersonService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
+import java.util.Objects;
 
 import static ru.job4j.site.controller.RequestResponseTools.getToken;
 
@@ -27,13 +29,15 @@ public class PersonController {
     private final String maxSizeFile;
     private final String contentTypeFile;
     private final PersonService personService;
+    private final ImageCompressorService compressorService;
 
     public PersonController(@Value("${server.site.maxSizeLoadFile}") String maxSizeFile,
                             @Value("${server.site.contentTypeFile}") String contentTypeFile,
-                            PersonService personService) {
+                            PersonService personService, ImageCompressorService imageCompressorService) {
         this.maxSizeFile = maxSizeFile;
         this.contentTypeFile = contentTypeFile;
         this.personService = personService;
+        this.compressorService = imageCompressorService;
     }
 
     /**
@@ -80,7 +84,7 @@ public class PersonController {
         );
         String errorMessage = null;
         if (error != null) {
-            errorMessage = "Файл фото не соответствует ограничениям";
+            errorMessage = "Файл изображения не соответствует ограничениям";
         }
         model.addAttribute("personDto", personDTO);
         model.addAttribute("photoId", getPhotoIdByPersonDTO(personDTO));
@@ -95,15 +99,17 @@ public class PersonController {
     public String updatePerson(@ModelAttribute PersonDTO personDTO,
                                MultipartFile file,
                                HttpServletRequest request) {
-        if (!isValidFile(file)) {
-            return "redirect:/persons/edit?error=true";
-        }
         var token = getToken(request);
         personDTO.setUpdated(Calendar.getInstance());
+        var compressFile = file;
         try {
-            personService.postUpdatePerson(token, personDTO, file);
+            if (!isValidFile(file)) {
+                compressFile = compressorService.compressImage(file);
+            }
+            personService.postUpdatePerson(token, personDTO, compressFile);
         } catch (Exception e) {
-            log.error("API post method error: {}", e.getMessage());
+            log.error("API post {} method error: {}", getClass().getName(), e.getMessage());
+            return "redirect:/persons/edit?error=true";
         }
         return "redirect:/";
     }
@@ -148,7 +154,8 @@ public class PersonController {
         if (file == null || file.isEmpty() || file.getSize() == 0) {
             return result;
         }
-        if (file.getSize() > maxFileSizeByte || !this.contentTypeFile.equals(contentTypeFile)) {
+        var content = Objects.requireNonNull(file.getContentType()).toLowerCase();
+        if (file.getSize() > maxFileSizeByte || !this.contentTypeFile.equals(content)) {
             return !result;
         }
         return result;

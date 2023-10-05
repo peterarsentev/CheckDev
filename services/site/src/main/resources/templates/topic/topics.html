@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon -->
+    <link rel="icon" type="image/svg+xml" href="/img/icons/svg/check-double-solid.svg">
 
-	<!-- favicon -->
-	<link rel="icon" type="image/svg+xml" href="/img/icons/svg/check-double-solid.svg">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="description" content="Обучение и трудоустройство Java-программистов от Junior до Senior">
+    <meta name="author" content="Job4j.ru">
+    <title>Check Dev</title>
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
@@ -23,14 +28,15 @@
 	<script th:src="@{/js_bootstrap_5_3_2/bootstrap.min.js}"></script>
 	<script th:src="@{/js_bootstrap_5_3_2/code.jquery.com_jquery-3.7.0.min.js}"></script>
 
+
 </head>
 <body>
 <div th:insert="fragments/header :: header"></div>
 <div class="container">
-	<div class="row pt-3">
-		<div class="col-md-12 pull-right">
-			<a th:if="${canManage}"
-			   th:href="@{/topic/createForm/{id}(id=${categoryId})}" class="btn btn-secondary
+    <div class="row pt-3">
+        <div class="col-md-12 pull-right">
+            <a th:if="${canManage}"
+               th:href="@{/topic/createForm/{id}(id=${categoryId})}" class="btn btn-secondary
 				active mb-2" role="button" aria-pressed="true">
 				Создать тему
 			</a>
@@ -46,6 +52,10 @@
 						   th:href="@{|/topic/${topic.id}|}">
 							<h3 th:text="${topic.name}"></h3>
 						</a>
+            <small class="mb-2 text-muted">
+                            <span><i class="fas fa-eye pr-3"></i> : </span>
+                            <span class="fw-bold" th:text="${topic.total}"></span>
+            </small>
 						<div th:if="${canManage}">
 							<form class="mt-3"
 								  th:action="@{|/topic/updateForm/${topic.id}|}"

@@ -1,6 +1,8 @@
 package ru.checkdev.mock.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +18,9 @@ import ru.checkdev.mock.Application;
 import ru.checkdev.mock.domain.Interview;
 import ru.checkdev.mock.service.InterviewService;
 import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,13 +47,23 @@ class InterviewControllerTest {
             .description("test_description")
             .contactBy("test_contact_by")
             .approximateDate("test_approximate_date")
+            .createDate("test_create_date")
             .build();
 
-    private String string = "{\"id\":1,"
-            + "\"typeInterview\":2,\"submitterId\":3,"
-            + "\"title\":\"test_title\",\"description\":\"test_description\","
-            + "\"contactBy\":\"test_contact_by\",\"approximateDate\":\"test_approximate_date\"}";
+    private String string = new GsonBuilder().create().toJson(interview);
 
+    private Interview emptyInterview = Interview.of()
+            .id(1)
+            .typeInterview(0)
+            .submitterId(0)
+            .title(null)
+            .description(null)
+            .contactBy(null)
+            .approximateDate(null)
+            .createDate(null)
+            .build();
+
+    private String emptyString = new GsonBuilder().serializeNulls().create().toJson(emptyInterview);
     @Test
     @WithMockUser
     public void whenSaveAndGetTheSame() throws Exception {
@@ -122,10 +137,7 @@ class InterviewControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        content().string("{\"id\":1,"
-                                + "\"typeInterview\":0,\"submitterId\":0,"
-                                + "\"title\":null,\"description\":null,"
-                                + "\"contactBy\":null,\"approximateDate\":null}"));
+                        content().string(emptyString));
     }
 
     @Test
@@ -137,9 +149,6 @@ class InterviewControllerTest {
                 .andExpectAll(
                         status().isNoContent(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        content().string("{\"id\":1,"
-                                + "\"typeInterview\":0,\"submitterId\":0,"
-                                + "\"title\":null,\"description\":null,"
-                                + "\"contactBy\":null,\"approximateDate\":null}"));
+                        content().string(emptyString));
     }
 }

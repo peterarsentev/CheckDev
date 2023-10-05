@@ -20,11 +20,9 @@ public class Interview {
     @NotNull(message = "Id must be non null")
     private int id;
 
-    @NotNull(message = "Title must be non null")
     @JoinColumn(name="type_interview")
     private int typeInterview;
 
-    @NotNull(message = "Title must be non null")
     @JoinColumn(name="submitter_id")
     private int submitterId;
 
@@ -35,11 +33,14 @@ public class Interview {
     @JoinColumn(name="description")
     private String description;
 
-    @NotBlank(message = "Title must be not empty")
+    @NotBlank(message = "Contact must be not empty")
     @JoinColumn(name="contact_by")
     private String contactBy;
 
-    @NotBlank(message = "Title must be not empty")
+    @NotBlank(message = "Date must be not empty")
     @JoinColumn(name="approximate_date")
     private String approximateDate;
+
+    @JoinColumn(name="create_date")
+    private String createDate;
 }

@@ -1,5 +1,6 @@
 package ru.checkdev.mock.web;
 
+import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -40,12 +41,10 @@ class InterviewsControllerTest {
             .description("test_description")
             .contactBy("test_contact_by")
             .approximateDate("test_approximate_date")
+            .createDate("test_create_date")
             .build();
 
-    private String string = "{\"id\":1,"
-            + "\"typeInterview\":2,\"submitterId\":3,"
-            + "\"title\":\"test_title\",\"description\":\"test_description\","
-            + "\"contactBy\":\"test_contact_by\",\"approximateDate\":\"test_approximate_date\"}";
+    private String string = new GsonBuilder().create().toJson(interview);
 
     @Test
     @WithMockUser

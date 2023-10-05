@@ -1,6 +1,7 @@
 package ru.checkdev.mock.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -47,6 +48,7 @@ class WisherControllerTest {
             .description("test_description")
             .contactBy("test_contact_by")
             .approximateDate("test_approximate_date")
+            .createDate("test_create_date")
             .build();
 
     private Wisher wisher = Wisher.of()
@@ -57,13 +59,19 @@ class WisherControllerTest {
             .approve(true)
             .build();
 
-        private String interviewString = "{\"id\":1,"
-            + "\"typeInterview\":2,\"submitterId\":3,"
-            + "\"title\":\"test_title\",\"description\":\"test_description\","
-            + "\"contactBy\":\"test_contact_by\",\"approximateDate\":\"test_approximate_date\"}";
+    private String interviewString = new GsonBuilder().create().toJson(interview);
 
-    private String wisherString = "{\"id\":1,"
-        + "\"interview\":" + interviewString + ",\"userId\":1,\"contactBy\":\"test_contact_by\",\"approve\":true}";
+    private String wisherString = new GsonBuilder().create().toJson(wisher);
+
+    private Wisher emptyWisher = Wisher.of()
+            .id(1)
+            .interview(null)
+            .userId(0)
+            .contactBy(null)
+            .approve(false)
+            .build();
+
+    private String emptyWisherString = new GsonBuilder().serializeNulls().create().toJson(emptyWisher);
 
     @Test
     @WithMockUser
@@ -143,8 +151,7 @@ class WisherControllerTest {
                 .andExpectAll(
                         status().isOk(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        content().string("{\"id\":1,"
-                                + "\"interview\":null,\"userId\":0,\"contactBy\":null,\"approve\":false}"));
+                        content().string(emptyWisherString));
     }
 
     @Test
@@ -156,7 +163,6 @@ class WisherControllerTest {
                 .andExpectAll(
                         status().isNoContent(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        content().string("{\"id\":1,"
-                                + "\"interview\":null,\"userId\":0,\"contactBy\":null,\"approve\":false}"));
+                        content().string(emptyWisherString));
     }
 }

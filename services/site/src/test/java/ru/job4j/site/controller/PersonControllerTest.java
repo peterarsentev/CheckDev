@@ -10,7 +10,10 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.site.dto.PersonDTO;
+import ru.job4j.site.service.ImageCompressorService;
 import ru.job4j.site.service.PersonService;
+
+import java.io.IOException;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,6 +34,8 @@ class PersonControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private PersonService personService;
+    @MockBean
+    private ImageCompressorService compressorService;
     @Value("${server.site.maxSizeLoadFile}")
     private String maxSizeFile;
 
@@ -96,6 +101,7 @@ class PersonControllerTest {
                 MediaType.IMAGE_JPEG_VALUE,
                 fileSize
         );
+        when(compressorService.compressImage(file)).thenReturn(file);
         when(personService.getPerson(token)).thenReturn(person);
         this.mockMvc.perform(multipart("/persons/edit")
                         .file(file)
@@ -121,6 +127,7 @@ class PersonControllerTest {
                 MediaType.IMAGE_JPEG_VALUE,
                 fileSize
         );
+        when(compressorService.compressImage(file)).thenThrow(IOException.class);
         when(personService.getPerson(token)).thenReturn(person);
         this.mockMvc.perform(multipart("/persons/edit")
                         .file(file)
@@ -146,6 +153,7 @@ class PersonControllerTest {
                 MediaType.IMAGE_PNG_VALUE,
                 fileSize
         );
+        when(compressorService.compressImage(file)).thenThrow(IOException.class);
         when(personService.getPerson(token)).thenReturn(person);
         this.mockMvc.perform(multipart("/persons/edit")
                         .file(file)

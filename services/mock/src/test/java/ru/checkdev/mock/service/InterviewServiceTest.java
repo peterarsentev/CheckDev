@@ -36,6 +36,7 @@ class InterviewServiceTest {
             .description("test_description")
             .contactBy("test_contact_by")
             .approximateDate("test_approximate_date")
+            .createDate("test_create_date")
             .build();
 
     @Test

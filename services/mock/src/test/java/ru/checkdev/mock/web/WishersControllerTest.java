@@ -1,5 +1,6 @@
 package ru.checkdev.mock.web;
 
+import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +42,7 @@ class WishersControllerTest {
             .description("test_description")
             .contactBy("test_contact_by")
             .approximateDate("test_approximate_date")
+            .createDate("test_create_date")
             .build();
 
     private Wisher wisher = Wisher.of()
@@ -51,13 +53,9 @@ class WishersControllerTest {
             .approve(true)
             .build();
 
-    private String interviewString = "{\"id\":1,"
-            + "\"typeInterview\":2,\"submitterId\":3,"
-            + "\"title\":\"test_title\",\"description\":\"test_description\","
-            + "\"contactBy\":\"test_contact_by\",\"approximateDate\":\"test_approximate_date\"}";
+    private String interviewString = new GsonBuilder().create().toJson(interview);
 
-    private String wisherString = "{\"id\":1,"
-            + "\"interview\":" + interviewString + ",\"userId\":1,\"contactBy\":\"test_contact_by\",\"approve\":true}";
+    private String wisherString = new GsonBuilder().create().toJson(wisher);
 
     @Test
     @WithMockUser

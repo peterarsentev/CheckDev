@@ -5,5 +5,6 @@ submitter_id int,
 title varchar(765),
 description text,
 contact_by varchar(765),
-approximate_date varchar(256)
+approximate_date varchar(256),
+create_date timestamp without time zone default now()
 );
