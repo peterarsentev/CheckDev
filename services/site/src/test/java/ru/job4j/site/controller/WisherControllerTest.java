@@ -6,6 +6,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.job4j.site.domain.StatusWisher;
 import ru.job4j.site.dto.WisherDto;
 import ru.job4j.site.service.WisherServiceWebClient;
 
@@ -28,7 +29,7 @@ class WisherControllerTest {
 
     @Test
     void whenCreateWisherThenReturnRedirect() throws Exception {
-        var wisher = new WisherDto(1, 2, 3, "mail", true);
+        var wisher = new WisherDto(1, 2, 3, "mail", true, StatusWisher.IS_CONSIDERED.getId());
         var token = "1234";
         when(wisherService.saveWisherDto(token, wisher)).thenReturn(true);
         this.mockMvc.perform(post("/wisher/create")

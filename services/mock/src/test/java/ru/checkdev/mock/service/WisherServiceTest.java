@@ -104,5 +104,4 @@ class WisherServiceTest {
         var actual = wisherService.delete(wisher);
         assertThat(actual, is(false));
     }
-
 }

@@ -1,32 +1,32 @@
-package ru.checkdev.mock.dto;
+package ru.job4j.site.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
+/**
+ * @author Dmitry Stepanov, user Dmitry
+ * @since 20.10.2023
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WisherDto {
-
+public class WisherDetailDTO {
     private int id;
 
-    @NotNull(message = "Title must be non null")
     private int interviewId;
 
-    @NotNull(message = "Title must be non null")
     private int userId;
 
-    @NotBlank(message = "Title must be not empty")
+    private String username;
+
     private String contactBy;
 
     private boolean approve;
-
     /**
      * Соответствует id enum StatusWisher.
      */
-    private int status;
+    private int statusId;
+
+    private String statusName;
 }

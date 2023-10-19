@@ -38,7 +38,8 @@
             <pre th:text="${interview.createDate}"></pre>
             <span th:if="${statisticMap.get(interview.id) != null}">
                 <small class="text-muted" th:text="'Участвуют: ' + ${statisticMap.get(interview.id).participate}">Участников: </small>
-                <small class="text-muted" th:text="'Ожидают: ' + ${statisticMap.get(interview.id).expect}">Ожидают: </small>
+                <small class="text-muted"
+                       th:text="'Ожидают: ' + ${statisticMap.get(interview.id).expect}">Ожидают: </small>
                 <small class="text-muted" th:text="'Сдали: ' + ${statisticMap.get(interview.id).passed}">Сдано: </small>
             </span>
             <span th:unless="${statisticMap.get(interview.id) != null}">
@@ -46,33 +47,69 @@
                 <small class="text-muted" th:text="'Ожидают: 0'">Ожидают: </small>
                 <small class="text-muted" th:text="'Сдали: 0'">Сдано: </small>
             </span>
-        </div>
-        <div th:if="${userInfo != null}">
-            <!--Кнопка редактировать видна интервью создал текущий пользователь -->
-            <div class="form-group">
-                <a th:if="${isAuthor}" class="btn btn-success mt-3"
-                   th:href="@{|/interview/edit/${interview.id}|}">Редактировать</a>
-            </div>
-            <!--Форма для стать участником собеседования-->
-            <div th:if="${!isAuthor and !isWisher}" class="form-group">
-                <form class="was-validated" th:action="@{/wisher/create}" method="post">
-                    <input type="hidden" th:id="interviewId" th:name="interviewId" th:value="${interview.id}">
-                    <input type="hidden" th:id="userId" th:name="userId" th:value="${userInfo.id}">
-                    <div class="mb-3">
-                        <label class="form-label" for="email">Введите контакт для связи</label>
-                        <input type="text" class="form-control"
-                               id="email"
-                               name="email"
-                               th:field="${userInfo.email}"
-                               placeholder="контакт не должен быть пустым">
-                        <div class="invalid-feedback">
-                            Пожалуйста введите контакт для связи.
+            <div th:if="${userInfo != null}">
+                <!--Кнопка редактировать видна интервью создал текущий пользователь -->
+                <div class="form-group">
+                    <a th:if="${isAuthor and !isDismissed}" class="btn btn-success mt-3"
+                       th:href="@{|/interview/edit/${interview.id}|}">Редактировать</a>
+                </div>
+                <!-- Отображение списка участников собеседования -->
+                <div th:if="${isAuthor}">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Участник</th>
+                            <th scope="col">Статус</th>
+                            <th scope="col">Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="wisher : ${wishersDetail}">
+                            <td>
+                                <div class="row h4" th:text="${wisher.username}">
+                                    Имя участника
+                                </div>
+                                <div class="row text-secondary" th:text="${wisher.contactBy}">
+                                    Контактные данные
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row" th:text="${wisher.statusName}">Статус участника</div>
+                                <div class="row text-secondary">статистика участника</div>
+                            </td>
+                            <td>
+                                <form th:if="${!isDismissed}" th:action="@{/wisher/dismissed}" method="post">
+                                    <input type="hidden" th:id="interviewId" th:name="interviewId" th:value="${wisher.interviewId}">
+                                    <input type="hidden" th:id="wisherId" th:name="wisherId" th:value="${wisher.id}">
+                                    <button type="submit" class="btn btn-info mt-3">Одобрить</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--Форма для стать участником собеседования-->
+                <div th:if="${!isAuthor and !isWisher}" class="form-group">
+                    <form class="was-validated" th:action="@{/wisher/create}" method="post">
+                        <input type="hidden" th:id="interviewId" th:name="interviewId" th:value="${interview.id}">
+                        <input type="hidden" th:id="userId" th:name="userId" th:value="${userInfo.id}">
+                        <div class="mb-3">
+                            <label class="form-label" for="email">Введите контакт для связи</label>
+                            <input type="text" class="form-control"
+                                   id="email"
+                                   name="email"
+                                   th:field="${userInfo.email}"
+                                   placeholder="контакт не должен быть пустым">
+                            <div class="invalid-feedback">
+                                Пожалуйста введите контакт для связи.
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary mt-3">Участвовать</button>
-                    </div>
-                </form>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary mt-3">Участвовать</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -28,4 +28,7 @@ public class Wisher {
 
     @JoinColumn(name="approve")
     private boolean approve;
+
+    @JoinColumn(name = "status")
+    private int status;
 }

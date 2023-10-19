@@ -66,33 +66,34 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="row pt-3">
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Новые собеседования</th>
-            </tr>
-            </thead>
-            <tbody class="table-hover">
-            <tr th:each="interview: ${new_interviews}" style="cursor: pointer;">
-                <td>
-                    <div>
-                        <a class="fw-bold text-dark text-decoration-none"
-                           th:href="@{|/interview/${interview.id}|}">
-                            <h5 th:text="${interview.title}"></h5>
-                        </a>
-                    </div>
-                    <div class="pb-2">
-                        <a class="text-dark text-decoration-none"
-                           th:href="@{|/interview/${interview.id}|}"
-                           th:text="${'Ориентировочная дата: ' + interview.approximateDate}">
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+
+        <div class="row pt-3">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Новые собеседования</th>
+                </tr>
+                </thead>
+                <tbody class="table-hover">
+                <tr th:each="interview: ${new_interviews}" style="cursor: pointer;">
+                    <td>
+                        <div>
+                            <a class="fw-bold text-dark text-decoration-none"
+                               th:href="@{|/interview/${interview.id}|}">
+                                <h5 th:text="${interview.title}"></h5>
+                            </a>
+                        </div>
+                        <div class="pb-2">
+                            <a class="text-dark text-decoration-none"
+                               th:href="@{|/interview/${interview.id}|}"
+                               th:text="${'Ориентировочная дата: ' + interview.approximateDate}">
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <div th:insert="fragments/footer :: footer"></div>

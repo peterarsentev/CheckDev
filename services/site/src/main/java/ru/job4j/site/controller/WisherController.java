@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.job4j.site.domain.StatusWisher;
 import ru.job4j.site.dto.WisherDto;
 import ru.job4j.site.service.WisherService;
 
@@ -30,8 +31,21 @@ public class WisherController {
         int interviewId = Integer.parseInt(wishParam.get("interviewId"));
         int userId = Integer.parseInt(wishParam.get("userId"));
         var contactBy = wishParam.get("email");
-        var wisherDto = new WisherDto(0, interviewId, userId, contactBy, false);
+        var wisherDto = new WisherDto(0, interviewId, userId, contactBy, false, StatusWisher.IS_CONSIDERED.getId());
         wisherService.saveWisherDto(token, wisherDto);
+        return "redirect:/interview/" + interviewId;
+    }
+
+    @PostMapping("/dismissed")
+    public String dismissedWisher(@RequestParam Map<String, String> param,
+                                  HttpServletRequest request) {
+        var token = RequestResponseTools.getToken(request);
+        var statusDismissedID = String.valueOf(StatusWisher.IS_DISMISSED.getId());
+        var statusRejectedID = String.valueOf(StatusWisher.IS_REJECTED.getId());
+        var interviewId = param.get("interviewId");
+        var wisherId = param.get("wisherId");
+        wisherService.setNewStatusByWisherInterview(
+                token, interviewId, wisherId, statusDismissedID, statusRejectedID);
         return "redirect:/interview/" + interviewId;
     }
 }

@@ -12,4 +12,5 @@
     <include file="changelog/005_ddl_rename_column_interview.sql" relativeToChangelogFile="true"/>
     <include file="changelog/006_ddl_add_column_interview.sql" relativeToChangelogFile="true"/>
     <include file="changelog/007_dml_insert_table_interview.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/008_ddl_add_column_status_in_wiser_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
