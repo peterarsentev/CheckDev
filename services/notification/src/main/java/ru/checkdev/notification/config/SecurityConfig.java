@@ -1,4 +1,4 @@
-package ru.checkdev.notification.web;
+package ru.checkdev.notification.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(
                 "/template/queue",
-                "/template/ping"
+                "/template/ping", "/subscribeCategory/**"
         );
     }
 }

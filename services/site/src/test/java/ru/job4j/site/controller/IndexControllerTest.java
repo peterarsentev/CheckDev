@@ -14,9 +14,7 @@ import ru.job4j.site.domain.Breadcrumb;
 import ru.job4j.site.dto.CategoryDTO;
 import ru.job4j.site.dto.InterviewDTO;
 import ru.job4j.site.dto.TopicDTO;
-import ru.job4j.site.service.CategoriesService;
-import ru.job4j.site.service.InterviewsService;
-import ru.job4j.site.service.TopicsService;
+import ru.job4j.site.service.*;
 
 import java.util.List;
 
@@ -46,12 +44,18 @@ class IndexControllerTest {
     private TopicsService topicsService;
     @MockBean
     private InterviewsService interviewsService;
+    @MockBean
+    private AuthService authService;
+    @MockBean
+    private NotificationService notificationService;
 
     private IndexController indexController;
 
     @BeforeEach
     void initTest() {
-        this.indexController = new IndexController(categoriesService, interviewsService);
+        this.indexController = new IndexController(
+                categoriesService, interviewsService, authService, notificationService
+        );
     }
 
     @Test
@@ -86,8 +90,7 @@ class IndexControllerTest {
         when(interviewsService.getByType(1)).thenReturn(listInterviews);
         var listBread = List.of(new Breadcrumb("Главная", "/"));
         var model = new ConcurrentModel();
-
-        var view = indexController.getIndexPage(model);
+        var view = indexController.getIndexPage(model, null);
         var actualCategories = model.getAttribute("categories");
         var actualBreadCrumbs = model.getAttribute("breadcrumbs");
         var actualUserInfo = model.getAttribute("userInfo");

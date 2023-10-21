@@ -46,5 +46,5 @@ public class Interview {
     private Timestamp createDate;
 
     @JoinColumn(name="topic_id")
-    private int topicId;
+    private Integer topicId;
 }

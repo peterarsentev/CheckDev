@@ -1,18 +1,31 @@
 package ru.checkdev.desc.repository;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import ru.checkdev.desc.domain.Category;
 import ru.checkdev.desc.domain.Topic;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.List;
 
 /**
  * TopicRepository TEST
@@ -22,11 +35,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @DataJpaTest
 @RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 class TopicRepositoryTest {
+
     @Autowired
     private EntityManager entityManager;
     @Autowired
     private TopicRepository topicRepository;
+
     private Category category1 = new Category();
     private Category category2 = new Category();
 
@@ -50,10 +66,23 @@ class TopicRepositoryTest {
         entityManager.clear();
     }
 
-
     @Test
     void initRepositoryWhenNotNull() {
         assertThat(topicRepository).isNotNull();
+    }
+
+    @Test
+    void whenSaveCategoryThenFindItsName() {
+        var topic = new Topic();
+        topic.setCategory(category1);
+        topic.setText("text");
+        topic.setPosition(1);
+        topic.setName("Stream API");
+        entityManager.persist(topic);
+        var saved = topicRepository.save(topic);
+        var name = topicRepository.getNameById(saved.getId());
+        Assertions.assertTrue(name.isPresent());
+        assertThat("Stream API").isEqualTo(name.get());
     }
 
     @Test

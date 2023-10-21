@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.site.SiteSrv;
 import ru.job4j.site.domain.Breadcrumb;
@@ -21,6 +22,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -129,12 +131,14 @@ public class InterviewControllerTest {
         interview.setCreateDate("06.10.2023");
         interview.setTopicId(1);
         when(authService.userInfo(token)).thenReturn(userInfo);
+        when(interviewService.create(token, interview)).thenReturn(interview);
         mockMvc.perform(post("/interview/create")
                         .flashAttr("interviewDTO", interview)
+                        .sessionAttr("token", token)
                         .param("topicId", "1"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/interviews/"));
+                .andExpect(view().name("redirect:/interview/" + interview.getId()));
     }
 
     @Test

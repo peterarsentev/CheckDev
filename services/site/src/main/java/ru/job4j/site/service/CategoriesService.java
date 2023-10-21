@@ -66,4 +66,15 @@ public class CategoriesService {
         }
         return categoriesDTO;
     }
+
+    public String getNameById(List<CategoryDTO> list, int id) {
+        String result = "";
+        for (CategoryDTO category : list) {
+            if (id == category.getId()) {
+                result = category.getName();
+                break;
+            }
+        }
+        return result;
+    }
 }

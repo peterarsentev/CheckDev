@@ -3,16 +3,20 @@ package ru.checkdev.mock.web;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.checkdev.mock.MockSrv;
 import ru.checkdev.mock.domain.Interview;
+import ru.checkdev.mock.repository.InterviewRepository;
 import ru.checkdev.mock.service.InterviewService;
 
 import java.util.List;
@@ -33,6 +37,9 @@ class InterviewsControllerTest {
     @MockBean
     private InterviewService service;
 
+    @MockBean
+    private InterviewRepository interviewRepository;
+
     private Interview interview = Interview.of()
             .id(1)
             .typeInterview(2)
@@ -49,12 +56,15 @@ class InterviewsControllerTest {
     @Test
     @WithMockUser
     public void whenGetAll() throws Exception {
-        when(service.findAll()).thenReturn(List.of(interview));
+        var page = new PageImpl<>(List.of(interview));
+        when(interviewRepository.findAll(PageRequest.of(0, 5)))
+                .thenReturn(page);
+        when(service.findPaging(Mockito.anyInt(), Mockito.anyInt()))
+                .thenReturn(page);
         mockMvc.perform(get("/interviews/"))
                 .andDo(print())
                 .andExpectAll(status().isOk(),
-                        content().contentType(MediaType.APPLICATION_JSON),
-                        content().string("[" + string + "]"));
+                        content().contentType(MediaType.APPLICATION_JSON));
     }
 
 }

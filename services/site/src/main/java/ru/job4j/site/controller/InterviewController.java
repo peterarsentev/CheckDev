@@ -67,8 +67,8 @@ public class InterviewController {
             interviewDTO.setSubmitterId(userInfo.getId());
         }
         interviewDTO.setTopicId(topicId);
-        interviewService.create(getToken(req), interviewDTO);
-        return "redirect:/interviews/";
+        InterviewDTO createInterview = interviewService.create(getToken(req), interviewDTO);
+        return "redirect:/interview/" + createInterview.getId();
     }
 
     @GetMapping("/{id}")

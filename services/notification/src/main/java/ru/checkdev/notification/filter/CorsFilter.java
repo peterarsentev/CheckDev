@@ -1,4 +1,4 @@
-package ru.checkdev.notification.web;
+package ru.checkdev.notification.filter;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
