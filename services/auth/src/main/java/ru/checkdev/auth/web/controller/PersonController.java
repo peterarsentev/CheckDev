@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.checkdev.auth.domain.Person;
+import ru.checkdev.auth.domain.Profile;
 import ru.checkdev.auth.service.PersonService;
 import ru.checkdev.auth.service.RoleService;
 
@@ -41,12 +41,12 @@ public class PersonController {
     }
 
     @GetMapping("/current")
-    public Person getCurrent(Principal user) {
+    public Profile getCurrent(Principal user) {
         return this.persons.findByEmail(user.getName()).get();
     }
 
     @PostMapping("/hh")
-    public Person getPersonFromHh(@RequestBody String linc) {
+    public Profile getPersonFromHh(@RequestBody String linc) {
         return persons.loadFromHh(linc);
     }
 
@@ -73,13 +73,13 @@ public class PersonController {
     }
 
     @GetMapping("/profile")
-    public Person loadProfile(@RequestParam String key) throws ServletException {
+    public Profile loadProfile(@RequestParam String key) throws ServletException {
         return this.persons.findByKey(key);
     }
 
     @PostMapping("/by")
-    public List<Person> getIn(@RequestBody List<String> keys, @RequestParam String key) throws ServletException {
-        List<Person> result = Collections.emptyList();
+    public List<Profile> getIn(@RequestBody List<String> keys, @RequestParam String key) throws ServletException {
+        List<Profile> result = Collections.emptyList();
         if (this.access.equals(key)) {
             result = this.persons.getIn(keys);
         }
@@ -87,63 +87,63 @@ public class PersonController {
     }
 
     @PostMapping("/by/email")
-    public Person findByEmail(@RequestParam String email, @RequestParam String key) throws ServletException {
+    public Profile findByEmail(@RequestParam String email, @RequestParam String key) throws ServletException {
         if (this.access.equals(key)) {
-            return this.persons.findByEmail(email).orElseGet(Person::new);
+            return this.persons.findByEmail(email).orElseGet(Profile::new);
         }
         throw new IllegalStateException();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/")
-    public Person save(@RequestBody Person person, Principal user) throws ServletException {
-        this.persons.saveRole(person);
-        return person;
+    public Profile save(@RequestBody Profile profile, Principal user) throws ServletException {
+        this.persons.saveRole(profile);
+        return profile;
     }
 
     @SuppressWarnings("unchecked")
     @PostMapping("/updateMultipart")
-    public ResponseEntity<String> update(@RequestPart Person person, @RequestPart(required = false) MultipartFile file, Principal user) throws ServletException, IOException {
+    public ResponseEntity<String> update(@RequestPart Profile profile, @RequestPart(required = false) MultipartFile file, Principal user) throws ServletException, IOException {
         String email = ((Map<String, String>) ((OAuth2Authentication) user)
                 .getUserAuthentication().getDetails()).get("username");
-        person.setEmail(email);
-        return new ResponseEntity<>(persons.update(email, file, person), HttpStatus.OK);
+        profile.setEmail(email);
+        return new ResponseEntity<>(persons.update(email, file, profile), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
-    public Object createPerson(@RequestBody Person person, Principal user) {
-        Optional<Person> result = persons.create(person);
+    public Object createPerson(@RequestBody Profile profile, Principal user) {
+        Optional<Profile> result = persons.create(profile);
         return result.<Object>map(per -> new Object() {
-            public Person getPerson() {
+            public Profile getPerson() {
                 return per;
             }
         }).orElseGet(() -> new Object() {
             public String getError() {
-                return String.format("Пользователь с почтой %s уже существует.", person.getEmail());
+                return String.format("Пользователь с почтой %s уже существует.", profile.getEmail());
             }
         });
     }
 
     @PutMapping("/changePassword")
-    public void changePassword(@RequestBody Person person, Principal user) {
+    public void changePassword(@RequestBody Profile profile, Principal user) {
         String email = ((Map<String, String>) ((OAuth2Authentication) user)
                 .getUserAuthentication().getDetails()).get("username");
-        Person personDb = persons.findById(person.getId());
-        if (email.equals(personDb.getEmail())) {
-            personDb.setPassword(this.encoding.encode(person.getPassword()));
-            persons.save(personDb);
+        Profile profileDb = persons.findById(profile.getId());
+        if (email.equals(profileDb.getEmail())) {
+            profileDb.setPassword(this.encoding.encode(profile.getPassword()));
+            persons.save(profileDb);
         }
     }
 
 
     @PutMapping("/pass")
-    public ResponseEntity<String> changePass(@RequestBody Person.Password password) {
-        Person personDb = persons.findById(password.getId());
+    public ResponseEntity<String> changePass(@RequestBody Profile.Password password) {
+        Profile profileDb = persons.findById(password.getId());
         String response;
-        if (this.encoding.matches(password.getPassword(), personDb.getPassword())) {
-            personDb.setPassword(this.encoding.encode(password.getNewPass()));
-            persons.save(personDb);
+        if (this.encoding.matches(password.getPassword(), profileDb.getPassword())) {
+            profileDb.setPassword(this.encoding.encode(password.getNewPass()));
+            persons.save(profileDb);
             response = "ok";
         } else {
             response = "Введите правильный пароль";

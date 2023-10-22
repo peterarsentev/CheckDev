@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.checkdev.auth.domain.Notify;
-import ru.checkdev.auth.domain.Person;
+import ru.checkdev.auth.domain.Profile;
 import ru.checkdev.auth.domain.Photo;
 import ru.checkdev.auth.domain.Role;
 import ru.checkdev.auth.repository.PersonRepository;
@@ -55,82 +55,82 @@ public class PersonService {
         this.msg = msg;
     }
 
-    public Optional<Person> reg(Person person) {
-        Optional<Person> result = Optional.empty();
+    public Optional<Profile> reg(Profile profile) {
+        Optional<Profile> result = Optional.empty();
         try {
-            if (person.isPrivacy()) {
-                person.setRoles(null);
-                person.setActive(true);
-                person.setKey(
+            if (profile.isPrivacy()) {
+                profile.setRoles(null);
+                profile.setActive(true);
+                profile.setKey(
                         this.encoding.encode(
-                                String.format("%s%s", System.currentTimeMillis(), person.getPassword())
+                                String.format("%s%s", System.currentTimeMillis(), profile.getPassword())
                         )
                 );
-                person.setPassword(this.encoding.encode(person.getPassword()));
-                person.setUpdated(Calendar.getInstance());
-                result = Optional.of(this.persons.save(person));
+                profile.setPassword(this.encoding.encode(profile.getPassword()));
+                profile.setUpdated(Calendar.getInstance());
+                result = Optional.of(this.persons.save(profile));
                 Map<String, Object> keys = new HashMap<>();
-                keys.put("key", person.getKey());
-                this.msg.send(new Notify(person.getEmail(), keys, Notify.Type.REG.name()));
+                keys.put("key", profile.getKey());
+                this.msg.send(new Notify(profile.getEmail(), keys, Notify.Type.REG.name()));
             }
         } catch (DataIntegrityViolationException e) {
-            log.error("not unique email {}", person.getEmail());
+            log.error("not unique email {}", profile.getEmail());
         }
         return result;
     }
 
-    public Optional<Person> create(Person person) {
-        Optional<Person> result = Optional.empty();
+    public Optional<Profile> create(Profile profile) {
+        Optional<Profile> result = Optional.empty();
         try {
-            person.setPrivacy(true);
-            person.setRoles(null);
-            person.setKey(
+            profile.setPrivacy(true);
+            profile.setRoles(null);
+            profile.setKey(
                     this.encoding.encode(
-                            String.format("%s%s", System.currentTimeMillis(), person.getPassword())
+                            String.format("%s%s", System.currentTimeMillis(), profile.getPassword())
                     )
             );
-            person.setPassword(this.encoding.encode(person.getPassword()));
-            result = Optional.of(this.persons.save(person));
+            profile.setPassword(this.encoding.encode(profile.getPassword()));
+            result = Optional.of(this.persons.save(profile));
         } catch (DataIntegrityViolationException e) {
-            log.error("not unique email {}", person.getEmail());
+            log.error("not unique email {}", profile.getEmail());
         }
         return result;
     }
 
-    public Optional<Person> findByEmail(String email) {
-        final Optional<Person> result;
-        Person person = this.persons.findByEmail(email);
-        if (person == null) {
+    public Optional<Profile> findByEmail(String email) {
+        final Optional<Profile> result;
+        Profile profile = this.persons.findByEmail(email);
+        if (profile == null) {
             result = Optional.empty();
         } else {
-            result = Optional.of(person);
+            result = Optional.of(profile);
         }
         return result;
     }
 
-    public List<Person> getAll() {
+    public List<Profile> getAll() {
         return Lists.newArrayList(persons.findAll());
     }
 
-    public List<Person> getIn(List<String> keys) {
+    public List<Profile> getIn(List<String> keys) {
         return this.persons.findByKeyIn(keys);
     }
 
     @Transactional
     public boolean activated(String key) {
-        Person person = this.persons.findByKey(key);
+        Profile profile = this.persons.findByKey(key);
         boolean result = false;
-        if (person != null && !person.isActive()) {
-            person.setActive(true);
-            this.persons.save(person);
+        if (profile != null && !profile.isActive()) {
+            profile.setActive(true);
+            this.persons.save(profile);
             result = true;
         }
         return result;
     }
 
-    public Optional<Person> forgot(Person person) {
-        final Optional<Person> result;
-        Person find = this.persons.findByEmail(person.getEmail());
+    public Optional<Profile> forgot(Profile profile) {
+        final Optional<Profile> result;
+        Profile find = this.persons.findByEmail(profile.getEmail());
         if (find == null) {
             result = Optional.empty();
         } else {
@@ -139,13 +139,13 @@ public class PersonService {
             this.persons.save(find);
             Map<String, Object> keys = new HashMap<>();
             keys.put("password", password);
-            this.msg.send(new Notify(person.getEmail(), keys, Notify.Type.FORGOT.name()));
-            result = Optional.of(person);
+            this.msg.send(new Notify(profile.getEmail(), keys, Notify.Type.FORGOT.name()));
+            result = Optional.of(profile);
         }
         return result;
     }
 
-    public List<Person> findAll(Pageable pageable) {
+    public List<Profile> findAll(Pageable pageable) {
         return this.persons.findAll(pageable).getContent();
     }
 
@@ -153,24 +153,24 @@ public class PersonService {
         return this.persons.total();
     }
 
-    public Person findById(int id) {
+    public Profile findById(int id) {
         return this.persons.findById(id).get();
     }
 
-    public void save(Person person) {
-        this.persons.save(person);
+    public void save(Profile profile) {
+        this.persons.save(profile);
     }
 
     @Transactional
-    public void saveRole(Person person) {
-        Person load = this.persons.findById(person.getId()).get();
+    public void saveRole(Profile profile) {
+        Profile load = this.persons.findById(profile.getId()).get();
         List<Role> roles = new ArrayList<>();
-        for (Role role : person.getRoles()) {
+        for (Role role : profile.getRoles()) {
             if (role != null) {
                 roles.add(role);
             }
         }
-        if (person.isActive()) {
+        if (profile.isActive()) {
             load.setActive(true);
         }
         load.setRoles(roles);
@@ -178,23 +178,23 @@ public class PersonService {
         this.persons.save(load);
     }
 
-    public Person findByKey(String key) {
+    public Profile findByKey(String key) {
         return this.persons.findByKey(key);
     }
 
-    public List<Person> findBySearch(String search, PageRequest email) {
+    public List<Profile> findBySearch(String search, PageRequest email) {
         return this.persons.findByEmailContainingOrUsernameContaining(search, search, email).getContent();
     }
 
-    public List<Person> findByShow(boolean show, int limit) {
+    public List<Profile> findByShow(boolean show, int limit) {
         return this.persons.findByShow(show, PageRequest.of(0, limit));
     }
 
-    public List<Person> findByShow(boolean show) {
+    public List<Profile> findByShow(boolean show) {
         return this.persons.findByShow(show);
     }
 
-    public List<Person> findByShow(boolean show, Pageable pageable) {
+    public List<Profile> findByShow(boolean show, Pageable pageable) {
         return this.persons.findByShow(show, pageable);
     }
 
@@ -226,8 +226,8 @@ public class PersonService {
     }
 
 
-    public Person loadFromHh(String linc) {
-        Person person = null;
+    public Profile loadFromHh(String linc) {
+        Profile profile = null;
         try {
             Document doc = Jsoup.connect(linc).validateTLSCertificates(false).get();
             String name = doc.getElementsByAttributeValue("data-qa", "resume-personal-name").first().text();
@@ -247,54 +247,54 @@ public class PersonService {
                 about.append(startP).append(companyName).append(endP);
                 about.append(startP).append(description).append(endP);
             }
-            person = new Person(name, experience, salary, aboutShort, about.toString(), address);
+            profile = new Profile(name, experience, salary, aboutShort, about.toString(), address);
             Element img = doc.getElementsByClass("resume-photo__image HH-Bloko-PopupSwitcher-Switcher").first();
             if (img != null) {
                 String url = img.absUrl("src");
-                person.setUrlHh(url);
+                profile.setUrlHh(url);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return person;
+        return profile;
     }
 
 
-    public String update(String email, MultipartFile file, Person person) {
+    public String update(String email, MultipartFile file, Profile profile) {
         String result = "ok";
-        Person personDb = persons.findPerson(email);
+        Profile profileDb = persons.findPerson(email);
         Photo photo;
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             if (file.getSize() < 1000000) {
                 photo = compress(file);
-                if (personDb.getPhoto() == null) {
-                    personDb.setPhoto(photo);
+                if (profileDb.getPhoto() == null) {
+                    profileDb.setPhoto(photo);
                 } else {
-                    BeanUtils.copyProperties(photo, personDb.getPhoto(), "id");
+                    BeanUtils.copyProperties(photo, profileDb.getPhoto(), "id");
                 }
             } else {
                 result = "Photo is very big!";
             }
-        } else if (!StringUtils.isEmpty(person.getUrlHh())) {
+        } else if (!StringUtils.isEmpty(profile.getUrlHh())) {
             try {
-                byte[] bytes = Jsoup.connect(person.getUrlHh()).validateTLSCertificates(false).ignoreContentType(true).execute().bodyAsBytes();
+                byte[] bytes = Jsoup.connect(profile.getUrlHh()).validateTLSCertificates(false).ignoreContentType(true).execute().bodyAsBytes();
                 String uuidFile = UUID.randomUUID().toString();
                 photo = new Photo(bytes, uuidFile);
-                if (personDb.getPhoto() == null) {
-                    personDb.setPhoto(photo);
+                if (profileDb.getPhoto() == null) {
+                    profileDb.setPhoto(photo);
                 } else {
-                    BeanUtils.copyProperties(photo, personDb.getPhoto(), "id");
+                    BeanUtils.copyProperties(photo, profileDb.getPhoto(), "id");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 return "Не верная ссылка";
             }
         }
-        Set<String> nullPropertyNames = getNullPropertyNames(person, "id", "email", "key", "roles", "privacy", "photo");
-        BeanUtils.copyProperties(person, personDb, nullPropertyNames.toArray(new String[0]));
-        personDb.setUpdated(Calendar.getInstance());
-        personDb.setActive(true);
-        persons.save(personDb);
+        Set<String> nullPropertyNames = getNullPropertyNames(profile, "id", "email", "key", "roles", "privacy", "photo");
+        BeanUtils.copyProperties(profile, profileDb, nullPropertyNames.toArray(new String[0]));
+        profileDb.setUpdated(Calendar.getInstance());
+        profileDb.setActive(true);
+        persons.save(profileDb);
         return result;
     }
 

@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import ru.checkdev.auth.domain.Person;
+import ru.checkdev.auth.domain.Profile;
 import ru.checkdev.auth.repository.PersonRepository;
 
 import java.util.stream.Collectors;
@@ -25,7 +25,7 @@ public class UserDetailsDefinition implements org.springframework.security.core.
 
     @Override
     public UserDetails loadUserByUsername(final String email) {
-        Person person = this.persons.findByEmail(email);
+        Profile person = this.persons.findByEmail(email);
         if (person != null) {
             if (person.isActive()) {
                 return new User(email,

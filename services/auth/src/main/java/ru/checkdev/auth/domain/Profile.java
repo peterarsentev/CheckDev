@@ -13,8 +13,8 @@ import java.util.List;
  * @author parsentev
  * @since 25.09.2016
  */
-@Entity(name = "person")
-public class Person {
+@Entity(name = "profile")
+public class Profile {
     @Transient
     private final StandardPasswordEncoder encoding = new StandardPasswordEncoder();
 
@@ -49,9 +49,9 @@ public class Person {
     private Photo photo;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "person_role",
+    @JoinTable(name = "profile_role",
             joinColumns = {
-                    @JoinColumn(name = "person_id", nullable = false, updatable = false)
+                    @JoinColumn(name = "profile_id", nullable = false, updatable = false)
             },
             inverseJoinColumns = {
                     @JoinColumn(name = "role_id", nullable = false, updatable = false)
@@ -76,17 +76,17 @@ public class Person {
 
     private Calendar created;
 
-    public Person() {
+    public Profile() {
     }
 
-    public Person(String username, String email, String password) {
+    public Profile(String username, String email, String password) {
         this();
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    public Person(String username, String experience, String salary, String aboutShort, String about, String location) {
+    public Profile(String username, String experience, String salary, String aboutShort, String about, String location) {
         this.experience = experience;
         this.salary = salary;
         this.aboutShort = aboutShort;
@@ -95,7 +95,7 @@ public class Person {
         this.location = location;
     }
 
-    public Person(String key, String experience, String salary, String aboutShort, String username, String location, Object photo) {
+    public Profile(String key, String experience, String salary, String aboutShort, String username, String location, Object photo) {
         this.key = key;
         this.experience = experience;
         this.salary = salary;
@@ -107,8 +107,8 @@ public class Person {
         }
     }
 
-    public Person(int id, String username, String email, String key, String password, boolean active, String experience,
-                  boolean show, String salary, String aboutShort, String about, Photo photo, boolean privacy, String location) {
+    public Profile(int id, String username, String email, String key, String password, boolean active, String experience,
+                   boolean show, String salary, String aboutShort, String about, Photo photo, boolean privacy, String location) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -270,9 +270,9 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Person person = (Person) o;
+        Profile profile = (Profile) o;
 
-        return id == person.id;
+        return id == profile.id;
 
     }
 
