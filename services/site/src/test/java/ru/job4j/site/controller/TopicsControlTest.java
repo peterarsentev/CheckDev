@@ -8,14 +8,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.site.SiteSrv;
 import ru.job4j.site.domain.Breadcrumb;
-import ru.job4j.site.dto.CategoryDTO;
-import ru.job4j.site.dto.Role;
-import ru.job4j.site.dto.TopicDTO;
-import ru.job4j.site.dto.UserInfoDTO;
+import ru.job4j.site.dto.*;
 import ru.job4j.site.service.AuthService;
 import ru.job4j.site.service.CategoriesService;
+import ru.job4j.site.service.NotificationService;
 import ru.job4j.site.service.TopicsService;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -39,6 +38,9 @@ public class TopicsControlTest {
     @MockBean
     private AuthService authService;
 
+    @MockBean
+    private NotificationService notifications;
+
     @Test
     public void whenShowTopics() throws Exception {
         var token = "1410";
@@ -57,13 +59,18 @@ public class TopicsControlTest {
             return topic;
         }).toList();
         userInfo.setRoles(List.of(role));
+        var userTopicDto = new UserTopicDTO();
+        userTopicDto.setId(1);
+        userTopicDto.setSubscribeTopicIds(new ArrayList<>());
         when(topicsService.getByCategory(1)).thenReturn(topics);
         when(authService.userInfo(token)).thenReturn(userInfo);
+        when(notifications.findTopicByUserId(userInfo.getId())).thenReturn(userTopicDto);
         mockMvc.perform(get("/topics/1").sessionAttr("token", token))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("topic/topics"))
                 .andExpect(model().attribute("topics", topics))
+                .andExpect(model().attribute("userTopicDTO", userTopicDto))
                 .andExpect(model().attribute("breadcrumbs", List.of(
                         new Breadcrumb("Главная", "/index"),
                         new Breadcrumb("Категории", "/categories/"),

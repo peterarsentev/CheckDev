@@ -55,7 +55,7 @@ public class NotificationController {
     }
 
     @PostMapping("/subscribeTopic")
-    public String createSubscribeTopic(@ModelAttribute("userDTO") UserTopicDTO user,
+    public String createSubscribeTopic(@ModelAttribute("id") UserTopicDTO user,
                                        @ModelAttribute("categoryId")int categoryId,
                                        @ModelAttribute("topicId")int topicId,
                                        HttpServletRequest req)
@@ -65,7 +65,7 @@ public class NotificationController {
     }
 
     @PostMapping("/unSubscribeTopic")
-    public String deleteSubscribeCategory(@ModelAttribute("userInfo")UserTopicDTO user,
+    public String deleteSubscribeTopic(@ModelAttribute("id")UserTopicDTO user,
                                           @ModelAttribute("categoryId")int categoryId,
                                           @ModelAttribute("topicId")int topicId,
                                           HttpServletRequest req)
@@ -75,7 +75,7 @@ public class NotificationController {
     }
 
     @PostMapping("/subscribeTopicFromDetails")
-    public String createSubscribeTopicFromDetails(@ModelAttribute("userDTO")UserTopicDTO user,
+    public String createSubscribeTopicFromDetails(@ModelAttribute("id")UserTopicDTO user,
                                                    @ModelAttribute("topicId")int topicId,
                                                    HttpServletRequest req)
             throws JsonProcessingException {
@@ -84,7 +84,7 @@ public class NotificationController {
     }
 
     @PostMapping("/unSubscribeTopicFromDetails")
-    public String deleteSubscribeTopicFromDetails(@ModelAttribute("userInfo")UserTopicDTO user,
+    public String deleteSubscribeTopicFromDetails(@ModelAttribute("id")UserTopicDTO user,
                                                    @ModelAttribute("topicId")int topicId,
                                                    HttpServletRequest req)
             throws JsonProcessingException {

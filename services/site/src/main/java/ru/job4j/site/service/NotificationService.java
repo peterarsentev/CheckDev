@@ -49,7 +49,7 @@ public class NotificationService {
                 token, mapper.writeValueAsString(subscribeTopic));
     }
 
-    public UserTopicDTO findTByUserId(int id) throws JsonProcessingException {
+    public UserTopicDTO findTopicByUserId(int id) throws JsonProcessingException {
         var text = new RestAuthCall("http://localhost:9920/subscribeTopic/" + id).get();
         var mapper = new ObjectMapper();
         List<Integer> list = mapper.readValue(text, new TypeReference<>() {

@@ -41,6 +41,29 @@
                 </a>
             </span>
         </div>
+            <div class="cell">
+                <div th:if="${userInfo != null}">
+                    <a class="nav-item nav-link" th:if="${!userTopicDTO.subscribeTopicIds.contains(topic.id)}">
+                        <form th:action="@{/notification/subscribeTopicFromDetails}"  method="POST">
+                            <div class="form-group">
+                                <input type="hidden" name="id" th:value="${userInfo.id}"/>
+                                <input type="hidden" name="topicId" th:value="${topic.id}" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Подписаться</button>
+                        </form>
+                    </a>
+                    <a class="nav-item nav-link" th:if="${userTopicDTO.subscribeTopicIds.contains(topic.id)}">
+                        <form th:action="@{/notification/unSubscribeTopicFromDetails}"  method="POST">
+                            <div class="form-group">
+                                <input type="hidden" name="id" th:value="${userInfo.id}"/>
+                                <input type="hidden" name="topicId" th:value="${topic.id}" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Отписаться</button>
+                        </form>
+                    </a>
+                </div>
+                <p></p>
+            </div>
     </div>
     <div class="card">
         <div class="card-header">
