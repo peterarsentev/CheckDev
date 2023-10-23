@@ -31,8 +31,8 @@ public class Interview {
     @JoinColumn(name="title")
     private String title;
 
-    @JoinColumn(name="description")
-    private String description;
+    @JoinColumn(name="additional")
+    private String additional;
 
     @NotBlank(message = "Contact must be not empty")
     @JoinColumn(name="contact_by")
@@ -44,4 +44,7 @@ public class Interview {
 
     @JoinColumn(name="create_date")
     private Timestamp createDate;
+
+    @JoinColumn(name="topic_id")
+    private Integer topicId;
 }

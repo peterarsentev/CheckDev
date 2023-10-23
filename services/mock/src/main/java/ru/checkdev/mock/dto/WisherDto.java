@@ -24,4 +24,9 @@ public class WisherDto {
     private String contactBy;
 
     private boolean approve;
+
+    /**
+     * Соответствует id enum StatusWisher.
+     */
+    private int status;
 }

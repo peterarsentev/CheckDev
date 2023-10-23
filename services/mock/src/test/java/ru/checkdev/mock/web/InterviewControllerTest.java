@@ -16,7 +16,6 @@ import ru.checkdev.mock.MockSrv;
 import ru.checkdev.mock.domain.Interview;
 import ru.checkdev.mock.service.InterviewService;
 
-import java.sql.Timestamp;
 import java.util.Optional;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -41,7 +40,7 @@ class InterviewControllerTest {
             .typeInterview(2)
             .submitterId(3)
             .title("test_title")
-            .description("test_description")
+            .additional("test_additional")
             .contactBy("test_contact_by")
             .approximateDate("test_approximate_date")
             .createDate(null)
@@ -54,7 +53,7 @@ class InterviewControllerTest {
             .typeInterview(0)
             .submitterId(0)
             .title(null)
-            .description(null)
+            .additional(null)
             .contactBy(null)
             .approximateDate(null)
             .createDate(null)

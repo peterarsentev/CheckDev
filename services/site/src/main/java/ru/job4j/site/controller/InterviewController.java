@@ -66,8 +66,9 @@ public class InterviewController {
             var userInfo = authService.userInfo(token);
             interviewDTO.setSubmitterId(userInfo.getId());
         }
-        interviewService.create(getToken(req), interviewDTO);
-        return "redirect:/interviews/";
+        interviewDTO.setTopicId(topicId);
+        InterviewDTO createInterview = interviewService.create(getToken(req), interviewDTO);
+        return "redirect:/interview/" + createInterview.getId();
     }
 
     @GetMapping("/{id}")
@@ -80,15 +81,22 @@ public class InterviewController {
         var isAuthor = interviewService.isAuthor(userInfo, interview);
         var wishers = wisherService.getAllWisherDtoByInterviewId(token, String.valueOf(interview.getId()));
         var isWisher = wisherService.isWisher(userInfo.getId(), interview.getId(), wishers);
-        var statusMap = wisherService.getInterviewStatistic(wishers);
+        var statisticMap = wisherService.getInterviewStatistic(wishers);
         var statuses = StatusInterview.values();
-        if (interview.getTypeInterview() < statuses.length) {
-            model.addAttribute("status", statuses[interview.getTypeInterview()].getInfo());
-        }
         model.addAttribute("interview", interview);
         model.addAttribute("isAuthor", isAuthor);
         model.addAttribute("isWisher", isWisher);
-        model.addAttribute("statisticMap", statusMap);
+        model.addAttribute("statisticMap", statisticMap);
+        if (interview.getTypeInterview() < statuses.length) {
+            model.addAttribute("status", statuses[interview.getTypeInterview()].getInfo());
+        }
+        if (isAuthor) {
+            var wishersDetail = interviewService.getAllWisherDetail(wishers);
+            boolean isDismissed = wisherService.isDismissed(interviewId, wishers);
+            model.addAttribute("isDismissed", isDismissed);
+            model.addAttribute("wishersDetail", wishersDetail);
+        }
+
         RequestResponseTools.addAttrBreadcrumbs(model,
                 "Главная", "/index",
                 "Собеседования", "/interviews/",

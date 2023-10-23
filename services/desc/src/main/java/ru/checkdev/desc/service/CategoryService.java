@@ -1,12 +1,13 @@
 package ru.checkdev.desc.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.checkdev.desc.domain.Category;
 import ru.checkdev.desc.repository.CategoryRepository;
+import ru.checkdev.desc.utility.Utility;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,9 +39,8 @@ public class CategoryService {
     }
 
     public List<Category> getMostPopular() {
-        var list = new ArrayList<Category>();
-        categoryRepository.findMostPopular().forEach(list::add);
-        return list;
+        return categoryRepository.findAllByOrderTotalDescLimit(
+                PageRequest.of(0, Utility.LIMIT_MOST_POPULAR));
     }
 
     public void updateStatistic(int id) {

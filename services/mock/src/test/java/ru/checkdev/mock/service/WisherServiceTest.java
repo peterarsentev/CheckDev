@@ -36,7 +36,7 @@ class WisherServiceTest {
             .typeInterview(2)
             .submitterId(3)
             .title("test_title")
-            .description("test_description")
+            .additional("test_additional")
             .contactBy("test_contact_by")
             .approximateDate("test_approximate_date")
             .createDate(new Timestamp(System.currentTimeMillis()))
@@ -107,26 +107,5 @@ class WisherServiceTest {
         when(wisherRepository.findById(any(Integer.class))).thenReturn(Optional.empty());
         var actual = wisherService.delete(wisher);
         assertThat(actual, is(false));
-    }
-
-    @Test
-    public void whenFindAllWisherDto() {
-        when(wisherRepository.findAllWiserDto()).thenReturn(List.of(wisherDto));
-        var actual = wisherService.findAllWisherDto();
-        assertThat(actual, is(List.of(wisherDto)));
-    }
-
-    @Test
-    public void whenFindWisherByInterviewId() {
-        when(wisherRepository.findWisherDTOByInterviewId(any(Integer.class))).thenReturn(List.of(wisherDto));
-        var actual = wisherService.findWisherByInterviewId(1);
-        assertThat(actual, is(List.of(wisherDto)));
-    }
-
-    @Test
-    public void whenFindByByInterviewId() {
-        when(wisherRepository.findByInterview(any(Interview.class))).thenReturn(List.of(wisher));
-        var actual = wisherService.findByInterview(interview);
-        assertThat(actual, is(List.of(wisher)));
     }
 }

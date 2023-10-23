@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.site.SiteSrv;
 import ru.job4j.site.domain.Breadcrumb;
@@ -21,6 +22,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -54,8 +56,9 @@ public class InterviewControllerTest {
         InterviewDTO interview = new InterviewDTO();
         interview.setId(1);
         interview.setTitle("Some interview");
-        interview.setDescription("Some description");
+        interview.setAdditional("Some description");
         interview.setTypeInterview(4);
+        interview.setTopicId(1);
         var status = StatusInterview.values()[interview.getTypeInterview()].getInfo();
         List<WisherDto> wisherDtos = new ArrayList<>();
         when(authService.userInfo(token)).thenReturn(userInfo);
@@ -122,17 +125,20 @@ public class InterviewControllerTest {
         InterviewDTO interview = new InterviewDTO();
         interview.setId(1);
         interview.setTitle("Some interview");
-        interview.setDescription("Some description");
+        interview.setAdditional("Some description");
         interview.setContactBy("Some contact");
         interview.setApproximateDate("30.02.2024");
         interview.setCreateDate("06.10.2023");
+        interview.setTopicId(1);
         when(authService.userInfo(token)).thenReturn(userInfo);
+        when(interviewService.create(token, interview)).thenReturn(interview);
         mockMvc.perform(post("/interview/create")
                         .flashAttr("interviewDTO", interview)
+                        .sessionAttr("token", token)
                         .param("topicId", "1"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/interviews/"));
+                .andExpect(view().name("redirect:/interview/" + interview.getId()));
     }
 
     @Test
@@ -146,6 +152,7 @@ public class InterviewControllerTest {
         interview.setId(1);
         interview.setTitle("title");
         interview.setSubmitterId(userInfo.getId());
+        interview.setTopicId(1);
         var breadcrumbs = List.of(
                 new Breadcrumb("Главная", "/index"),
                 new Breadcrumb("Собеседования", "/interviews/"),
@@ -172,6 +179,7 @@ public class InterviewControllerTest {
         var interview = new InterviewDTO();
         interview.setId(1);
         interview.setSubmitterId(22);
+        interview.setTopicId(1);
         when(authService.userInfo(token)).thenReturn(userInfo);
         when(interviewService.getById(token, interview.getId())).thenReturn(interview);
         mockMvc.perform(get("/interview/edit/{id}", interview.getId())
@@ -192,6 +200,7 @@ public class InterviewControllerTest {
         var interview = new InterviewDTO();
         interview.setId(1);
         interview.setSubmitterId(userInfo.getId());
+        interview.setTopicId(1);
         when(authService.userInfo(token)).thenReturn(userInfo);
         when(interviewService.getById(token, interview.getId())).thenThrow(JsonProcessingException.class);
         mockMvc.perform(get("/interview/edit/{id}", interview.getId())
@@ -210,6 +219,7 @@ public class InterviewControllerTest {
         var interview = new InterviewDTO();
         interview.setId(1);
         interview.setSubmitterId(userInfo.getId());
+        interview.setTopicId(1);
         mockMvc.perform(post("/interview/update")
                         .sessionAttr("token", token)
                         .param("id", String.valueOf(interview.getId()))

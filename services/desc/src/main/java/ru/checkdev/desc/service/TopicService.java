@@ -53,4 +53,8 @@ public class TopicService {
     public void incrementTotal(int id) {
         topicRepository.incrementTotal(id);
     }
+
+    public Optional<String> getNameById(int id) {
+        return topicRepository.getNameById(id);
+    }
 }

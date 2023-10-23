@@ -35,6 +35,11 @@ public class Photo {
         this.name = name;
     }
 
+    public Photo(int id, byte[] photo, String name) {
+        this.id = id;
+        this.photo = photo;
+        this.name = name;
+    }
 
     public int getId() {
         return id;

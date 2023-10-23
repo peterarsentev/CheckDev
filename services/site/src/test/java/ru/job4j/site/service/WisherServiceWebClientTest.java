@@ -8,8 +8,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import ru.job4j.site.domain.StatusWisher;
 import ru.job4j.site.dto.InterviewStatistic;
 import ru.job4j.site.dto.WisherDto;
 
@@ -61,7 +64,7 @@ class WisherServiceWebClientTest {
 
     @Test
     void whenSaveWisherThenReturnTrue() {
-        WisherDto wisherDto = new WisherDto(1, 1, 1, "mail@mail.ru", true);
+        WisherDto wisherDto = new WisherDto(1, 1, 1, "mail@mail.ru", true, StatusWisher.IS_CONSIDERED.getId());
         String token = "12345";
         when(webClientMock.post()).thenReturn(requestBodyUriMock);
         when(requestBodyUriMock.uri(urlWisher)).thenReturn(requestBodyMock);
@@ -93,8 +96,8 @@ class WisherServiceWebClientTest {
     @Test
     void whenGetAllWisherByInterviewIdThenListWisherDto() {
         var interviewId = "2";
-        var wisherDto0 = new WisherDto(1, Integer.parseInt(interviewId), 3, "mail1@", true);
-        var wisherDto1 = new WisherDto(1, Integer.parseInt(interviewId), 4, "mail2@", true);
+        var wisherDto0 = new WisherDto(1, Integer.parseInt(interviewId), 3, "mail1@", true, StatusWisher.IS_CONSIDERED.getId());
+        var wisherDto1 = new WisherDto(1, Integer.parseInt(interviewId), 4, "mail2@", true, StatusWisher.IS_CONSIDERED.getId());
         var listWisher = List.of(wisherDto0, wisherDto1);
         String token = "12345";
         when(webClientMock.get()).thenReturn(requestHeadersUriMock);
@@ -123,8 +126,8 @@ class WisherServiceWebClientTest {
 
     @Test
     void whenGetAllWisherThenListWisherDto() {
-        var wisherDto0 = new WisherDto(1, 1, 3, "mail1@", true);
-        var wisherDto1 = new WisherDto(1, 2, 4, "mail2@", true);
+        var wisherDto0 = new WisherDto(1, 1, 3, "mail1@", true, StatusWisher.IS_CONSIDERED.getId());
+        var wisherDto1 = new WisherDto(1, 2, 4, "mail2@", true, StatusWisher.IS_CONSIDERED.getId());
         var listWisher = List.of(wisherDto0, wisherDto1);
         String token = "12345";
         when(webClientMock.get()).thenReturn(requestHeadersUriMock);
@@ -154,8 +157,8 @@ class WisherServiceWebClientTest {
     void whenIsWisherThenReturnTrue() {
         var userId = 77;
         var interviewId = 33;
-        var wishers = List.of(new WisherDto(1, interviewId, -1, "mail.1", true),
-                new WisherDto(2, interviewId, userId, "mail.1", true));
+        var wishers = List.of(new WisherDto(1, interviewId, -1, "mail.1", true, StatusWisher.IS_CONSIDERED.getId()),
+                new WisherDto(2, interviewId, userId, "mail.1", true, StatusWisher.IS_CONSIDERED.getId()));
         var actual = wisherService.isWisher(userId, interviewId, wishers);
         assertThat(actual).isTrue();
     }
@@ -164,18 +167,18 @@ class WisherServiceWebClientTest {
     void whenIsWisherThenReturnFalse() {
         var userId = 77;
         var interviewId = 33;
-        var wishers = List.of(new WisherDto(1, -1, -1, "mail.1", true),
-                new WisherDto(2, -1, -1, "mail.1", true));
+        var wishers = List.of(new WisherDto(1, -1, -1, "mail.1", true, StatusWisher.IS_CONSIDERED.getId()),
+                new WisherDto(2, -1, -1, "mail.1", true, StatusWisher.IS_CONSIDERED.getId()));
         var actual = wisherService.isWisher(userId, interviewId, wishers);
         assertThat(actual).isFalse();
     }
 
     @Test
     void whenTest1GetInterviewStatisticThenReturnEqualsTrue() {
-        var wisher1Interview1 = new WisherDto(1, 1, 2, null, false);
-        var wisher2Interview1 = new WisherDto(2, 1, 3, null, true);
-        var wisher3Interview2 = new WisherDto(3, 2, 4, null, true);
-        var wisher4Interview2 = new WisherDto(4, 2, 5, null, true);
+        var wisher1Interview1 = new WisherDto(1, 1, 2, null, false, StatusWisher.IS_CONSIDERED.getId());
+        var wisher2Interview1 = new WisherDto(2, 1, 3, null, true, StatusWisher.IS_CONSIDERED.getId());
+        var wisher3Interview2 = new WisherDto(3, 2, 4, null, true, StatusWisher.IS_CONSIDERED.getId());
+        var wisher4Interview2 = new WisherDto(4, 2, 5, null, true, StatusWisher.IS_CONSIDERED.getId());
         var wishers = List.of(wisher1Interview1, wisher2Interview1, wisher3Interview2, wisher4Interview2);
         var key1 = wisher1Interview1.getInterviewId();
         var key2 = wisher3Interview2.getInterviewId();
@@ -191,10 +194,10 @@ class WisherServiceWebClientTest {
 
     @Test
     void whenTest2GetInterviewStatisticThenReturnEqualsTrue() {
-        var wisher1Interview1 = new WisherDto(1, 1, 2, null, false);
-        var wisher2Interview2 = new WisherDto(2, 2, 3, null, true);
-        var wisher3Interview3 = new WisherDto(3, 3, 4, null, false);
-        var wisher4Interview4 = new WisherDto(4, 4, 5, null, true);
+        var wisher1Interview1 = new WisherDto(1, 1, 2, null, false, StatusWisher.IS_CONSIDERED.getId());
+        var wisher2Interview2 = new WisherDto(2, 2, 3, null, true, StatusWisher.IS_CONSIDERED.getId());
+        var wisher3Interview3 = new WisherDto(3, 3, 4, null, false, StatusWisher.IS_CONSIDERED.getId());
+        var wisher4Interview4 = new WisherDto(4, 4, 5, null, true, StatusWisher.IS_CONSIDERED.getId());
         var wishers = List.of(wisher1Interview1, wisher2Interview2, wisher3Interview3, wisher4Interview4);
         var key1 = wisher1Interview1.getInterviewId();
         var key2 = wisher2Interview2.getInterviewId();
@@ -210,5 +213,83 @@ class WisherServiceWebClientTest {
         assertThat(actual)
                 .usingRecursiveComparison()
                 .isEqualTo(expected);
+    }
+
+    @Test
+    void whenIsDismissedThenTrue() {
+        var interviewID = 1;
+        var wisher1 = new WisherDto(1, interviewID, 2, null, false, StatusWisher.IS_CONSIDERED.getId());
+        var wisher2 = new WisherDto(2, interviewID, 3, null, true, StatusWisher.IS_CONSIDERED.getId());
+        var wisher3 = new WisherDto(3, interviewID, 4, null, false, StatusWisher.IS_DISMISSED.getId());
+        var wisher4 = new WisherDto(4, interviewID, 5, null, true, StatusWisher.IS_CONSIDERED.getId());
+        var wishers = List.of(wisher1, wisher2, wisher3, wisher4);
+        var actual = wisherService.isDismissed(interviewID, wishers);
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void whenIsDismissedThenFalse() {
+        var interviewID = 1;
+        var wisher1 = new WisherDto(1, interviewID, 2, null, false, StatusWisher.IS_CONSIDERED.getId());
+        var wisher2 = new WisherDto(2, interviewID, 3, null, true, StatusWisher.IS_CONSIDERED.getId());
+        var wisher3 = new WisherDto(3, interviewID, 4, null, false, StatusWisher.IS_COMPLETED.getId());
+        var wisher4 = new WisherDto(4, interviewID, 5, null, true, StatusWisher.IS_CONSIDERED.getId());
+        var wishers = List.of(wisher1, wisher2, wisher3, wisher4);
+        var actual = wisherService.isDismissed(interviewID, wishers);
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    void whenSetNewStatusByWisherInterviewThenTrue() {
+        WisherDto wisherDto = new WisherDto(1, 1, 1,
+                "mail@mail.ru", true,
+                StatusWisher.IS_CONSIDERED.getId());
+        String token = "12345";
+        var interviewId = String.valueOf(wisherDto.getInterviewId());
+        var wisherId = String.valueOf(wisherDto.getId());
+        var newStatusId = String.valueOf(StatusWisher.IS_DISMISSED.getId());
+        var anyStatusId = String.valueOf(StatusWisher.IS_REJECTED.getId());
+        MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
+        param.add("interviewId", interviewId);
+        param.add("wisherId", wisherId);
+        param.add("newStatusId", newStatusId);
+        param.add("anyStatusId", anyStatusId);
+        when(webClientMock.post()).thenReturn(requestBodyUriMock);
+        when(requestBodyUriMock.uri(urlWishers + "status/")).thenReturn(requestBodyMock);
+        when(requestBodyMock.header("Authorization", "Bearer " + token)).thenReturn(requestBodyMock);
+        when(requestBodyMock.accept(MediaType.APPLICATION_JSON)).thenReturn(requestBodyMock);
+        when(requestBodyMock.bodyValue(param)).thenReturn(requestHeadersMock);
+        when(requestHeadersMock.retrieve()).thenReturn(responseMock);
+        when(responseMock.toEntity(HttpStatus.class)).thenReturn(Mono.just(new ResponseEntity<>(HttpStatus.OK)));
+        var setStatusActual = wisherService.setNewStatusByWisherInterview(token, interviewId,
+                wisherId, newStatusId, anyStatusId);
+        assertThat(setStatusActual).isTrue();
+    }
+
+    @Test
+    void whenSetNewStatusByWisherInterviewThenFalse() {
+        WisherDto wisherDto = new WisherDto(1, 1, 1,
+                "mail@mail.ru", true,
+                StatusWisher.IS_CONSIDERED.getId());
+        String token = "12345";
+        var interviewId = String.valueOf(wisherDto.getInterviewId());
+        var wisherId = String.valueOf(wisherDto.getId());
+        var newStatusId = String.valueOf(StatusWisher.IS_DISMISSED.getId());
+        var anyStatusId = String.valueOf(StatusWisher.IS_REJECTED.getId());
+        MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
+        param.add("interviewId", interviewId);
+        param.add("wisherId", wisherId);
+        param.add("newStatusId", newStatusId);
+        param.add("anyStatusId", anyStatusId);
+        when(webClientMock.post()).thenReturn(requestBodyUriMock);
+        when(requestBodyUriMock.uri(urlWishers + "status/")).thenReturn(requestBodyMock);
+        when(requestBodyMock.header("Authorization", "Bearer " + token)).thenReturn(requestBodyMock);
+        when(requestBodyMock.accept(MediaType.APPLICATION_JSON)).thenReturn(requestBodyMock);
+        when(requestBodyMock.bodyValue(param)).thenReturn(requestHeadersMock);
+        when(requestHeadersMock.retrieve()).thenReturn(responseMock);
+        when(responseMock.toEntity(HttpStatus.class)).thenReturn(Mono.just(new ResponseEntity<>(HttpStatus.NOT_FOUND)));
+        var setStatusActual = wisherService.setNewStatusByWisherInterview(token, interviewId,
+                wisherId, newStatusId, anyStatusId);
+        assertThat(setStatusActual).isFalse();
     }
 }

@@ -1,11 +1,6 @@
-<div th:fragment="header">
+<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
     <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
-        <div class="container-fluid">
-            <span class="ps-5 pe-4">
-                <a th:href="@{/}" class="logo">
-                    <img src="/img/icons/svg/check-double-solid.svg" width="20" alt="check-double-solid">
-                </a>
-            </span>
+        <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent"
@@ -27,35 +22,33 @@
                         <a class="nav-link" th:classappend="${'profiles' == current_page ? 'active' : ''}"
                            aria-current="page" th:href="@{/profiles/}">Профили</a>
                     </li>
-                </ul>
-                <ul class="navbar-nav d-flex" th:if="${userInfo == null}">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/login}">
-                            Войти
-                        </a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav d-flex" th:if="${userInfo != null}">
-                    <li class="nav-item">
+                    <li class="nav-item" th:if="${userInfo != null}">
                         <a class="nav-link" th:href="@{/persons/}">
                         <span th:text="${userInfo.username != null} ? ${userInfo.username} : ${userInfo.email}">
                             Login/Email пользователя
                         </span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/logout}">Выйти</a></li>
+                    <li class="nav-item" th:if="${userInfo != null}">
+                        <a class="nav-link" th:href="@{/logout}">Выйти</a></li>
+                    <li class="nav-item" th:if="${userInfo == null}">
+                        <a class="nav-link" th:href="@{/login}">
+                            Войти
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container pt-2">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li th:each="breadcrumb: ${breadcrumbs}" class="breadcrumb-item">
-                    <a th:href="${breadcrumb.url}" th:text="${breadcrumb.name}"></a>
-                </li>
-            </ol>
-        </nav>
+    <div class="container">
+        <div class="px-2 pt-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li th:each="breadcrumb: ${breadcrumbs}" class="breadcrumb-item">
+                        <a th:href="${breadcrumb.url}" th:text="${breadcrumb.name}"></a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
     </div>
 </div>

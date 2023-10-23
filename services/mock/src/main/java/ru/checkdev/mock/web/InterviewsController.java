@@ -1,12 +1,10 @@
 package ru.checkdev.mock.web;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.checkdev.mock.domain.Interview;
 import ru.checkdev.mock.service.InterviewService;
 
@@ -23,10 +21,13 @@ public class InterviewsController {
     /*Аннотация не работает
     @PreAuthorize("isAuthenticated()") */
     @GetMapping("/")
-    public ResponseEntity<List<Interview>> findAll() throws SQLException {
+    public ResponseEntity<Page<Interview>> findAll(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int size
+    ) throws SQLException {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(interviewService.findAll());
+                .body(interviewService.findPaging(page, size));
     }
 
     @GetMapping("/{type}")
@@ -34,5 +35,15 @@ public class InterviewsController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(interviewService.findByType(type));
+    }
+
+    @GetMapping("/findByTopicId/{topicId}")
+    public ResponseEntity<Page<Interview>> findByTopicId(
+            @PathVariable int topicId,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "20") int size) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(interviewService.findByTopicId(topicId, page, size));
     }
 }

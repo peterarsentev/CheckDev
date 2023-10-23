@@ -3,10 +3,14 @@ package ru.job4j.site.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
+import ru.job4j.site.domain.StatusWisher;
 import ru.job4j.site.dto.InterviewStatistic;
 import ru.job4j.site.dto.WisherDto;
 
@@ -82,6 +86,40 @@ public class WisherServiceWebClient implements WisherService {
     }
 
     /**
+     * Метод по устанавливает новый статус участниках интервью
+     *
+     * @param token       User token
+     * @param interviewId ID Interview
+     * @param wisherId    ID select Wisher
+     * @param newStatusId new Status ID select Wisher
+     * @param anyStatusId new Status ID any Wisher
+     * @return boolean true / false
+     */
+    @Override
+    public boolean setNewStatusByWisherInterview(String token, String interviewId,
+                                                 String wisherId, String newStatusId,
+                                                 String anyStatusId) {
+        MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
+        param.add("interviewId", interviewId);
+        param.add("wisherId", wisherId);
+        param.add("newStatusId", newStatusId);
+        param.add("anyStatusId", anyStatusId);
+        var setNewStatus = this.webClientWisher
+                .post()
+                .uri(URL_WISHERS + "status/")
+                .header("Authorization", "Bearer " + token)
+                .accept(MediaType.APPLICATION_JSON)
+                .bodyValue(param)
+                .retrieve()
+                .toEntity(HttpStatus.class)
+                .doOnError(err -> log.error("API MOCK not found: {}", err.getMessage()))
+                .blockOptional();
+        return setNewStatus
+                .map(re -> re.getStatusCode().is2xxSuccessful())
+                .orElse(false);
+    }
+
+    /**
      * Метод проверяет, является пользователь участником конкретного интервью
      *
      * @param userId      User ID
@@ -95,6 +133,22 @@ public class WisherServiceWebClient implements WisherService {
                 .anyMatch(wiser ->
                         wiser.getUserId() == userId
                                 && wiser.getInterviewId() == interviewId);
+    }
+
+    /**
+     * Метод проверяет одобрен хотя бы один участник собеседования.
+     *
+     * @param interviewId Interview ID
+     * @param wishers     List<WisherDto>
+     * @return boolean true or false
+     */
+    @Override
+    public boolean isDismissed(int interviewId, List<WisherDto> wishers) {
+        int dismissedId = StatusWisher.IS_DISMISSED.getId();
+        return wishers.stream()
+                .filter(w -> w.getInterviewId() == interviewId)
+                .mapToInt(WisherDto::getStatus)
+                .anyMatch(s -> s == dismissedId);
     }
 
     /**

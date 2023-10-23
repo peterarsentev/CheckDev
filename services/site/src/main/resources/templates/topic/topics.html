@@ -5,7 +5,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
 
     <!-- favicon -->
-    <link href="/img/icons/svg/check-double-solid.svg" rel="icon" type="image/svg+xml">
+    <link rel="icon" type="image/svg+xml" href="/img/icons/svg/check-double-solid_dark.svg">
 
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
@@ -19,11 +19,11 @@
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" rel="stylesheet">
     <!-- Bootstrap 5.3.2 CSS -->
-    <link rel="stylesheet" th:href="@{/css_bootstrap_5_3_2/bootstrap.min.css}">
-    <script th:href="@{/js_bootstrap_5_3_2/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/js_bootstrap_5_3_2/popper.min.js}"></script>
-    <script th:src="@{/js_bootstrap_5_3_2/bootstrap.min.js}"></script>
-    <script th:src="@{/js_bootstrap_5_3_2/code.jquery.com_jquery-3.7.0.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}">
+    <script th:href="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/5.3.2/js/popper.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.min.js}"></script>
+    <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
 </head>
 <body>
 <div th:insert="fragments/header :: header"></div>
@@ -59,11 +59,13 @@
                     <div>
                         <small class="mb-2 text-muted">
                             <span><i class="fas fa-eye pr-3"></i> : </span>
-                            <span class="fw-bold" th:text="${topic.total}"></span> |
+                            <span class="fw-bold" th:text="${topic.total}"></span>
                         </small>
-                        <small class="mb-2 text-muted">
-                            <span> Позиция : </span>
-                            <span class="fw-bold" th:text="${topic.position}"></span>
+                        <small th:if="${canManage}" >
+                            <small class="mb-2 text-muted"> |
+                                <span> Позиция : </span>
+                                <span class="fw-bold" th:text="${topic.position}"></span>
+                            </small>
                         </small>
                     </div>
                 </td>

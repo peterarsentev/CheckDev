@@ -24,6 +24,15 @@ public class TopicControl {
                 () -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/name/{id}")
+    public ResponseEntity<String> getNameById(@PathVariable int id) {
+        var name = topicService.getNameById(id);
+        return name.map(
+                value -> new ResponseEntity<>(value, HttpStatus.OK)
+        ).orElseGet(
+                () -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping("/")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Topic> create(@RequestBody Topic topic) {

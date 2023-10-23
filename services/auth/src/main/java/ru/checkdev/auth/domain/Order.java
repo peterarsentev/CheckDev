@@ -27,6 +27,16 @@ public class Order {
     public Order() {
     }
 
+    public Order(int id, int userId, String email, String username, String msg, Calendar created, boolean archive) {
+        this.id = id;
+        this.userId = userId;
+        this.email = email;
+        this.username = username;
+        this.msg = msg;
+        this.created = created;
+        this.archive = archive;
+    }
+
     public int getId() {
         return this.id;
     }

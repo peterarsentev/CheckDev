@@ -72,7 +72,21 @@ public class WisherService {
      * @param interviewId ID Interview ID
      * @return List<WisherDTO>
      */
-    public List<WisherDto> findWisherByInterviewId(int interviewId) {
+    public List<WisherDto> findWisherDtoByInterviewId(int interviewId) {
         return wisherRepository.findWisherDTOByInterviewId(interviewId);
+    }
+
+    /**
+     * Метод выполняет два запроса для изменения статуса нужного участника,
+     * и установки остальным участника anyStatus.
+     *
+     * @param interviewId ID interview
+     * @param wisherId    ID wisher from set newStatus
+     * @param newStatusId from Wisher ID
+     * @param anyStatusId Status IS from Any Wisher
+     */
+    public void setWisherStatus(int interviewId, int wisherId, int newStatusId, int anyStatusId) {
+        wisherRepository.setWisherStatus(interviewId, wisherId, newStatusId);
+        wisherRepository.setNotWisherStatus(interviewId, wisherId, anyStatusId);
     }
 }

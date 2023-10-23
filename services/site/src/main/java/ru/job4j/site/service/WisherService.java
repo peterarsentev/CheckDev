@@ -19,7 +19,13 @@ public interface WisherService {
 
     List<WisherDto> getAllWisherDtoByInterviewId(String token, String interviewId);
 
+    boolean setNewStatusByWisherInterview(String token, String interviewId,
+                                                 String wisherId, String newStatusId,
+                                                 String anyStatusId);
+
     boolean isWisher(int userId, int interviewId, List<WisherDto> wishers);
+
+    boolean isDismissed(int interviewId, List<WisherDto> wishers);
 
     Map<Integer, InterviewStatistic> getInterviewStatistic(List<WisherDto> wishers);
 }

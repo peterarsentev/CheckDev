@@ -17,11 +17,13 @@ public class InterviewDTO {
 
     private String title;
 
-    private String description;
+    private String additional;
 
     private String contactBy;
 
     private String approximateDate;
 
     private String createDate;
+
+    private int topicId;
 }

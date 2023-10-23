@@ -9,4 +9,10 @@
     <include file="changelog/002_ddl_create_table_wisher.sql" relativeToChangelogFile="true"/>
     <include file="changelog/003_ddl_update_table_interview.sql" relativeToChangelogFile="true"/>
     <include file="changelog/004_dml_insert_table_interview.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/005_ddl_rename_column_interview.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/006_ddl_add_column_interview.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/007_dml_insert_table_interview.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/008_ddl_add_column_status_in_wiser_table.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/009_dml_set_table_interview_topicId_notNull.sql" relativeToChangelogFile="true"/>
+    <include file="changelog/010_ddl_create_table_cd_filter.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

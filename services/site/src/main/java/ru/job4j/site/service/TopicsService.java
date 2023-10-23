@@ -63,4 +63,8 @@ public class TopicsService {
                 mapper.writeValueAsString(topic)
         );
     }
+
+    public String getNameById(int id) {
+        return new RestAuthCall(String.format("http://localhost:9902/topic/name/%d", id)).get();
+    }
 }
