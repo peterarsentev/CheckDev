@@ -6,4 +6,5 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <include file="changelog/001_ddl_create_table_cd_subscribe_category.xml" relativeToChangelogFile="true"/>
+    <include file="changelog/002_ddl_create_table_cd_subscribe_topic.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
