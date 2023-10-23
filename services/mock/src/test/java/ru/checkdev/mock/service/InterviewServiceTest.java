@@ -10,6 +10,7 @@ import ru.checkdev.mock.MockSrv;
 import ru.checkdev.mock.domain.Interview;
 import ru.checkdev.mock.repository.InterviewRepository;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;

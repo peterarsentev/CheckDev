@@ -16,6 +16,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.checkdev.mock.dto.WisherDto;
 import ru.checkdev.mock.repository.WisherRepository;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -48,6 +49,9 @@ class WisherServiceTest {
             .contactBy("test_contact_by")
             .approve(true)
             .build();
+
+    private WisherDto wisherDto = new WisherDto(1, 1, 1, "contact", true);
+
 
     @Test
     public void whenSaveAndGetTheSame() {
@@ -105,4 +109,24 @@ class WisherServiceTest {
         assertThat(actual, is(false));
     }
 
+    @Test
+    public void whenFindAllWisherDto() {
+        when(wisherRepository.findAllWiserDto()).thenReturn(List.of(wisherDto));
+        var actual = wisherService.findAllWisherDto();
+        assertThat(actual, is(List.of(wisherDto)));
+    }
+
+    @Test
+    public void whenFindWisherByInterviewId() {
+        when(wisherRepository.findWisherDTOByInterviewId(any(Integer.class))).thenReturn(List.of(wisherDto));
+        var actual = wisherService.findWisherByInterviewId(1);
+        assertThat(actual, is(List.of(wisherDto)));
+    }
+
+    @Test
+    public void whenFindByByInterviewId() {
+        when(wisherRepository.findByInterview(any(Interview.class))).thenReturn(List.of(wisher));
+        var actual = wisherService.findByInterview(interview);
+        assertThat(actual, is(List.of(wisher)));
+    }
 }
