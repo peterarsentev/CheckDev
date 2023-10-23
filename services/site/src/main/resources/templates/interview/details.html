@@ -64,7 +64,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="wisher : ${wishersDetail}">
+                        <tr th:each="wisher : ${wishersDetail}" th:if="${!wisher.approve}">
                             <td>
                                 <div class="row h4" th:text="${wisher.username}">
                                     Имя участника
@@ -79,10 +79,43 @@
                             </td>
                             <td>
                                 <form th:if="${!isDismissed}" th:action="@{/wisher/dismissed}" method="post">
-                                    <input type="hidden" th:id="interviewId" th:name="interviewId" th:value="${wisher.interviewId}">
-                                    <input type="hidden" th:id="wisherId" th:name="wisherId" th:value="${wisher.id}">
+                                    <input type="hidden" th:id="interviewId" th:name="interviewId"
+                                           th:value="${wisher.interviewId}">
+                                    <input type="hidden" th:id="wisherId" th:name="wisherId"
+                                           th:value="${wisher.id}">
                                     <button type="submit" class="btn btn-info mt-3">Одобрить</button>
                                 </form>
+                            </td>
+                        </tr>
+                        <tr class="table-primary" th:if="${isDismissed}">
+                            <td>
+                            </td>
+                            <td>
+                                <div class="row h3">
+                                    Согласованные участники
+                                </div>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr  class="table-primary" th:each="wisher : ${wishersDetail}" th:if="${wisher.approve}">
+                            <td>
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${'Автор: ' + userInfo.username}">Автор: имя</h5>
+                                        <h6 class="card-subtitle mb-2 text-body" th:text="${'Контакт: ' + userInfo.email}">Контакт</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${'Участник: ' + wisher.username}">Участник: имя</h5>
+                                        <h6 class="card-subtitle mb-2 text-body" th:text="${'Контакт: ' + wisher.contactBy}">Контакт</h6>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         </tbody>
