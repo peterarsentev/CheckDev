@@ -27,11 +27,12 @@
 <div th:insert="fragments/header :: header"></div>
 <div class="container">
     <div class="row pt-3">
-        <div class="cell">
+        <div class="col-sm">
         </div>
-        <div class="cell">
+        <div class="col-sm">
             <form class="was-validated" th:action="@{/interview/update}" method="post" th:object="${interview}">
                 <input type="hidden" name="id" th:field="*{id}">
+                <input type="hidden" name="status" th:field="*{status}">
                 <input type="hidden" name="submitterId" th:field="*{submitterId}">
                 <input type="hidden" name="title" th:field="*{title}">
                 <input type="hidden" name="topicId" th:field="*{topicId}">
@@ -64,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--Заполнение поля additional-->
+                    <!--Заполнение поля description-->
                     <div class="mb-3">
                         <label class="form-label" for="additional">Описание</label>
                         <textarea class="form-control" rows="3"
@@ -78,14 +79,14 @@
                     <!--Выбор типа собеседования поел typeInterview-->
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="typeInterview" id="1" value="1"
-                               th:checked="${interview.typeInterview==1}">
+                               th:checked="${interview.getMode==1}">
                         <label class="form-check-label" for="1">
                             Буду проводить собеседование (задавать вопросы)
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="typeInterview" id="2" value="2"
-                               th:checked="${interview.typeInterview==2}">
+                               th:checked="${interview.getMode==2}">
                         <label class="form-check-label" for="2">
                             Буду проходить собеседование (отвечать на вопросы)
                         </label>

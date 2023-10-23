@@ -11,7 +11,9 @@ public class InterviewDTO {
 
     private int id;
 
-    private int typeInterview;
+    private int mode;
+
+    private int status;
 
     private int submitterId;
 

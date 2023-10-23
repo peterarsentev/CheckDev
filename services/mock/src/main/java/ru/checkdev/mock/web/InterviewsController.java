@@ -30,11 +30,11 @@ public class InterviewsController {
                 .body(interviewService.findPaging(page, size));
     }
 
-    @GetMapping("/{type}")
-    public ResponseEntity<List<Interview>> findByType(@PathVariable int type) {
+    @GetMapping("/{mode}")
+    public ResponseEntity<List<Interview>> findByMode(@PathVariable int mode) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(interviewService.findByType(type));
+                .body(interviewService.findByMode(mode));
     }
 
     @GetMapping("/findByTopicId/{topicId}")

@@ -53,8 +53,14 @@ public class InterviewController {
     @PostMapping("/create")
     public String createInterview(@ModelAttribute InterviewDTO interviewDTO,
                                   @ModelAttribute("topicId") int topicId,
-                                  HttpServletRequest req)
+                                  HttpServletRequest req, RedirectAttributes redirectAttributes)
             throws JsonProcessingException {
+        if (interviewDTO.getApproximateDate().isEmpty()
+                || interviewDTO.getContactBy().isEmpty()) {
+            redirectAttributes.addFlashAttribute("topicId", topicId);
+            redirectAttributes.addFlashAttribute("error", "Заполните поле!");
+            return "redirect:/interview/createForm";
+        }
         var token = getToken(req);
         if (token != null) {
             var userInfo = authService.userInfo(token);
@@ -81,8 +87,8 @@ public class InterviewController {
         model.addAttribute("isAuthor", isAuthor);
         model.addAttribute("isWisher", isWisher);
         model.addAttribute("statisticMap", statisticMap);
-        if (interview.getTypeInterview() < statuses.length) {
-            model.addAttribute("status", statuses[interview.getTypeInterview()].getInfo());
+        if (interview.getMode() < statuses.length) {
+            model.addAttribute("status", statuses[interview.getStatus()].getInfo());
         }
         if (isAuthor) {
             var wishersDetail = interviewService.getAllWisherDetail(wishers);

@@ -33,7 +33,7 @@ class WisherRepositoryTest {
     @BeforeEach
     public void clearTable() {
         interview = new Interview();
-        interview.setTypeInterview(1);
+        interview.setMode(1);
         interview.setSubmitterId(1);
         interview.setTitle("title");
         interview.setAdditional("additional");

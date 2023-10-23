@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.site.SiteSrv;
 import ru.job4j.site.domain.Breadcrumb;
@@ -22,7 +21,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -57,9 +55,9 @@ public class InterviewControllerTest {
         interview.setId(1);
         interview.setTitle("Some interview");
         interview.setAdditional("Some description");
-        interview.setTypeInterview(4);
+        interview.setMode(4);
         interview.setTopicId(1);
-        var status = StatusInterview.values()[interview.getTypeInterview()].getInfo();
+        var status = StatusInterview.values()[interview.getStatus()].getInfo();
         List<WisherDto> wisherDtos = new ArrayList<>();
         when(authService.userInfo(token)).thenReturn(userInfo);
         when(interviewService.getById(token, 1)).thenReturn(interview);

@@ -3,7 +3,7 @@ package ru.job4j.site.domain;
 /**
  * CheckDev пробное собеседование
  * StatusInterviews enum класс описывает статусы интервью.
- * В модели Interviews поле int typeInterview характеризует статус интервью.
+ * В модели Interviews поле int status характеризует статус интервью.
  * Для корректной его обработки используется следующие принятые понятия.
  * 0 - Неизвестен IS_UNKNOWN
  * 1 - Новая IS_NEW

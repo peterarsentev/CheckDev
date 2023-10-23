@@ -234,9 +234,9 @@
                                 |
                                 <!--Из переданного набора ENUM выбираем статус по его ID-->
                                 <span>Статус: </span>
-                                <span th:each="type: ${statuses}">
-                                    <span th:if="${interview.typeInterview == type.getId()}">
-                                        <span th:text="${type.getInfo()}">
+                                <span th:each="status: ${statuses}">
+                                    <span th:if="${interview.status == status.getId()}">
+                                        <span th:text="${status.getInfo()}">
                                     </span>
                                 </span>
                                 </span>

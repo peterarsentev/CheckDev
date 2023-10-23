@@ -77,10 +77,10 @@ class IndexControllerTest {
         var cat1 = new CategoryDTO(1, "name1");
         var cat2 = new CategoryDTO(2, "name2");
         var listCat = List.of(cat1, cat2);
-        var firstInterview = new InterviewDTO(1, 1, 1,
+        var firstInterview = new InterviewDTO(1, 1, 1, 1,
                 "interview1", "description1", "contact1",
                 "30.02.2024", "09.10.2023", 1);
-        var secondInterview = new InterviewDTO(2, 1, 2,
+        var secondInterview = new InterviewDTO(2, 1, 1, 2,
                 "interview2", "description2", "contact2",
                 "30.02.2024", "09.10.2023", 1);
         var listInterviews = List.of(firstInterview, secondInterview);

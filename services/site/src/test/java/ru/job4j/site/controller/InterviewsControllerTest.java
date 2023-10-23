@@ -62,7 +62,8 @@ public class InterviewsControllerTest {
         List<InterviewDTO> interviews = IntStream.range(0, 3).mapToObj(i -> {
             var interview = new InterviewDTO();
             interview.setId(i);
-            interview.setTypeInterview(1);
+            interview.setMode(1);
+            interview.setStatus(1);
             interview.setSubmitterId(1);
             interview.setTitle(String.format("Interview_%d", i));
             interview.setAdditional("Some text");
