@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.checkdev.auth.domain.Person;
+import ru.checkdev.auth.domain.Profile;
 import ru.checkdev.auth.repository.PersonRepository;
 
 import java.util.List;
@@ -32,22 +32,22 @@ public class PersonServiceTest {
     @After
     @Test
     public void whenRegDuplicatePersonThenResultEmpty() {
-        Person person = new Person("Петр Арсентьев", "parsentev@yandex.ru", "password");
-        this.service.reg(person);
-        Optional<Person> result = this.service.reg(person);
+        Profile profile = new Profile("Петр Арсентьев", "parsentev@yandex.ru", "password");
+        this.service.reg(profile);
+        Optional<Profile> result = this.service.reg(profile);
         assertThat(result, is(Optional.empty()));
     }
 
     @Test
     public void whenRegPersonRolesThenDropRoles() {
-        Person person = new Person("Петр Арсентьев", "parsentev@yandex.ru", "password");
-        person.setKey("test");
-        this.persons.save(person);
+        Profile profile = new Profile("Петр Арсентьев", "parsentev@yandex.ru", "password");
+        profile.setKey("test");
+        this.persons.save(profile);
     }
 
     @Test
     public void whenSelectAllPersonsThenListContainTestRecord() {
-        List<Person> personList = this.service.getAll();
-        assertTrue(personList.size() > 0);
+        List<Profile> profileList = this.service.getAll();
+        assertTrue(profileList.size() > 0);
     }
 }

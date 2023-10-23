@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import ru.checkdev.auth.domain.Person;
+import ru.checkdev.auth.domain.Profile;
 import ru.checkdev.auth.repository.PersonRepository;
 
 import java.util.stream.Collectors;
@@ -25,18 +25,18 @@ public class UserDetailsDefinition implements org.springframework.security.core.
 
     @Override
     public UserDetails loadUserByUsername(final String email) {
-        Person person = this.persons.findByEmail(email);
-        if (person != null) {
-            if (person.isActive()) {
+        Profile profile = this.persons.findByEmail(email);
+        if (profile != null) {
+            if (profile.isActive()) {
                 return new User(email,
-                        person.getPassword(),
-                        person.getRoles().stream()
+                        profile.getPassword(),
+                        profile.getRoles().stream()
                                 .map(
                                         role -> new SimpleGrantedAuthority(role.getValue())
                                 ).collect(Collectors.toList())
                 ) {
                     public String getKey() {
-                        return person.getKey();
+                        return profile.getKey();
                     }
                 };
             } else {
