@@ -31,13 +31,11 @@ public class InterviewController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Interview> getById(@Valid @PathVariable int id) {
-        return new ResponseEntity<>(
-                interviewService
-                        .findById(id)
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
-                HttpStatus.OK
-        );
+        return interviewService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 
     @PutMapping("/")
     public ResponseEntity<Interview> update(@Valid @RequestBody Interview interview) {
