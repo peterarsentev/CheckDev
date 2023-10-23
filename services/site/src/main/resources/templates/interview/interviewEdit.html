@@ -27,9 +27,7 @@
 <div th:insert="fragments/header :: header"></div>
 <div class="container">
     <div class="row pt-3">
-        <div class="col-sm">
-        </div>
-        <div class="col-sm">
+        <div class="cell">
             <form class="was-validated" th:action="@{/interview/update}" method="post" th:object="${interview}">
                 <input type="hidden" name="id" th:field="*{id}">
                 <input type="hidden" name="status" th:field="*{status}">
@@ -65,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--Заполнение поля description-->
+                    <!--Заполнение поля additional-->
                     <div class="mb-3">
                         <label class="form-label" for="additional">Описание</label>
                         <textarea class="form-control" rows="3"
@@ -97,11 +95,8 @@
                 </div>
             </form>
         </div>
-        <div class="col-sm">
-        </div>
     </div>
 </div>
-<br>
 <div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>

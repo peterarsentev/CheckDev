@@ -50,7 +50,12 @@ class TgAuthCallWebClintTest {
     @Test
     void whenDoGetThenReturnPersonDTO() {
         Integer personId = 100;
-        var personDto = new PersonDTO("mail", "password", true, Collections.EMPTY_LIST, Calendar.getInstance());
+        var created = new Calendar.Builder()
+                .set(Calendar.DAY_OF_MONTH, 23)
+                .set(Calendar.MONTH, Calendar.OCTOBER)
+                .set(Calendar.YEAR, 2023)
+                .build();
+        var personDto = new PersonDTO("mail", "password", true, Collections.EMPTY_LIST, created);
         when(webClientMock.get()).thenReturn(requestHeadersUriMock);
         when(requestHeadersUriMock.uri("/person/" + personId)).thenReturn(requestHeadersMock);
         when(requestHeadersMock.retrieve()).thenReturn(responseMock);
@@ -73,7 +78,12 @@ class TgAuthCallWebClintTest {
 
     @Test
     void whenDoPostSavePersonThenReturnNewPerson() {
-        var personDto = new PersonDTO("mail", "password", true, null, Calendar.getInstance());
+        var created = new Calendar.Builder()
+                .set(Calendar.DAY_OF_MONTH, 23)
+                .set(Calendar.MONTH, Calendar.OCTOBER)
+                .set(Calendar.YEAR, 2023)
+                .build();
+        var personDto = new PersonDTO("mail", "password", true, null, created);
         when(webClientMock.post()).thenReturn(requestBodyUriMock);
         when(requestBodyUriMock.uri("/person/created")).thenReturn(requestBodyMock);
         when(requestBodyMock.bodyValue(personDto)).thenReturn(requestHeadersMock);
