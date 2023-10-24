@@ -19,9 +19,7 @@ import static org.mockito.Mockito.when;
  */
 class InterviewServiceTest {
     private ProfilesService profilesService = mock(ProfilesService.class);
-    private String key = "1234";
-
-    private InterviewService interviewService = new InterviewService(key, profilesService);
+    private InterviewService interviewService = new InterviewService(profilesService);
 
     @Test
     void injectedNotNull() {
@@ -56,7 +54,7 @@ class InterviewServiceTest {
         var wisher1 = new WisherDto(1, 1, person.getId(), "mail1", false, 1);
         var wisher2 = new WisherDto(2, 1, person.getId(), "mail2", false, 1);
         var wishers = List.of(wisher1, wisher2);
-        when(profilesService.getProfileById(person.getId(), key)).thenReturn(Optional.of(person));
+        when(profilesService.getProfileById(person.getId())).thenReturn(Optional.of(person));
         var wisherDetail1 = new WisherDetailDTO(wisher1.getId(), wisher1.getInterviewId(), wisher1.getUserId(),
                 person.getUsername(), wisher1.getContactBy(), wisher1.isApprove(), wisher1.getStatus(),
                 StatusWisher.IS_CONSIDERED.getInfo());

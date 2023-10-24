@@ -2,7 +2,6 @@ package ru.job4j.site.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,7 +20,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @SpringBootTest(classes = SiteSrv.class)
 @AutoConfigureMockMvc
@@ -44,9 +42,6 @@ public class InterviewsControllerTest {
     private FilterService filterService;
     @MockBean
     private TopicsService topicsService;
-
-    @Value("${server.auth.access.key}")
-    private String key;
 
     @Test
     public void whenShowAllInterviews() throws Exception {
@@ -86,9 +81,9 @@ public class InterviewsControllerTest {
         when(wisherService.getAllWisherDtoByInterviewId(token, "")).thenReturn(new ArrayList<>());
         when(wisherService.getInterviewStatistic(new ArrayList<>())).thenReturn(new HashMap<>());
         when(interviewsService.getAll(token, 1, 5)).thenReturn(page);
-        when(interviewsService.getByTopicId(filter.getTopicId(),  1, 5)).thenReturn(page);
+        when(interviewsService.getByTopicId(filter.getTopicId(), 1, 5)).thenReturn(page);
         when(authService.userInfo(token)).thenReturn(userInfo);
-        when(profilesService.getProfileById(id, key)).thenReturn(Optional.of(profile));
+        when(profilesService.getProfileById(id)).thenReturn(Optional.of(profile));
         when(categoriesService.getAll()).thenReturn(categories);
         when(filterService.getByUserId(token, userInfo.getId())).thenReturn(filter);
         when(categoriesService.getNameById(categories, 1)).thenReturn(categories.get(1).getName());

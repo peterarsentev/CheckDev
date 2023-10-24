@@ -28,14 +28,13 @@ public class ProfilesService {
     /**
      * Метод получает из сервиса Auth один профиль по ID
      *
-     * @param id  Int ID
-     * @param key String Access key
+     * @param id Int ID
      * @return Optional<ProfileDTO>
      */
-    public Optional<ProfileDTO> getProfileById(int id, String key) {
-        var uri = URL_PROFILES + id + "/";
+    public Optional<ProfileDTO> getProfileById(int id) {
+        var uri = URL_PROFILES + id;
         ResponseEntity<ProfileDTO> profile = webClientAuthCall
-                .doGetReqParamKey(uri, key)
+                .doGetReqParam(uri)
                 .block();
         return Optional.ofNullable(profile.getBody());
     }
@@ -43,12 +42,11 @@ public class ProfilesService {
     /**
      * Метод получает из сервиса Auth список всех профилей.
      *
-     * @param key String Access key
      * @return List<ProfileDTO>
      */
-    public List<ProfileDTO> getAllProfile(String key) {
+    public List<ProfileDTO> getAllProfile() {
         var responseEntity = webClientAuthCall
-                .doGetReqParamKeyAll(URL_PROFILES, key)
+                .doGetReqParamAll(URL_PROFILES)
                 .block();
         return responseEntity.getBody();
     }

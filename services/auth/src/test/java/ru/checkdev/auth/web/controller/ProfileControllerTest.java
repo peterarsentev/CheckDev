@@ -1,11 +1,9 @@
 package ru.checkdev.auth.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -37,12 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProfileControllerTest {
     @MockBean
     private ProfileService profileService;
-    @Value("${access.key}")
-    private String access;
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
     private ProfileController profileController;
     private final ProfileDTO profileDTO1 = new ProfileDTO(
             1, "name1", "experience1", 1, null, null);
@@ -52,14 +46,14 @@ public class ProfileControllerTest {
 
     @Before
     public void initController() {
-        this.profileController = new ProfileController(profileService, access);
+        this.profileController = new ProfileController(profileService);
     }
 
     @Test
     @WithMockUser
     public void whenGetProfileByIdThenReturnStatusOK() throws Exception {
         when(profileService.findProfileByID(profileDTO1.getId())).thenReturn(Optional.of(profileDTO1));
-        mockMvc.perform(get("/profiles/{id}/?key={key}", profileDTO1.getId(), this.access))
+        mockMvc.perform(get("/profiles/{id}", profileDTO1.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(profileDTO1.getId()))
                 .andExpect(jsonPath("$.username").value(profileDTO1.getUsername()))
@@ -68,31 +62,13 @@ public class ProfileControllerTest {
                 .andDo(print());
     }
 
-    @Test
-    @WithMockUser
-    public void whenGetProfileByIdKeyEmptyThenReturnStatusUNAUTHORIZED() throws Exception {
-        when(profileService.findProfileByID(profileDTO1.getId())).thenReturn(Optional.of(profileDTO1));
-        mockMvc.perform(get("/profiles/{id}/?key={key}", profileDTO1.getId(), ""))
-                .andExpect(status().isUnauthorized())
-                .andDo(print());
-    }
-
     @SuppressWarnings("checkstyle:OperatorWrap")
     @Test
     @WithMockUser
     public void whenGetProfileByIdProfileNotFoundThenReturnStatusNotFound() throws Exception {
         when(profileService.findProfileByID(profileDTO1.getId())).thenReturn(Optional.empty());
-        mockMvc.perform(get("/profiles/{id}/?key={key}", anyInt(), this.access))
+        mockMvc.perform(get("/profiles/{id}/", anyInt()))
                 .andExpect(status().isNoContent())
-                .andDo(print());
-    }
-
-    @Test
-    @WithMockUser
-    public void whenGetAllProfilesOrderByCreateDescBadKeyThenReturnStatusUnauthorized() throws Exception {
-        when(profileService.findProfilesOrderByCreatedDesc()).thenReturn(List.of(profileDTO1, profileDTO2));
-        mockMvc.perform(get("/profiles/?key={key}", ""))
-                .andExpect(status().isUnauthorized())
                 .andDo(print());
     }
 
@@ -101,7 +77,7 @@ public class ProfileControllerTest {
     public void whenGetAllProfilesOrderByCreateDescThenReturnStatusOkAndBody() throws Exception {
         var profiles = List.of(profileDTO1, profileDTO2);
         when(profileService.findProfilesOrderByCreatedDesc()).thenReturn(profiles);
-        mockMvc.perform(get("/profiles/?key={key}", this.access))
+        mockMvc.perform(get("/profiles/"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(profiles.size()))
                 .andDo(print());
@@ -109,9 +85,9 @@ public class ProfileControllerTest {
 
     @Test
     @WithMockUser
-    public void whenGetAllProfilesOrderByCreateDescListEmptyThenReturnStatusNotContent() throws Exception {
+    public void whenGetAllProfilesOrderByCreateDescListEmptyThenReturnStatusNoContent() throws Exception {
         when(profileService.findProfilesOrderByCreatedDesc()).thenReturn(Collections.emptyList());
-        mockMvc.perform(get("/profiles/?key={key}", this.access))
+        mockMvc.perform(get("/profiles/"))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }

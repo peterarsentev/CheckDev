@@ -1,7 +1,6 @@
 package ru.checkdev.auth.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,9 @@ import ru.checkdev.auth.service.RoleService;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author parsentev
@@ -31,13 +32,10 @@ public class PersonController {
     private final PersonService persons;
     private final RoleService roles;
 
-    private final String access;
-
     @Autowired
-    public PersonController(final PersonService persons, RoleService roles, @Value("${access.key}") final String access) {
+    public PersonController(final PersonService persons, RoleService roles) {
         this.persons = persons;
         this.roles = roles;
-        this.access = access;
     }
 
     @GetMapping("/current")
@@ -53,7 +51,7 @@ public class PersonController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/list/{limit}/{page}/{search}")
     public ResponseEntity<HashMap<String, Object>> getAll(@PathVariable int limit, @PathVariable int page, @PathVariable String search, Principal user) throws ServletException {
-        HashMap<String, Object> data = new HashMap<String, Object>();
+        HashMap<String, Object> data = new HashMap<>();
         if ("noSearch".equals(search)) {
             data.put("users", this.persons.findAll(PageRequest.of(page, limit, Sort.Direction.ASC, "email")));
         } else {
@@ -75,23 +73,6 @@ public class PersonController {
     @GetMapping("/profile")
     public Profile loadProfile(@RequestParam String key) throws ServletException {
         return this.persons.findByKey(key);
-    }
-
-    @PostMapping("/by")
-    public List<Profile> getIn(@RequestBody List<String> keys, @RequestParam String key) throws ServletException {
-        List<Profile> result = Collections.emptyList();
-        if (this.access.equals(key)) {
-            result = this.persons.getIn(keys);
-        }
-        return result;
-    }
-
-    @PostMapping("/by/email")
-    public Profile findByEmail(@RequestParam String email, @RequestParam String key) throws ServletException {
-        if (this.access.equals(key)) {
-            return this.persons.findByEmail(email).orElseGet(Profile::new);
-        }
-        throw new IllegalStateException();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -135,7 +116,6 @@ public class PersonController {
             persons.save(profileDb);
         }
     }
-
 
     @PutMapping("/pass")
     public ResponseEntity<String> changePass(@RequestBody Profile.Password password) {

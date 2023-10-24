@@ -26,11 +26,8 @@ import static ru.job4j.site.controller.RequestResponseTools.getToken;
 public class InterviewController {
 
     private final AuthService authService;
-
     private final TopicsService topicsService;
-
     private final InterviewService interviewService;
-
     private final WisherService wisherService;
 
     @GetMapping("/createForm")

@@ -1,7 +1,6 @@
 package ru.job4j.site.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +19,9 @@ import ru.job4j.site.service.ProfilesService;
 @RequestMapping("/profiles")
 @Slf4j
 public class ProfilesController {
-    private final String key;
     private final ProfilesService profilesService;
 
-    public ProfilesController(@Value("${server.auth.access.key}") String key,
-                              ProfilesService profilesService) {
-        this.key = key;
+    public ProfilesController(ProfilesService profilesService) {
         this.profilesService = profilesService;
     }
 
@@ -39,7 +35,7 @@ public class ProfilesController {
     @GetMapping("/{id}")
     public String getProfileById(@PathVariable int id, Model model) {
         String username = "";
-        var profileOptional = profilesService.getProfileById(id, key);
+        var profileOptional = profilesService.getProfileById(id);
         if (profileOptional.isPresent()) {
             model.addAttribute("profile", profileOptional.get());
             username = profileOptional.get().getUsername();
@@ -64,7 +60,7 @@ public class ProfilesController {
                 "Главная", "/",
                 "Профили", "/profiles/"
         );
-        var profilesList = profilesService.getAllProfile(key);
+        var profilesList = profilesService.getAllProfile();
         model.addAttribute("profiles", profilesList);
         model.addAttribute("current_page", "profiles");
         return "/profiles/profiles";

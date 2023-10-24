@@ -1,7 +1,6 @@
 package ru.job4j.site.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,26 +24,17 @@ import static ru.job4j.site.controller.RequestResponseTools.getToken;
 public class InterviewsController {
 
     private final InterviewsService interviewsService;
-
     private final ProfilesService profilesService;
-
     private final CategoriesService categoriesService;
-
     private final TopicsService topicsService;
-
     private final AuthService authService;
-
     private final FilterService filterService;
-
     private final WisherService wisherService;
-
-    private final String key;
 
     public InterviewsController(InterviewsService interviewsService, ProfilesService profilesService,
                                 CategoriesService categoriesService, TopicsService topicsService,
                                 AuthService authService, FilterService filterService,
-                                WisherService wisherService,
-                                @Value("${server.auth.access.key}") String key) {
+                                WisherService wisherService) {
         this.interviewsService = interviewsService;
         this.profilesService = profilesService;
         this.categoriesService = categoriesService;
@@ -52,7 +42,6 @@ public class InterviewsController {
         this.authService = authService;
         this.filterService = filterService;
         this.wisherService = wisherService;
-        this.key = key;
     }
 
     @GetMapping("/")
@@ -82,7 +71,7 @@ public class InterviewsController {
             topicName = topicsService.getNameById(filter.getTopicId());
         }
         Set<ProfileDTO> userList = interviewsPage.toList().stream()
-                .map(x -> profilesService.getProfileById(x.getSubmitterId(), key))
+                .map(x -> profilesService.getProfileById(x.getSubmitterId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toSet());

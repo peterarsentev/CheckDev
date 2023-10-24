@@ -3,14 +3,13 @@ package ru.job4j.site.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.job4j.site.domain.StatusInterview;
 import ru.job4j.site.domain.StatusWisher;
 import ru.job4j.site.dto.InterviewDTO;
 import ru.job4j.site.dto.UserInfoDTO;
-import ru.job4j.site.dto.WisherDto;
 import ru.job4j.site.dto.WisherDetailDTO;
+import ru.job4j.site.dto.WisherDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +17,9 @@ import java.util.List;
 @Service
 public class InterviewService {
     private static final String URL_MOCK = "http://localhost:9912/interview/";
-
-    private final String key;
     private final ProfilesService profilesService;
 
-    public InterviewService(@Value("${server.auth.access.key}") String key, ProfilesService profilesService) {
-        this.key = key;
+    public InterviewService(ProfilesService profilesService) {
         this.profilesService = profilesService;
     }
 
@@ -77,7 +73,7 @@ public class InterviewService {
         List<WisherDetailDTO> wishersDetail = new ArrayList<>();
         var statusesWisher = StatusWisher.values();
         for (WisherDto wisherDto : wishers) {
-            var person = profilesService.getProfileById(wisherDto.getUserId(), key);
+            var person = profilesService.getProfileById(wisherDto.getUserId());
             if (person.isPresent()) {
                 var wisherUser = new WisherDetailDTO(wisherDto.getId(),
                         wisherDto.getInterviewId(),
