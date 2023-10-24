@@ -76,6 +76,7 @@ public class InterviewControllerTest {
                 .andExpect(model().attribute("isAuthor", false))
                 .andExpect(model().attribute("isWisher", false))
                 .andExpect(model().attribute("statisticMap", new HashMap<>()))
+                .andExpect(model().attribute("STATUS_IN_PROGRESS_ID", StatusInterview.IN_PROGRESS.getId()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/interview/details"));
     }

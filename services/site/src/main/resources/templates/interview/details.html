@@ -38,7 +38,8 @@
             <pre th:text="${interview.createDate}"></pre>
             <span th:if="${statisticMap.get(interview.id) != null}">
                 <small class="text-muted" th:text="'Участвуют: ' + ${statisticMap.get(interview.id).participate}">Участников: </small>
-                <small class="text-muted" th:text="'Ожидают: ' + ${statisticMap.get(interview.id).expect}">Ожидают: </small>
+                <small class="text-muted"
+                       th:text="'Ожидают: ' + ${statisticMap.get(interview.id).expect}">Ожидают: </small>
                 <small class="text-muted" th:text="'Сдали: ' + ${statisticMap.get(interview.id).passed}">Сдано: </small>
             </span>
             <span th:unless="${statisticMap.get(interview.id) != null}">
@@ -97,12 +98,14 @@
                             <td>
                             </td>
                         </tr>
-                        <tr  class="table-primary" th:each="wisher : ${wishersDetail}" th:if="${wisher.approve}">
+                        <tr class="table-primary" th:each="wisher : ${wishersDetail}" th:if="${wisher.approve}">
                             <td>
                                 <div class="card" style="width: 18rem;">
                                     <div class="card-body">
-                                        <h5 class="card-title" th:text="${'Автор: ' + userInfo.username}">Автор: имя</h5>
-                                        <h6 class="card-subtitle mb-2 text-body" th:text="${'Контакт: ' + userInfo.email}">Контакт</h6>
+                                        <h5 class="card-title" th:text="${'Автор: ' + userInfo.username}">Автор:
+                                            имя</h5>
+                                        <h6 class="card-subtitle mb-2 text-body"
+                                            th:text="${'Контакт: ' + userInfo.email}">Контакт</h6>
                                     </div>
                                 </div>
                             </td>
@@ -111,8 +114,10 @@
                             <td>
                                 <div class="card" style="width: 18rem;">
                                     <div class="card-body">
-                                        <h5 class="card-title" th:text="${'Участник: ' + wisher.username}">Участник: имя</h5>
-                                        <h6 class="card-subtitle mb-2 text-body" th:text="${'Контакт: ' + wisher.contactBy}">Контакт</h6>
+                                        <h5 class="card-title" th:text="${'Участник: ' + wisher.username}">Участник:
+                                            имя</h5>
+                                        <h6 class="card-subtitle mb-2 text-body"
+                                            th:text="${'Контакт: ' + wisher.contactBy}">Контакт</h6>
                                     </div>
                                 </div>
                             </td>
@@ -120,7 +125,6 @@
                         </tbody>
                     </table>
                 </div>
-
                 <!--Форма для стать участником собеседования-->
                 <div th:if="${!isAuthor and !isWisher}" class="form-group">
                     <form class="was-validated" th:action="@{/wisher/create}" method="post">
@@ -141,6 +145,17 @@
                             <button type="submit" class="btn btn-primary mt-3">Участвовать</button>
                         </div>
                     </form>
+                </div>
+                <!--Кнопки оставить отзыв. Доступна если статус IN_PROGRESS-->
+                <div class="m-3" th:if="${STATUS_IN_PROGRESS_ID==interview.status}">
+                    <!--Кнопка оставляет отзыв АВТОР собеседования. Доступна если isAuthor=true-->
+                    <div th:if="${isAuthor}">
+                        <button type="button" class="btn btn-primary">Оставить отзыв участнику</button>
+                    </div>
+                    <!--Кнопка оставляет отзыв УЧАСТНИК собеседования. Доступна если isWisher=true-->
+                    <div th:if="${isWisher}">
+                        <button type="button" class="btn btn-primary">Оставить отзыв автору</button>
+                    </div>
                 </div>
             </div>
         </div>
