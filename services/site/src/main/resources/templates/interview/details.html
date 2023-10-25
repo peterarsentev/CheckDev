@@ -149,13 +149,19 @@
                 <!--Кнопки оставить отзыв. Доступна если статус IN_PROGRESS-->
                 <div class="m-3" th:if="${STATUS_IN_PROGRESS_ID==interview.status}">
                     <!--Кнопка оставляет отзыв АВТОР собеседования. Доступна если isAuthor=true-->
-                    <div th:if="${isAuthor}">
-                        <button type="button" class="btn btn-primary">Оставить отзыв участнику</button>
-                    </div>
-                    <!--Кнопка оставляет отзыв УЧАСТНИК собеседования. Доступна если isWisher=true-->
-                    <div th:if="${isWisher}">
-                        <button type="button" class="btn btn-primary">Оставить отзыв автору</button>
-                    </div>
+                    <form th:action="@{/interview/feedback/}" method="get">
+                        <input type="hidden" id="interviewId" name="interviewId" th:value="${interview.id}">
+                        <input type="hidden" id="submitterId" name="submitterId" th:value="${interview.submitterId}">
+                        <input type="hidden" id="userId" name="userId" th:value="${userInfo.id}">
+                        <input type="hidden" id="mode" name="mode" th:value="${interview.mode}">
+                        <div th:if="${isAuthor}">
+                            <button type="submit" class="btn btn-primary">Оставить отзыв участнику</button>
+                        </div>
+                        <!--Кнопка оставляет отзыв УЧАСТНИК собеседования. Доступна если isWisher=true-->
+                        <div th:if="${isWisher}">
+                            <button type="submit" class="btn btn-primary">Оставить отзыв автору</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

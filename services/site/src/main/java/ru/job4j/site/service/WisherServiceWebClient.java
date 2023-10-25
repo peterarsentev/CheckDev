@@ -34,7 +34,7 @@ public class WisherServiceWebClient implements WisherService {
 
     public WisherServiceWebClient(@Value("${service.mock}") String urlMock) {
         this.urlMock = urlMock;
-        this.webClientWisher = WebClient.create(urlMock);
+        this.webClientWisher = WebClient.create(this.urlMock);
     }
 
     /**
