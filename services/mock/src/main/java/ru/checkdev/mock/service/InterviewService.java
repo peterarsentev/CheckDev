@@ -1,6 +1,7 @@
 package ru.checkdev.mock.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class InterviewService {
 
     private final InterviewRepository interviewRepository;
@@ -42,7 +44,7 @@ public class InterviewService {
                     }
                 }).collect(Collectors.toList());
     }
-  
+
     public Page<Interview> findPaging(int page, int size) {
         return interviewRepository.findAll(PageRequest.of(page, size));
     }
@@ -51,8 +53,8 @@ public class InterviewService {
         return interviewRepository.findById(id);
     }
 
-    public List<Interview> findByType(int type) {
-        return interviewRepository.findByTypeInterview(type).stream()
+    public List<Interview> findByMode(int mode) {
+        return interviewRepository.findByMode(mode).stream()
                 .peek(interview -> {
                     if (interview.getTopicId() == null) {
                         interview.setTopicId(1);
@@ -76,5 +78,22 @@ public class InterviewService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Метод обновляет статус собеседования.
+     *
+     * @param id     ID Interview.
+     * @param status Status
+     * @return boolean true / false
+     */
+    public boolean updateStatus(int id, int status) {
+        try {
+            interviewRepository.updateStatus(id, status);
+            return true;
+        } catch (Exception e) {
+            log.error("Update status error {}", e.getMessage());
+            return false;
+        }
     }
 }

@@ -47,10 +47,9 @@ public class WisherController {
         if (rsl.isEmpty()) {
             throw new SQLException("There is no wisher with this number");
         }
-        return new ResponseEntity<Wisher>(
-                rsl.orElse(new Wisher()),
-                rsl.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
-        );
+        return  rsl
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MODERATOR')")

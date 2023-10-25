@@ -19,7 +19,7 @@
     <!-- Bootstrap 5.1.3 CSS -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}">
     <script th:href="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/5.3.2/js/popper.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/2.11.7/umd/popper.js}"></script>
     <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.min.js}"></script>
     <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
 </head>
@@ -64,7 +64,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="wisher : ${wishersDetail}">
+                        <tr th:each="wisher : ${wishersDetail}" th:if="${!wisher.approve}">
                             <td>
                                 <div class="row h4" th:text="${wisher.username}">
                                     Имя участника
@@ -79,16 +79,52 @@
                             </td>
                             <td>
                                 <form th:if="${!isDismissed}" th:action="@{/wisher/dismissed}" method="post">
-                                    <input type="hidden" th:id="interviewId" th:name="interviewId" th:value="${wisher.interviewId}">
-                                    <input type="hidden" th:id="wisherId" th:name="wisherId" th:value="${wisher.id}">
+                                    <input type="hidden" th:id="interviewId" th:name="interviewId"
+                                           th:value="${wisher.interviewId}">
+                                    <input type="hidden" th:id="wisherId" th:name="wisherId"
+                                           th:value="${wisher.id}">
                                     <button type="submit" class="btn btn-info mt-3">Одобрить</button>
                                 </form>
+                            </td>
+                        </tr>
+                        <tr class="table-primary" th:if="${isDismissed}">
+                            <td>
+                            </td>
+                            <td>
+                                <div class="row h3">
+                                    Согласованные участники
+                                </div>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr class="table-primary" th:each="wisher : ${wishersDetail}" th:if="${wisher.approve}">
+                            <td>
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${'Автор: ' + userInfo.username}">Автор:
+                                            имя</h5>
+                                        <h6 class="card-subtitle mb-2 text-body"
+                                            th:text="${'Контакт: ' + userInfo.email}">Контакт</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${'Участник: ' + wisher.username}">Участник:
+                                            имя</h5>
+                                        <h6 class="card-subtitle mb-2 text-body"
+                                            th:text="${'Контакт: ' + wisher.contactBy}">Контакт</h6>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-
                 <!--Форма для стать участником собеседования-->
                 <div th:if="${!isAuthor and !isWisher}" class="form-group">
                     <form class="was-validated" th:action="@{/wisher/create}" method="post">
@@ -109,6 +145,17 @@
                             <button type="submit" class="btn btn-primary mt-3">Участвовать</button>
                         </div>
                     </form>
+                </div>
+                <!--Кнопки оставить отзыв. Доступна если статус IN_PROGRESS-->
+                <div class="m-3" th:if="${STATUS_IN_PROGRESS_ID==interview.status}">
+                    <!--Кнопка оставляет отзыв АВТОР собеседования. Доступна если isAuthor=true-->
+                    <div th:if="${isAuthor}">
+                        <button type="button" class="btn btn-primary">Оставить отзыв участнику</button>
+                    </div>
+                    <!--Кнопка оставляет отзыв УЧАСТНИК собеседования. Доступна если isWisher=true-->
+                    <div th:if="${isWisher}">
+                        <button type="button" class="btn btn-primary">Оставить отзыв автору</button>
+                    </div>
                 </div>
             </div>
         </div>

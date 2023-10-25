@@ -31,18 +31,24 @@ public class InterviewController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Interview> getById(@Valid @PathVariable int id) {
-        return new ResponseEntity<>(
-                interviewService
-                        .findById(id)
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)),
-                HttpStatus.OK
-        );
+        return interviewService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 
     @PutMapping("/")
     public ResponseEntity<Interview> update(@Valid @RequestBody Interview interview) {
         return new ResponseEntity<Interview>(interview,
                 interviewService.update(interview) ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/status/")
+    public ResponseEntity<HttpStatus> updateStatusInterview(@RequestParam String id, @RequestParam String newStatus) {
+        var idInterview = Integer.parseInt(id);
+        var status = Integer.parseInt(newStatus);
+        var result = interviewService.updateStatus(idInterview, status);
+        return ResponseEntity.status(result ? HttpStatus.OK : HttpStatus.NOT_FOUND).build();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MODERATOR')")

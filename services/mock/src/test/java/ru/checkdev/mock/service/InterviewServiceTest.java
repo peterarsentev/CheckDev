@@ -18,10 +18,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = MockSrv.class)
 @RunWith(SpringRunner.class)
@@ -35,7 +36,8 @@ class InterviewServiceTest {
 
     private Interview interview = Interview.of()
             .id(1)
-            .typeInterview(2)
+            .mode(2)
+            .status(1)
             .submitterId(3)
             .title("test_title")
             .additional("test_additional")
@@ -63,7 +65,7 @@ class InterviewServiceTest {
         List<Interview> interviews = IntStream.range(0, 5).mapToObj(i -> {
             var interview = new Interview();
             interview.setId(i);
-            interview.setTypeInterview(1);
+            interview.setMode(1);
             interview.setSubmitterId(1);
             interview.setTitle(String.format("Interview_%d", i));
             interview.setAdditional("Some text");
@@ -127,9 +129,16 @@ class InterviewServiceTest {
     public void whenFindByTypeAllWithTopicIdIsNull() {
         Interview interviewWithTopicId = interview;
         interviewWithTopicId.setTopicId(1);
-        interviewWithTopicId.setTypeInterview(1);
-        when(interviewRepository.findByTypeInterview(1)).thenReturn(List.of(interviewWithTopicId));
-        var actual = interviewService.findByType(1);
+        interviewWithTopicId.setMode(1);
+        when(interviewRepository.findByMode(1)).thenReturn(List.of(interviewWithTopicId));
+        var actual = interviewService.findByMode(1);
         assertThat(actual, is(List.of(interviewWithTopicId)));
+    }
+
+    @Test
+    public void whenUpdateStatusThenTrue() {
+        doNothing().when(interviewRepository).updateStatus(1, 12);
+        var actual = interviewService.updateStatus(1, 12);
+        assertThat(actual).isTrue();
     }
 }

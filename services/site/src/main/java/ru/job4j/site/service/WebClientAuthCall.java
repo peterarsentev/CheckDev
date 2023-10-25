@@ -67,19 +67,16 @@ public class WebClientAuthCall {
     }
 
     /**
-     * Метод обрабатывает запросы Get,
-     * тело запроса RequestParam key.
+     * Метод обрабатывает запросы Get.
      *
      * @param url String URL API
-     * @param key String RequestParam
      * @return Mono<ResponseEntity>
      */
-    public Mono<ResponseEntity<ProfileDTO>> doGetReqParamKey(String url, String key) {
+    public Mono<ResponseEntity<ProfileDTO>> doGetReqParam(String url) {
         return webClient
                 .get()
                 .uri(urlBuilder -> urlBuilder
                         .path(url)
-                        .queryParam("key", key)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -88,19 +85,16 @@ public class WebClientAuthCall {
     }
 
     /**
-     * Метод обрабатывает запросы Get,
-     * тело запроса RequestParam key. Возвращает List ProfileDTO
+     * Метод обрабатывает запросы Get.
      *
      * @param url String URL API
-     * @param key String RequestParam
      * @return Mono<ResponseEntity < List < ProfileDTO>>>
      */
-    public Mono<ResponseEntity<List<ProfileDTO>>> doGetReqParamKeyAll(String url, String key) {
+    public Mono<ResponseEntity<List<ProfileDTO>>> doGetReqParamAll(String url) {
         return webClient
                 .get()
                 .uri(urlBuilder -> urlBuilder
                         .path(url)
-                        .queryParam("key", key)
                         .build())
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()

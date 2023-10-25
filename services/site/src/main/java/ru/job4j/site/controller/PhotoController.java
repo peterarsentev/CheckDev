@@ -24,7 +24,6 @@ import ru.job4j.site.service.PhotoServices;
 public class PhotoController {
     private final PhotoServices photoServices;
 
-
     @GetMapping("/{id}")
     public ResponseEntity<ByteArrayResource> getPhoto(@PathVariable int id) {
         return photoServices.getPhotoById(id);

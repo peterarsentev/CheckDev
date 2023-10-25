@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.job4j.site.dto.TopicDTO;
 import ru.job4j.site.dto.TopicLiteDTO;
 import ru.job4j.site.service.AuthService;
+import ru.job4j.site.service.NotificationService;
 import ru.job4j.site.service.TopicsService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,14 +21,21 @@ import static ru.job4j.site.controller.RequestResponseTools.getToken;
 public class TopicControl {
     private final TopicsService topicsService;
     private final AuthService authService;
+    private final NotificationService notifications;
 
     @GetMapping("/{topicId}")
     public String details(@PathVariable int topicId,
-                          Model model) throws JsonProcessingException {
+                          Model model,
+                          HttpServletRequest req) throws JsonProcessingException {
         var topic = topicsService.getById(topicId);
         String categoryName = topic.getCategory().getName();
         int categoryId = topic.getCategory().getId();
         model.addAttribute("topic", topic);
+        var token = getToken(req);
+        if (token != null) {
+            var userInfo = authService.userInfo(token);
+            model.addAttribute("userTopicDTO", notifications.findTopicByUserId(userInfo.getId()));
+        }
         RequestResponseTools.addAttrBreadcrumbs(model,
                 "Главная", "/index",
                 "Категории", "/categories/",

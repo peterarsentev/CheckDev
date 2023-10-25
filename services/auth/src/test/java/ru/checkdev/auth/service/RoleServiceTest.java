@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.checkdev.auth.domain.Person;
+import ru.checkdev.auth.domain.Profile;
 import ru.checkdev.auth.domain.Role;
 import ru.checkdev.auth.repository.PersonRepository;
 
@@ -30,10 +30,10 @@ public class RoleServiceTest {
     @Test
     public void whenAddRolesThenPersonHasRoles() {
         Role role = this.service.save(new Role("ROLE_ADMIN"));
-        Person person = new Person("Петр Арсентьев", String.format("%s@yandex.ru", System.currentTimeMillis()), "password");
-        person.setRoles(Collections.singletonList(role));
-        this.persons.save(person);
-        Person result = this.persons.findByEmail(person.getEmail());
+        Profile profile = new Profile("Петр Арсентьев", String.format("%s@yandex.ru", System.currentTimeMillis()), "password");
+        profile.setRoles(Collections.singletonList(role));
+        this.persons.save(profile);
+        Profile result = this.persons.findByEmail(profile.getEmail());
         assertThat(result.getRoles().isEmpty(), is(false));
     }
 }

@@ -41,7 +41,7 @@ class WishersControllerTest {
 
     private Interview interview = Interview.of()
             .id(1)
-            .typeInterview(2)
+            .mode(2)
             .submitterId(3)
             .title("test_title")
             .additional("test_additional")

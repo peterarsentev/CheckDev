@@ -21,30 +21,33 @@ public class Interview {
     @NotNull(message = "Id must be non null")
     private int id;
 
-    @JoinColumn(name="type_interview")
-    private int typeInterview;
+    @Column(name = "mode")
+    private int mode;
 
-    @JoinColumn(name="submitter_id")
+    @Column(name = "status")
+    private int status;
+
+    @JoinColumn(name = "submitter_id")
     private int submitterId;
 
     @NotBlank(message = "Title must be not empty")
-    @JoinColumn(name="title")
+    @JoinColumn(name = "title")
     private String title;
 
-    @JoinColumn(name="additional")
+    @JoinColumn(name = "additional")
     private String additional;
 
     @NotBlank(message = "Contact must be not empty")
-    @JoinColumn(name="contact_by")
+    @JoinColumn(name = "contact_by")
     private String contactBy;
 
     @NotBlank(message = "Date must be not empty")
-    @JoinColumn(name="approximate_date")
+    @JoinColumn(name = "approximate_date")
     private String approximateDate;
 
-    @JoinColumn(name="create_date")
+    @JoinColumn(name = "create_date")
     private Timestamp createDate;
 
-    @JoinColumn(name="topic_id")
+    @JoinColumn(name = "topic_id")
     private Integer topicId;
 }

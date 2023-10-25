@@ -19,7 +19,7 @@
     <!-- Bootstrap 5.1.3 CSS -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}">
     <script th:href="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/webjars/bootstrap/5.3.2/js/popper.min.js}"></script>
+    <script th:src="@{/webjars/popper.js/2.11.7/umd/popper.js}"></script>
     <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.min.js}"></script>
     <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
 </head>
@@ -27,39 +27,66 @@
 <div th:insert="fragments/header :: header"></div>
 <div class="container">
     <div class="row pt-3">
-        <div class="col-sm">
-        </div>
-        <div class="col-sm">
-            <form th:action="@{/interview/create}" method="post">
+        <div class="cell">
+            <form class="was-validated" th:action="@{/interview/create}" method="post">
+                <input type="hidden" class="form-control mb-3 mt-2" id="title"
+                       name="title" th:value="${category.name + ' : ' + topic.name}">
+                <input type="hidden" class="form-control mb-3 mt-2" id="topicId"
+                       name="topicId" th:value="${topic.id}">
                 <div class="form-group">
-                    <p>
-                    <h3><label class="fw-bold" for="title" th:text="${category.name + ' : ' + topic.name}">Тема</label>
-                    </h3>
-                    <input type="hidden" class="form-control mb-3 mt-2" id="title"
-                           name="title" th:value="${category.name + ' : ' + topic.name}">
-                    <input type="hidden" class="form-control mb-3 mt-2" id="topicId"
-                           name="topicId" th:value="${topic.id}">
-                    </p>
-                    <p>
+                    <div class="mb-3">
+                        <label class="fw-bold h3" for="title"
+                               th:text="${category.name + ' : ' + topic.name}">Тема</label>
+                    </div>
+                    <!--Кнопка описание темы раскрывается по нажатию кнопки подробно-->
+                    <div class="mb-3">
+                        <button class="btn btn-primary m-3" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Подробно
+                        </button>
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                                <span th:text="${topic.text}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Поле approximateDate-->
+                    <div class="mb-3">
                         <label class="fw-bold" for="approximateDate">Удобное время для собеседования</label>
-                        <input type="text" class="form-control mb-3 mt-2" id="approximateDate"
+                        <input type="text" class="form-control" id="approximateDate"
                                name="approximateDate"
                                placeholder="Введите удобное время для собеседования" required>
-                    <div class="mb-3" th:if="${error}">
-                        <p class="text-danger" th:text="${error}"></p>
+                        <small class="text-muted"><span>Например, Могу в любой день после 18.00 по Москве.</span>
+                        </small>
+                        <div class="invalid-feedback">
+                            Пожалуйста введите удобное время. Например: могу в любой день после 18.00 по Москве.
+                        </div>
                     </div>
-                    <small class="mb-2 text-muted"><span>Например, Могу в любой день после 18.00 по Москве.</span>
-                    </small>
-                    </p>
-                    <p>
+                    <!--Поля contactBy -->
+                    <div class="mb-3">
                         <label class="fw-bold" for="contactBy">Связаться со мной по telegram</label>
-                        <input type="text" class="form-control mb-3 mt-2" id="contactBy"
-                               name="contactBy"
-                               placeholder="Способ связи" required>
-                    <div class="mb-3" th:if="${error}">
-                        <p class="text-danger" th:text="${error}"></p>
+                        <div class="input-group">
+                            <span class="input-group-text" id="inputGroupPrepend3">@</span>
+                            <input type="text" class="form-control" id="contactBy"
+                                   name="contactBy"
+                                   placeholder="Способ связи" required>
+                            <div class="invalid-feedback">
+                                Пожалуйста введите контакт для связи.
+                            </div>
+                        </div>
                     </div>
-                    </p>
+                    <!--Заполнение поля description-->
+                    <div class="mb-3">
+                        <label class="form-label" for="additional">Описание</label>
+                        <textarea class="form-control" rows="3"
+                                  id="additional"
+                                  name="additional"
+                                  placeholder="Введите дополнительную информацию" required></textarea>
+                        <div class="invalid-feedback">
+                            Пожалуйста введите описание.
+                        </div>
+                    </div>
+                    <!--Выбор типа собеседования поел typeInterview-->
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="typeInterview" id="1" value="1">
                         <label class="form-check-label" for="1">
@@ -73,17 +100,13 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <p></p>
+                <div class="form-group m-3">
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
             </form>
         </div>
-        <div class="col-sm">
-        </div>
     </div>
 </div>
-<br>
 <div th:insert="fragments/footer :: footer"></div>
 </body>
 </html>

@@ -2,7 +2,6 @@ package ru.job4j.site.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * CheckDev пробное собеседование
  * ProfilesControllerTest тесты на контроллер IndexController
- *
  * @author Dmitry Stepanov, user Dmitry
  * @since 25.09.2023
  */
@@ -33,16 +31,13 @@ class ProfilesControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private ProfilesService profilesService;
-    @Value("${server.auth.access.key}")
-    private String key;
-
 
     @Test
     void whenGetProfileByIdThenReturnPageProfileView() throws Exception {
         var id = 1;
         var profile = new ProfileDTO(id, "username", "experience", 1,
                 Calendar.getInstance(), Calendar.getInstance());
-        when(this.profilesService.getProfileById(id, key)).thenReturn(Optional.of(profile));
+        when(this.profilesService.getProfileById(id)).thenReturn(Optional.of(profile));
         this.mockMvc.perform(get("/profiles/{id}", profile.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -56,7 +51,7 @@ class ProfilesControllerTest {
         var profile2 = new ProfileDTO(2, "username2", "experience2", 2,
                 Calendar.getInstance(), Calendar.getInstance());
         var listProfile = List.of(profile1, profile2);
-        when(profilesService.getAllProfile(key)).thenReturn(listProfile);
+        when(profilesService.getAllProfile()).thenReturn(listProfile);
         this.mockMvc.perform(get("/profiles/"))
                 .andDo(print())
                 .andExpect(status().isOk())

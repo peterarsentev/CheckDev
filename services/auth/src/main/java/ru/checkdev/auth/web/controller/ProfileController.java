@@ -1,10 +1,12 @@
 package ru.checkdev.auth.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.checkdev.auth.dto.ProfileDTO;
 import ru.checkdev.auth.service.ProfileService;
 
@@ -22,25 +24,19 @@ import java.util.List;
 @Slf4j
 public class ProfileController {
     private final ProfileService profileService;
-    private final String access;
 
-    public ProfileController(ProfileService profileService, @Value("${access.key}") String access) {
+    public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
-        this.access = access;
     }
 
     /**
      * Обрабатывает get запрос на получение профиля пользователя по запрошенному ID.
      *
-     * @param id  ID ProfileDTO
-     * @param key Access.key сервиса Auth
+     * @param id ID ProfileDTO
      * @return ResponseEntity
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable int id, @RequestParam String key) {
-        if (!this.access.equals(key)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    public ResponseEntity<ProfileDTO> getProfileById(@PathVariable int id) {
         var profileDTO = profileService.findProfileByID(id);
         return new ResponseEntity<>(
                 profileDTO.orElse(new ProfileDTO()),
@@ -50,14 +46,10 @@ public class ProfileController {
     /**
      * Отправляет все профили пользователей
      *
-     * @param key Access.key сервиса Auth
      * @return ResponseEntity
      */
     @GetMapping("/")
-    public ResponseEntity<List<ProfileDTO>> getAllProfilesOrderByCreateDesc(@RequestParam String key) {
-        if (!this.access.equals(key)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    public ResponseEntity<List<ProfileDTO>> getAllProfilesOrderByCreateDesc() {
         var profiles = profileService.findProfilesOrderByCreatedDesc();
         return new ResponseEntity<>(
                 profiles,

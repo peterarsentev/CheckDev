@@ -38,7 +38,9 @@ public class SecurityConfig {
                 "/person/profile",
                 "/template/queue",
                 "/template/ping",
-                "/profiles/**"
+                "/profiles/**",
+                "/swagger-ui/**",
+                "/v3/**"
         );
     }
 

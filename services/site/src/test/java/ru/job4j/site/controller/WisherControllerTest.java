@@ -8,8 +8,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.job4j.site.domain.StatusWisher;
 import ru.job4j.site.dto.WisherDto;
+import ru.job4j.site.service.InterviewService;
 import ru.job4j.site.service.WisherServiceWebClient;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -26,6 +28,8 @@ class WisherControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private WisherServiceWebClient wisherService;
+    @MockBean
+    private InterviewService interviewService;
 
     @Test
     void whenCreateWisherThenReturnRedirect() throws Exception {
@@ -39,6 +43,20 @@ class WisherControllerTest {
                         .param("contactBy", wisher.getContactBy()))
                 .andDo(print())
                 .andExpect(view().name("redirect:/interview/" + wisher.getInterviewId()));
+    }
 
+    @Test
+    void whenDismissedWisherThenRedirectInterviewDetailPage() throws Exception {
+        var token = "1234";
+        var interviewId = 1;
+        var wisherId = 2;
+        var newStatusId = 22;
+        doNothing().when(interviewService).updateStatus(token, interviewId, newStatusId);
+        this.mockMvc.perform(post("/wisher/dismissed")
+                        .sessionAttr("token", token)
+                        .param("interviewId", String.valueOf(interviewId))
+                        .param("wisherId", String.valueOf(wisherId)))
+                .andDo(print())
+                .andExpect(view().name("redirect:/interview/" + interviewId));
     }
 }

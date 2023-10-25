@@ -10,8 +10,10 @@ import ru.job4j.site.SiteSrv;
 import ru.job4j.site.domain.Breadcrumb;
 import ru.job4j.site.dto.*;
 import ru.job4j.site.service.AuthService;
+import ru.job4j.site.service.NotificationService;
 import ru.job4j.site.service.TopicsService;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -32,6 +34,9 @@ public class TopicControlTest {
     @MockBean
     private AuthService authService;
 
+    @MockBean
+    private NotificationService notifications;
+
     @Test
     public void whenShowDetails() throws Exception {
         var token = "1410";
@@ -47,12 +52,23 @@ public class TopicControlTest {
         category.setName("Some category");
         category.setPosition(55);
         topic.setCategory(category);
+        var userInfo = new UserInfoDTO();
+        userInfo.setId(1);
+        userInfo.setEmail("email");
+        userInfo.setUsername("name");
+        var userTopicDto = new UserTopicDTO();
+        userTopicDto.setId(1);
+        userTopicDto.setSubscribeTopicIds(new ArrayList<>());
+        when(authService.userInfo(token)).thenReturn(userInfo);
         when(topicsService.getById(1)).thenReturn(topic);
-        mockMvc.perform(get("/topic/1").sessionAttr("token", token))
+        when(notifications.findTopicByUserId(userInfo.getId())).thenReturn(userTopicDto);
+        mockMvc.perform(get("/topic/1")
+                        .sessionAttr("token", token))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("/topic/details"))
                 .andExpect(model().attribute("topic", topic))
+                .andExpect(model().attribute("userTopicDTO", userTopicDto))
                 .andExpect(model().attribute("breadcrumbs", List.of(
                         new Breadcrumb("Главная", "/index"),
                         new Breadcrumb("Категории", "/categories/"),

@@ -37,14 +37,14 @@ public interface WisherRepository extends CrudRepository<Wisher, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE wisher w SET w.status=:newStatusId WHERE w.interview.id=:interviewId AND w.id=:wisherId ")
+    @Query(value = "UPDATE wisher w SET w.approve = true, w.status=:newStatusId WHERE w.interview.id=:interviewId AND w.id=:wisherId ")
     void setWisherStatus(@Param("interviewId") int interviewId,
                          @Param("wisherId") int wisherId,
                          @Param("newStatusId") int newStatusId);
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE wisher w SET w.status=:newStatusId WHERE w.interview.id=:interviewId AND w.id!=:notWisherId")
+    @Query(value = "UPDATE wisher w SET w.approve = false, w.status=:newStatusId WHERE w.interview.id=:interviewId AND w.id!=:notWisherId")
     void setNotWisherStatus(@Param("interviewId") int interviewId,
                             @Param("notWisherId") int notWisherId,
                             @Param("newStatusId") int newStatusId);

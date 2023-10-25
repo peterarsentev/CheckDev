@@ -5,8 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.job4j.site.domain.StatusInterview;
 import ru.job4j.site.domain.StatusWisher;
 import ru.job4j.site.dto.WisherDto;
+import ru.job4j.site.service.InterviewService;
 import ru.job4j.site.service.WisherService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,15 @@ import java.util.Map;
 @AllArgsConstructor
 public class WisherController {
     private final WisherService wisherService;
+    private final InterviewService interviewService;
 
+    /**
+     * Подать заявку на участие в собеседовании.
+     *
+     * @param wishParam Map<String, String>
+     * @param request   HttpServletRequest
+     * @return String page.
+     */
     @PostMapping("/create")
     public String createWisher(@RequestParam Map<String, String> wishParam,
                                HttpServletRequest request) {
@@ -36,6 +46,13 @@ public class WisherController {
         return "redirect:/interview/" + interviewId;
     }
 
+    /**
+     * Одобрить участника собеседование, а остальных участников отклонить
+     *
+     * @param param   Map<String, String>
+     * @param request HttpServletRequest
+     * @return String page.
+     */
     @PostMapping("/dismissed")
     public String dismissedWisher(@RequestParam Map<String, String> param,
                                   HttpServletRequest request) {
@@ -46,6 +63,7 @@ public class WisherController {
         var wisherId = param.get("wisherId");
         wisherService.setNewStatusByWisherInterview(
                 token, interviewId, wisherId, statusDismissedID, statusRejectedID);
+        interviewService.updateStatus(token, Integer.parseInt(interviewId), StatusInterview.IN_PROGRESS.getId());
         return "redirect:/interview/" + interviewId;
     }
 }

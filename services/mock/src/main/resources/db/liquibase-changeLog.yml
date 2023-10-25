@@ -110,4 +110,24 @@ databaseChangeLog:
         sql: "CREATE TABLE IF NOT EXISTS cd_filter (\r\nuser_id SERIAL PRIMARY KEY,\r\
           \ncategory_id INT,\r\ntopic_id INT\r\n);"
         stripComments: false
+- changeSet:
+    id: 11
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: "--Скрипт меняет в таблице interview в поле typeInterview  на mode\r\n\
+          ALTER TABLE interview RENAME COLUMN type_interview TO mode;"
+        stripComments: false
+- changeSet:
+    id: 12
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: "--Скрипт добавляет поле status в таблицу interview\r\nALTER TABLE interview\
+          \ ADD COLUMN status INT DEFAULT 1;"
+        stripComments: false
 
