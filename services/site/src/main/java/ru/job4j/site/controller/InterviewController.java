@@ -151,4 +151,22 @@ public class InterviewController {
         }
         return "redirect:/interview/" + interview.getId();
     }
+
+    @GetMapping("/{interviewId}/participate")
+    public String participate(@PathVariable("interviewId") int interviewId,
+                              Model model,
+                              HttpServletRequest req) throws JsonProcessingException {
+        var token = getToken(req);
+        var interview = interviewService.getById(token, interviewId);
+        var wishers = wisherService.getAllWisherDtoByInterviewId(token, String.valueOf(interview.getId()));
+        var statisticMap = wisherService.getInterviewStatistic(wishers);
+        model.addAttribute("interview", interview);
+        model.addAttribute("statisticMap", statisticMap);
+        RequestResponseTools.addAttrBreadcrumbs(model,
+                "Главная", "/index",
+                "Собеседования", "/interviews/",
+                interview.getTitle(), String.format("/interview/%d", interviewId),
+                "принять участие в собеседовании", "/participate");
+        return "/interview/participate";
+    }
 }

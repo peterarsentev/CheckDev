@@ -40,7 +40,7 @@ public class WisherController {
         var token = RequestResponseTools.getToken(request);
         int interviewId = Integer.parseInt(wishParam.get("interviewId"));
         int userId = Integer.parseInt(wishParam.get("userId"));
-        var contactBy = wishParam.get("email");
+        var contactBy = wishParam.get("contactBy");
         var wisherDto = new WisherDto(0, interviewId, userId, contactBy, false, StatusWisher.IS_CONSIDERED.getId());
         wisherService.saveWisherDto(token, wisherDto);
         return "redirect:/interview/" + interviewId;
