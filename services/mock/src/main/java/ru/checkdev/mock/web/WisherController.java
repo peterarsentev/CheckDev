@@ -35,7 +35,7 @@ public class WisherController {
             throw new SQLException("An error occurred while saving data");
         }
         return  rsl
-                .map(ResponseEntity::ok)
+                .map(wisher -> new ResponseEntity<>(wisher, HttpStatus.CREATED))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
