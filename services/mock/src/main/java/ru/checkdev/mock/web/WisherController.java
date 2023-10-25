@@ -36,7 +36,7 @@ public class WisherController {
         }
         return  rsl
                 .map(wisher -> new ResponseEntity<>(wisher, HttpStatus.CREATED))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
     @PreAuthorize("isAuthenticated()")
