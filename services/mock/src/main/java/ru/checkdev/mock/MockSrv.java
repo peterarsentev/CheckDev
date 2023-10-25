@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.context.annotation.Bean;
-
 import javax.sql.DataSource;
 
 @SpringBootApplication
@@ -19,7 +18,7 @@ public class MockSrv {
     @Bean
     public SpringLiquibase liquibase(DataSource ds) {
         SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setChangeLog("classpath:db/liquibase-changeLog.xml");
+        liquibase.setChangeLog("classpath:db/liquibase-changeLog.yml");
         liquibase.setDataSource(ds);
         return liquibase;
     }

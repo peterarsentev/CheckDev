@@ -1,0 +1,113 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: "create table if not exists interview (\r\nid serial primary key ,\r\n\
+          type_interview int,\r\nsubmitter_id int,\r\ntitle varchar(765),\r\ndescription\
+          \ text,\r\ncontact_by varchar(765),\r\napproximate_date varchar(256)\r\n\
+          );"
+        stripComments: false
+- changeSet:
+    id: 2
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: "create table if not exists wisher (\r\nid serial primary key ,\r\ninterview_id\
+          \ int references interview(id),\r\nuser_id int,\r\ncontact_by varchar(765),\r\
+          \napprove boolean default false\r\n);"
+        stripComments: false
+- changeSet:
+    id: 3
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: alter table interview add column create_date timestamp without time zone
+          default now();
+        stripComments: false
+- changeSet:
+    id: 4
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: "INSERT INTO interview(type_interview, submitter_id, title, description,\
+          \ contact_by, approximate_date, create_date)\r\n VALUES ('2', '2', 'Перв\
+          ое знакомство со структурами данных', '', '@qwerty', '15:00', CURRENT_TIMESTAMP);\r\
+          \nINSERT INTO interview(type_interview, submitter_id, title, description,\
+          \ contact_by, approximate_date, create_date)\r\n VALUES ('1', '1', 'Стру\
+          ктуры данных и алгоритмы', '', '@ytrewq', '16:00', CURRENT_TIMESTAMP);"
+        stripComments: false
+- changeSet:
+    id: 5
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: ALTER TABLE interview RENAME COLUMN description TO additional;
+        stripComments: false
+- changeSet:
+    id: 6
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: "ALTER TABLE IF EXISTS interview\r\n    ADD COLUMN IF NOT EXISTS topic_id\
+          \ INT;"
+        stripComments: false
+- changeSet:
+    id: 7
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: "INSERT INTO interview(type_interview, submitter_id, title, additional,\
+          \ contact_by, approximate_date, create_date, topic_id)\r\n VALUES ('2',\
+          \ '2', 'Первое знакомство со структурами данных', '', '@qwerty', '15:00',\
+          \ CURRENT_TIMESTAMP, '1');\r\nINSERT INTO interview(type_interview, submitter_id,\
+          \ title, additional, contact_by, approximate_date, create_date, topic_id)\r\
+          \n VALUES ('1', '1', 'Структуры данных и алгоритмы', '', '@ytrewq', '16:00',\
+          \ CURRENT_TIMESTAMP, '1');"
+        stripComments: false
+- changeSet:
+    id: 8
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: "-- Скрипт добавляет в таблицу wisher поле status. Поле статус описыв\
+          ает статус участника собеседования.\r\nALTER TABLE wisher ADD COLUMN status\
+          \ INT DEFAULT 1;"
+        stripComments: false
+- changeSet:
+    id: 9
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: "UPDATE interview\r\nSET topic_id = 1\r\nWHERE topic_id IS NULL;"
+        stripComments: false
+- changeSet:
+    id: 10
+    author: includeAll
+    objectQuotingStrategy: LEGACY
+    changes:
+    - sql:
+        splitStatements: false
+        sql: "CREATE TABLE IF NOT EXISTS cd_filter (\r\nuser_id SERIAL PRIMARY KEY,\r\
+          \ncategory_id INT,\r\ntopic_id INT\r\n);"
+        stripComments: false
+
