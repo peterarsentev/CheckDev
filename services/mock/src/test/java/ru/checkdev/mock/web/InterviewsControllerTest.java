@@ -19,7 +19,11 @@ import ru.checkdev.mock.domain.Interview;
 import ru.checkdev.mock.repository.InterviewRepository;
 import ru.checkdev.mock.service.InterviewService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,4 +71,31 @@ class InterviewsControllerTest {
                         content().contentType(MediaType.APPLICATION_JSON));
     }
 
+    @Test
+    @WithMockUser
+    public void whenFindByTopicsIds() throws Exception {
+        List<Interview> interviews = new ArrayList<>();
+        IntStream.range(1, 8).forEach(i -> {
+            var interview = Interview.of()
+                    .id(i)
+                    .mode(2)
+                    .submitterId(3)
+                    .title(String.format("interview_%d", i))
+                    .additional("test_additional")
+                    .contactBy("test_contact_by")
+                    .approximateDate("test_approximate_date")
+                    .createDate(null)
+                    .build();
+            interviews.add(interview);
+        });
+        var page = new PageImpl<>(interviews);
+        when(interviewRepository.findByTopicIdIn(List.of(1, 2, 3), PageRequest.of(0, 5)))
+                .thenReturn(page);
+        when(service.findPaging(Mockito.anyInt(), Mockito.anyInt()))
+                .thenReturn(page);
+        mockMvc.perform(get("/interviews/findByTopicsIds/1,2,3"))
+                .andDo(print())
+                .andExpectAll(status().isOk(),
+                        content().contentType(MediaType.APPLICATION_JSON));
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ru.checkdev.mock.domain.Interview;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,4 +31,6 @@ public interface InterviewRepository extends JpaRepository<Interview, Integer> {
     @Transactional
     @Query(value = "UPDATE interview i SET i.status=:status WHERE i.id=:id")
     void updateStatus(@Param("id") int id, @Param("status") int status);
+
+    Page<Interview> findByTopicIdIn(Collection<Integer> topicIds, Pageable pageable);
 }

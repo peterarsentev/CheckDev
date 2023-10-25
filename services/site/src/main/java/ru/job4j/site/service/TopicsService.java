@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.site.dto.CategoryDTO;
 import ru.job4j.site.dto.TopicDTO;
 import ru.job4j.site.dto.TopicLiteDTO;
+import ru.job4j.site.dto.TopicIdNameDTO;
 
 import java.util.Calendar;
 import java.util.List;
@@ -66,5 +67,15 @@ public class TopicsService {
 
     public String getNameById(int id) {
         return new RestAuthCall(String.format("http://localhost:9902/topic/name/%d", id)).get();
+    }
+
+    public List<TopicIdNameDTO> getTopicIdNameDtoByCategory(int categoryId)
+            throws JsonProcessingException {
+        var text = new
+                RestAuthCall(String.format("http://localhost:9902/topics/getByCategoryId/%d",
+                categoryId)).get();
+        var mapper = new ObjectMapper();
+        return mapper.readValue(text, new TypeReference<>() {
+        });
     }
 }

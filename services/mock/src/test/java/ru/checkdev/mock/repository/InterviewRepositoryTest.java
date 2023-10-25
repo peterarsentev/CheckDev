@@ -12,7 +12,9 @@ import ru.checkdev.mock.domain.Interview;
 
 import javax.persistence.EntityManager;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -177,5 +179,43 @@ class InterviewRepositoryTest {
         var interviewInDb = interviewRepository.findById(interview.getId());
         assertThat(interviewInDb.isPresent()).isTrue();
         assertThat(interviewInDb.get().getStatus()).isEqualTo(interview.getStatus());
+    }
+
+    public void whenInterviewsFoundByTopicIdsList() {
+        entityManager.createQuery("delete from interview").executeUpdate();
+        List<Interview> oddTopicIdsInterviewList = new ArrayList<>();
+        List<Interview> evenTopicIdsInterviewList = new ArrayList<>();
+        IntStream.range(0, 8).forEach(i -> {
+            var interview = new Interview();
+            interview.setMode(1);
+            interview.setSubmitterId(1);
+            interview.setTitle(String.format("Interview_%d", i));
+            interview.setAdditional(String.format("Some text_%d", i));
+            interview.setContactBy("Some contact");
+            interview.setApproximateDate("30.02.2024");
+            interview.setCreateDate(new Timestamp(System.currentTimeMillis()));
+            interview.setTopicId(i + 1);
+            entityManager.persist(interview);
+            if (interview.getTopicId() % 2 == 0) {
+                evenTopicIdsInterviewList.add(interview);
+            } else {
+                oddTopicIdsInterviewList.add(interview);
+            }
+        });
+        var firstOddPage =
+                interviewRepository.findByTopicIdIn(List.of(1, 3, 5, 7), PageRequest.of(0, 3));
+        var secondEvenPage =
+                interviewRepository.findByTopicIdIn(List.of(1, 3, 5, 7), PageRequest.of(1, 3));
+        var evenPage =
+                interviewRepository.findByTopicIdIn(List.of(2, 4, 6), PageRequest.of(0, 3));
+        var firstPageList = oddTopicIdsInterviewList.subList(0, 3);
+        var secondPageList = oddTopicIdsInterviewList.subList(3, 4);
+        var thirdPageList = evenTopicIdsInterviewList.subList(0, 3);
+        Assertions.assertEquals(firstOddPage.toList().size(), 3);
+        Assertions.assertEquals(firstOddPage.toList(), firstPageList);
+        Assertions.assertEquals(secondEvenPage.toList().size(), 1);
+        Assertions.assertEquals(secondEvenPage.toList(), secondPageList);
+        Assertions.assertEquals(evenPage.toList().size(), 3);
+        Assertions.assertEquals(evenPage.toList(), thirdPageList);
     }
 }

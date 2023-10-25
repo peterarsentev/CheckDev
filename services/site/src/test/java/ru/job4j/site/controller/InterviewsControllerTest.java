@@ -76,6 +76,9 @@ public class InterviewsControllerTest {
             category.setTopicsSize(14);
             return category;
         }).toList();
+        List<TopicIdNameDTO> topicIdNameDTOS = IntStream.range(1, 8).mapToObj(
+                i -> new TopicIdNameDTO(i, String.format("topic_id_name_%d", i))
+        ).toList();
         var filter = new FilterDTO(1, 1, 1);
         var page = new PageImpl<>(interviews);
         when(wisherService.getAllWisherDtoByInterviewId(token, "")).thenReturn(new ArrayList<>());
@@ -88,23 +91,26 @@ public class InterviewsControllerTest {
         when(filterService.getByUserId(token, userInfo.getId())).thenReturn(filter);
         when(categoriesService.getNameById(categories, 1)).thenReturn(categories.get(1).getName());
         when(topicsService.getNameById(filter.getTopicId())).thenReturn("SOME TOPIC NAME");
+        when(topicsService.getTopicIdNameDtoByCategory(id)).thenReturn(topicIdNameDTOS);
         mockMvc.perform(get("/interviews/")
                         .sessionAttr("token", token)
                         .param("page", "1")
                         .param("size", "5"))
                 .andDo(print())
-                .andExpect(model().attribute("statisticMap", new HashMap<>()))
-                .andExpect(model().attribute("interviewsPage", page))
-                .andExpect(model().attribute("statuses", StatusInterview.values()))
-                .andExpect(model().attribute("current_page", "interviews"))
-                .andExpect(model().attribute("userInfo", userInfo))
-                .andExpect(model().attribute("breadcrumbs", breadcrumbs))
-                .andExpect(model().attribute("users", Set.of(profile)))
-                .andExpect(model().attribute("categories", categories))
-                .andExpect(model().attribute("categoryName", "category_1"))
-                .andExpect(model().attribute("topicName", "SOME TOPIC NAME"))
-                .andExpect(model().attribute("filter", filter))
-                .andExpect(status().isOk())
-                .andExpect(view().name("interviews"));
+                .andExpectAll(
+                        model().attribute("statisticMap", new HashMap<>()),
+                        model().attribute("interviewsPage", page),
+                        model().attribute("statuses", StatusInterview.values()),
+                        model().attribute("current_page", "interviews"),
+                        model().attribute("userInfo", userInfo),
+                        model().attribute("breadcrumbs", breadcrumbs),
+                        model().attribute("users", Set.of(profile)),
+                        model().attribute("categories", categories),
+                        model().attribute("categoryName", "category_1"),
+                        model().attribute("topicName", "SOME TOPIC NAME"),
+                        model().attribute("filter", filter),
+                        model().attribute("topics", topicIdNameDTOS),
+                        status().isOk(),
+                        view().name("interviews"));
     }
 }

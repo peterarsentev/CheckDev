@@ -3,6 +3,7 @@ package ru.checkdev.desc.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.checkdev.desc.domain.Topic;
+import ru.checkdev.desc.dto.TopicDTO;
 import ru.checkdev.desc.repository.TopicRepository;
 
 import java.util.ArrayList;
@@ -45,9 +46,7 @@ public class TopicService {
     }
 
     public List<Topic> getAll() {
-        var list = new ArrayList<Topic>();
-        topicRepository.findAllByOrderByPositionAsc().forEach(list::add);
-        return list;
+        return new ArrayList<>(topicRepository.findAllByOrderByPositionAsc());
     }
 
     public void incrementTotal(int id) {
@@ -56,5 +55,14 @@ public class TopicService {
 
     public Optional<String> getNameById(int id) {
         return topicRepository.getNameById(id);
+    }
+
+    public List<TopicDTO> getTopicDTOsByCategoryId(int categoryId) {
+        List<TopicDTO> result = new ArrayList<>();
+        var topics = topicRepository.findByCategoryIdOrderByPositionAsc(categoryId);
+        for (var topic : topics) {
+            result.add(new TopicDTO(topic.getId(), topic.getName()));
+        }
+        return result;
     }
 }

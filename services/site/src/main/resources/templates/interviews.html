@@ -32,22 +32,20 @@
 
     var filter = /*[[${filter}]]*/ null;
 
+    var topics = /*[[${topics}]]*/ null;
+
+    var userId = /*[[${userId}]]*/ 0;
+
     var currentCategoryId;
 
     function init() {
         document.getElementById('category_patch_div').style.display =
-        filter != null && filter.topicId > 0 ? 'block' : 'none';
+        filter != null && filter.categoryId > 0 ? 'block' : 'none';
         document.getElementById('topic_patch_div').style.display =
         filter != null && filter.topicId > 0 ? 'block' : 'none';
-        if (filter != null && filter.categoryId > 0) {
-            var categoryId = filter.categoryId;
-            $.ajax({
-			    type: 'GET',
-			    url: '/topics_rest/' + categoryId,
-			    success: function(result) {
-			        inflateTopicList(categoryId, result);
-			    }
-		    });
+        currentCategoryId = filter != null ? filter.categoryId : 0;
+        if (filter != null && currentCategoryId > 0) {
+             inflateTopicList(topics);
         }
     }
 
@@ -58,18 +56,10 @@
         var categoryName = element.getAttribute('data-name');
         userId = element.getAttribute('data-user_id');
         currentCategoryId = id;
-        $.ajax({
-			type: 'GET',
-			url: '/topics_rest/' + id,
-			success: function(result) {
-			    showPatch('category_patch_div', 'categoryPatchTextSpan', categoryName);
-			    hideElement('topic_patch_div');
-			    inflateTopicList(id, result);
-			}
-		});
+        createFilter(0);
     }
 
-    function inflateTopicList(id, response) {
+    function inflateTopicList(response) {
         var s = '';
 		    for(var i = 0; i < response.length; i++) {
                 s += '<ul value="' + response[i].id + '" ' +
@@ -101,9 +91,7 @@
         var container = element.parentNode
         hideElement(container.id);
         var userId = element.getAttribute('data-user_id');
-        if (filter != null) {
-            deleteFilter(filter.userId);
-        }
+        createFilter(0);
     }
 
     function showPatch(elementId, textSpanId, text) {

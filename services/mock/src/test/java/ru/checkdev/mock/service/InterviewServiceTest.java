@@ -14,6 +14,7 @@ import ru.checkdev.mock.domain.Interview;
 import ru.checkdev.mock.repository.InterviewRepository;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -140,5 +141,35 @@ class InterviewServiceTest {
         doNothing().when(interviewRepository).updateStatus(1, 12);
         var actual = interviewService.updateStatus(1, 12);
         assertThat(actual).isTrue();
+    }
+
+    @Test
+    public void whenGetByTopicsIds() {
+        List<Interview> oddTopicIdsInterviewList = new ArrayList<>();
+        List<Interview> evenTopicIdsInterviewList = new ArrayList<>();
+        IntStream.range(0, 8).forEach(i -> {
+            var interview = new Interview();
+            interview.setMode(1);
+            interview.setSubmitterId(1);
+            interview.setTitle(String.format("Interview_%d", i));
+            interview.setAdditional(String.format("Some text_%d", i));
+            interview.setContactBy("Some contact");
+            interview.setApproximateDate("30.02.2024");
+            interview.setCreateDate(new Timestamp(System.currentTimeMillis()));
+            interview.setTopicId(i + 1);
+            if (interview.getTopicId() % 2 == 0) {
+                evenTopicIdsInterviewList.add(interview);
+            } else {
+                oddTopicIdsInterviewList.add(interview);
+            }
+        });
+        var evenPage = new PageImpl<>(evenTopicIdsInterviewList);
+        var oddPage = new PageImpl<>(oddTopicIdsInterviewList);
+        when(interviewRepository.findByTopicIdIn(List.of(2, 4, 6), PageRequest.of(0, 5)))
+                .thenReturn(evenPage);
+        when(interviewRepository.findByTopicIdIn(List.of(1, 3, 5, 7), PageRequest.of(0, 5)))
+                .thenReturn(oddPage);
+        assertThat(interviewService.findByTopicsIds(List.of(2, 4, 6), 0, 5), is(evenPage));
+        assertThat(interviewService.findByTopicsIds(List.of(1, 3, 5, 7), 0, 5), is(oddPage));
     }
 }
