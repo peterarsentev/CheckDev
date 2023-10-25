@@ -6,7 +6,7 @@
 
     <groupId>ru.checkdev</groupId>
     <artifactId>desc</artifactId>
-    <version>1.1.1</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <properties>

@@ -1,6 +1,5 @@
 package ru.checkdev.auth.service;
 
-
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.RandomStringUtils;
 import org.jsoup.Jsoup;

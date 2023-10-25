@@ -3,10 +3,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pro.hunt4</groupId>
-    <artifactId>actuator</artifactId>
+    <groupId>ru</groupId>
+    <artifactId>checkdev</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
+    <name>CheckDev</name>
 
     <modules>
         <module>services/auth</module>
@@ -14,17 +15,11 @@
         <module>services/mock</module>
         <module>services/notification</module>
         <module>services/site</module>
-        <!--
-        <module>services/template-service</module>
-        <module>services/exam</module>
-        <module>services/hr</module>
-        <module>services/images</module>
-        <module>services/train</module>
-        <module>services/video</module>
-        -->
     </modules>
 
     <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
