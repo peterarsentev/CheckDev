@@ -41,68 +41,68 @@
         </div>
     </div>
     <div class="row">
-        <table class="table table-hover">
-            <tbody>
-            <tr th:each="topic: ${topics}">
-                <td>
-                    <div>
-                        <span>
-                            <a class="text-decoration-none text-dark h5"
-                               th:href="@{|/topic/${topic.id}|}"
-                               th:text="${topic.name}">
-                            </a>
-                        </span>
-                        <span th:if="${canManage}">
-                            <a class="text-decoration-none text-dark"
-                               th:href="@{|/topic/updateForm/${topic.id}|}">
-                                <i class="fas fa-pencil-alt pl-3"></i>
-                            </a>
-                        </span>
-                    </div>
-                    <div>
-                        <small class="mb-2 text-muted">
-                            <span><i class="fas fa-eye pr-3"></i> : </span>
-                            <span class="fw-bold" th:text="${topic.total}"></span>
-                        </small>
-                        <small th:if="${canManage}">
-                            <small class="mb-2 text-muted"> |
-                                <span> Позиция : </span>
-                                <span class="fw-bold" th:text="${topic.position}"></span>
-                            </small>
-                        </small>
-                        <div th:if="${userInfo != null}">
-                            <a class="nav-item nav-link" th:if="${!userTopicDTO.subscribeTopicIds.contains(topic.id)}">
-                                <form th:action="@{/notification/subscribeTopic}" method="POST">
-                                    <div class="form-group">
-                                        <input type="hidden" name="id" th:value="${userInfo.id}"/>
-                                        <input type="hidden" name="categoryId" th:value="${categoryId}"/>
-                                        <input type="hidden" name="topicId" th:value="${topic.id}"/>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Подписаться</button>
-                                </form>
-                            </a>
-                            <a class="nav-item nav-link" th:if="${userTopicDTO.subscribeTopicIds.contains(topic.id)}">
-                                <form th:action="@{/notification/unSubscribeTopic}" method="POST">
-                                    <div class="form-group">
-                                        <input type="hidden" name="id" th:value="${userInfo.id}"/>
-                                        <input type="hidden" name="categoryId" th:value="${categoryId}"/>
-                                        <input type="hidden" name="topicId" th:value="${topic.id}"/>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Отписаться</button>
-                                </form>
-                            </a>
+        <div class="cell">
+            <table class="table table-hover">
+                <tr th:each="topic: ${topics}">
+                    <td>
+                        <div>
+                            <span>
+                                <a class="text-decoration-none text-dark h5"
+                                   th:href="@{|/topic/${topic.id}|}"
+                                   th:text="${topic.name}">
+                                </a>
+                            </span>
+                            <span th:if="${canManage}">
+                                <a class="text-decoration-none text-dark"
+                                   th:href="@{|/topic/updateForm/${topic.id}|}">
+                                    <i class="fas fa-pencil-alt pl-3"></i>
+                                </a>
+                            </span>
                         </div>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <span>Новых: 1</span> |
-                        <span>Проведено: 100500</span>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                        <div>
+                            <small class="mb-2 text-muted">
+                                <span><i class="fas fa-eye pr-3"></i> : </span>
+                                <span class="fw-bold" th:text="${topic.total}"></span>
+                            </small>
+                            <small th:if="${canManage}">
+                                <small class="mb-2 text-muted"> |
+                                    <span> Позиция : </span>
+                                    <span class="fw-bold" th:text="${topic.position}"></span>
+                                </small>
+                            </small>
+                            <div th:if="${userInfo != null}">
+                                <a class="nav-item nav-link" th:if="${!userTopicDTO.subscribeTopicIds.contains(topic.id)}">
+                                    <form th:action="@{/notification/subscribeTopic}" method="POST">
+                                        <div class="form-group">
+                                            <input type="hidden" name="id" th:value="${userInfo.id}"/>
+                                            <input type="hidden" name="categoryId" th:value="${categoryId}"/>
+                                            <input type="hidden" name="topicId" th:value="${topic.id}"/>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Подписаться</button>
+                                    </form>
+                                </a>
+                                <a class="nav-item nav-link" th:if="${userTopicDTO.subscribeTopicIds.contains(topic.id)}">
+                                    <form th:action="@{/notification/unSubscribeTopic}" method="POST">
+                                        <div class="form-group">
+                                            <input type="hidden" name="id" th:value="${userInfo.id}"/>
+                                            <input type="hidden" name="categoryId" th:value="${categoryId}"/>
+                                            <input type="hidden" name="topicId" th:value="${topic.id}"/>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Отписаться</button>
+                                    </form>
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <span>Новых: 1</span> |
+                            <span>Проведено: 100500</span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 <br>
