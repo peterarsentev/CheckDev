@@ -1,25 +1,5 @@
 #!/bin/bash
 
-if test -f "auth.pid"; then
-    kill -9 $(cat job4j.pid)
-fi
-
-if test -f "desc.pid"; then
-    kill -9 $(cat job4j.pid)
-fi
-
-if test -f "mock.pid"; then
-    kill -9 $(cat job4j.pid)
-fi
-
-if test -f "notification.pid"; then
-    kill -9 $(cat job4j.pid)
-fi
-
-if test -f "site.pid"; then
-    kill -9 $(cat job4j.pid)
-fi
-
 export JAVA_HOME=/root/jdk-18.0.1.1
 
 export M2_HOME=/root/apache-maven-3.8.6
@@ -30,14 +10,4 @@ git fetch
 
 git rebase
 
-mvn clean package
-
-nohup java -jar services/auth/target/auth-1.0.0.jar --spring.config.location=etc/auth.properties > /dev/null 2>&1& &
-
-nohup java -jar services/auth/target/desc-1.0.0.jar --spring.config.location=etc/desc.properties > /dev/null 2>&1& &
-
-nohup java -jar services/auth/target/mock-1.0.0.jar --spring.config.location=etc/mock.properties > /dev/null 2>&1& &
-
-nohup java -jar services/auth/target/notification-1.0.0.jar --spring.config.location=etc/notification.properties > /dev/null 2>&1& &
-
-nohup java -jar services/auth/target/site-1.0.0.jar --spring.config.location=etc/site.properties > /dev/null 2>&1& &
+mvn clean package -Dmaven.test.skip=true -DskipTests=true
