@@ -17,3 +17,5 @@ nohup java -jar services/notification/target/notification-1.0.0.jar > /dev/null 
 
 export SPRING_CONFIG_LOCATION=./etc/site.properties
 nohup java -jar services/site/target/site-1.0.0.jar > /dev/null 2>&1&
+
+ps aux | grep services
