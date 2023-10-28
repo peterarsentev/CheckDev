@@ -98,6 +98,6 @@ public class InterviewsController {
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("topicName", topicName);
         model.addAttribute("topics", topicIdNameDTOS);
-        return "interviews";
+        return "/interview/interviews";
     }
 }
