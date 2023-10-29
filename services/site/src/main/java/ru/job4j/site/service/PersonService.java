@@ -22,8 +22,8 @@ import ru.job4j.site.dto.PersonDTO;
 @Slf4j
 @AllArgsConstructor
 public class PersonService {
-    private static final String URL_PERSON_CURRENT = "/person/current";
-    private static final String URL_PERSON_UPDATE = "/person/updateMultipart";
+    private static final String URL_PERSON_CURRENT = "/profile/current";
+    private static final String URL_PERSON_UPDATE = "/profile/updateMultipart";
     private final WebClientAuthCall webClientAuthCall;
 
     /**

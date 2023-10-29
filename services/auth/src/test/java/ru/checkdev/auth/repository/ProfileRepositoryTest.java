@@ -23,11 +23,11 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest()
-public class PersonRepositoryTest {
+public class ProfileRepositoryTest {
     @Autowired
     private EntityManager entityManager;
     @Autowired
-    private PersonRepository personRepository;
+    private ProfileRepository profileRepository;
 
     @Before
     public void clearTable() {
@@ -37,18 +37,18 @@ public class PersonRepositoryTest {
     @Test
     public void injectedComponentAreNotNull() {
         assertNotNull(entityManager);
-        assertNotNull(personRepository);
+        assertNotNull(profileRepository);
     }
 
     @Test
     public void whenFindProfileByIdThenReturnNull() {
-        ProfileDTO profileDTO = personRepository.findProfileById(-1);
+        ProfileDTO profileDTO = profileRepository.findProfileById(-1);
         assertNull(profileDTO);
     }
 
     @Test
     public void whenFindProfileOrderByCreatedDescThenReturnEmptyList() {
-        var listProfileDTO = personRepository.findProfileOrderByCreatedDesc();
+        var listProfileDTO = profileRepository.findProfileOrderByCreatedDesc();
         assertThat(listProfileDTO, is(Collections.emptyList()));
     }
 }

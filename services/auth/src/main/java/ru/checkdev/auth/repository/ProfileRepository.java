@@ -16,7 +16,7 @@ import java.util.List;
  * @author parsentev
  * @since 25.09.2016
  */
-public interface PersonRepository extends CrudRepository<Profile, Integer> {
+public interface ProfileRepository extends CrudRepository<Profile, Integer> {
 
     Profile findByEmail(String email);
 

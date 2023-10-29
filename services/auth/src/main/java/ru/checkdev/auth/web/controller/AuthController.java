@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.checkdev.auth.domain.Profile;
-import ru.checkdev.auth.service.PersonService;
+import ru.checkdev.auth.service.ProfileService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -16,12 +16,12 @@ import java.util.Optional;
  */
 @RestController
 public class AuthController {
-    private final PersonService persons;
+    private final ProfileService profileService;
     private final String ping = "{}";
 
     @Autowired
-    public AuthController(final PersonService persons) {
-        this.persons = persons;
+    public AuthController(final ProfileService profileService) {
+        this.profileService = profileService;
     }
 
     @RequestMapping("/user")
@@ -36,7 +36,7 @@ public class AuthController {
 
     @GetMapping("/auth/activated/{key}")
     public Object activated(@PathVariable String key) {
-        if (this.persons.activated(key)) {
+        if (this.profileService.activated(key)) {
             return new Object() {
                 public boolean getSuccess() {
                     return true;
@@ -53,7 +53,7 @@ public class AuthController {
 
     @PostMapping("/registration")
     public Object registration(@RequestBody Profile profile) {
-        Optional<Profile> result = this.persons.reg(profile);
+        Optional<Profile> result = this.profileService.reg(profile);
         return result.<Object>map(prs -> new Object() {
             public Profile getPerson() {
                 return prs;
@@ -67,7 +67,7 @@ public class AuthController {
 
     @PostMapping("/forgot")
     public Object forgot(@RequestBody Profile profile) {
-        Optional<Profile> result = this.persons.forgot(profile);
+        Optional<Profile> result = this.profileService.forgot(profile);
         if (result.isPresent()) {
             return new Object() {
                 public String getOk() {

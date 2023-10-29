@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.checkdev.auth.domain.Profile;
 import ru.checkdev.auth.domain.Role;
-import ru.checkdev.auth.repository.PersonRepository;
+import ru.checkdev.auth.repository.ProfileRepository;
 
 import java.util.Collections;
 
@@ -25,15 +25,15 @@ public class RoleServiceTest {
     private RoleService service;
 
     @Autowired
-    private PersonRepository persons;
+    private ProfileRepository profileRepository;
 
     @Test
     public void whenAddRolesThenPersonHasRoles() {
         Role role = this.service.save(new Role("ROLE_ADMIN"));
         Profile profile = new Profile("Петр Арсентьев", String.format("%s@yandex.ru", System.currentTimeMillis()), "password");
         profile.setRoles(Collections.singletonList(role));
-        this.persons.save(profile);
-        Profile result = this.persons.findByEmail(profile.getEmail());
+        this.profileRepository.save(profile);
+        Profile result = this.profileRepository.findByEmail(profile.getEmail());
         assertThat(result.getRoles().isEmpty(), is(false));
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.checkdev.auth.dto.ProfileDTO;
-import ru.checkdev.auth.service.ProfileService;
+import ru.checkdev.auth.service.ProfileDtoService;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,13 +31,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @version 01:45
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(ProfileController.class)
+@WebMvcTest(ProfileDtoController.class)
 public class ProfileControllerTest {
     @MockBean
-    private ProfileService profileService;
+    private ProfileDtoService profileService;
     @Autowired
     private MockMvc mockMvc;
-    private ProfileController profileController;
+    private ProfileDtoController profileDtoController;
     private final ProfileDTO profileDTO1 = new ProfileDTO(
             1, "name1", "experience1", 1, null, null);
     private final ProfileDTO profileDTO2 = new ProfileDTO(
@@ -46,7 +46,7 @@ public class ProfileControllerTest {
 
     @Before
     public void initController() {
-        this.profileController = new ProfileController(profileService);
+        this.profileDtoController = new ProfileDtoController(profileService);
     }
 
     @Test

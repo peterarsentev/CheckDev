@@ -23,7 +23,7 @@ public class AuthService {
     public UserInfoDTO userInfo(String token) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(new RestAuthCall(
-                "http://localhost:9900/person/current"
+                "http://localhost:9900/profile/current"
         ).get(token), UserInfoDTO.class);
     }
 

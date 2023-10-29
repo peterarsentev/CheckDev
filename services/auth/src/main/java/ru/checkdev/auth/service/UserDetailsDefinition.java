@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import ru.checkdev.auth.domain.Profile;
-import ru.checkdev.auth.repository.PersonRepository;
+import ru.checkdev.auth.repository.ProfileRepository;
 
 import java.util.stream.Collectors;
 
@@ -17,15 +17,15 @@ public class UserDetailsDefinition implements org.springframework.security.core.
 
     private final Logger log = LoggerFactory.getLogger(UserDetailsDefinition.class);
 
-    private final PersonRepository persons;
+    private final ProfileRepository profileRepository;
 
-    public UserDetailsDefinition(PersonRepository persons) {
-        this.persons = persons;
+    public UserDetailsDefinition(ProfileRepository profileRepository) {
+        this.profileRepository = profileRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(final String email) {
-        Profile profile = this.persons.findByEmail(email);
+        Profile profile = this.profileRepository.findByEmail(email);
         if (profile != null) {
             if (profile.isActive()) {
                 return new User(email,
