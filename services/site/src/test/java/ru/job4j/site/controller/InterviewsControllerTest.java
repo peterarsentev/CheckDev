@@ -111,6 +111,6 @@ public class InterviewsControllerTest {
                         model().attribute("filter", filter),
                         model().attribute("topics", topicIdNameDTOS),
                         status().isOk(),
-                        view().name("interviews"));
+                        view().name("interview/interviews"));
     }
 }

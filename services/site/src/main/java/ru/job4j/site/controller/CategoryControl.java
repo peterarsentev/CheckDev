@@ -30,7 +30,7 @@ public class CategoryControl {
                 "Категории", "/categories/",
                 "Создать категорию", "/category/createForm"
         );
-        return "createForm";
+        return "categories/createForm";
     }
 
     @PostMapping("/")
@@ -54,7 +54,7 @@ public class CategoryControl {
                 "Категории", "/categories/",
                 "Редактировать категорию", String.format("/category/editForm/%d/%s", id, name)
         );
-        return "editCategoryForm";
+        return "categories/editCategoryForm";
     }
 
     @PostMapping("/update")

@@ -45,6 +45,6 @@ public class CategoriesControl {
             );
             log.error("Remote application not responding. Error: {}. {}, ", e.getCause(), e.getMessage());
         }
-        return "categories";
+        return "categories/categories";
     }
 }
