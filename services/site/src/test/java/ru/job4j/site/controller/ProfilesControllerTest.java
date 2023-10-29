@@ -56,6 +56,6 @@ class ProfilesControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("profiles", listProfile))
-                .andExpect(view().name("profiles"));
+                .andExpect(view().name("profiles/profiles"));
     }
 }

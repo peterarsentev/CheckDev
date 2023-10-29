@@ -55,7 +55,7 @@ class CategoryControlTest {
                 .andExpect(model().attribute("userInfo", userInfo))
                 .andExpect(model().attribute("breadcrumbs", breadcrumbs))
                 .andExpect(status().isOk())
-                .andExpect(view().name("createForm"));
+                .andExpect(view().name("categories/createForm"));
     }
 
     @Test
@@ -92,7 +92,7 @@ class CategoryControlTest {
                 .andExpect(model().attribute("userInfo", userInfo))
                 .andExpect(model().attribute("breadcrumbs", breadcrumbs))
                 .andExpect(status().isOk())
-                .andExpect(view().name("editCategoryForm"));
+                .andExpect(view().name("categories/editCategoryForm"));
     }
 
     @Test

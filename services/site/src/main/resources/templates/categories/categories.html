@@ -82,7 +82,7 @@
                         <span class="badge bg-success">Новых: 100</span>
                     </td>
                     <td>
-                        <div th:if="${userDto != null }">
+                        <div th:if="${userDTO != null}">
                             <a class="nav-item nav-link" th:if="${!userDTO.subscribeCategoryIds.contains(category.id)}"
                                th:href="@{|/notification/subscribeCategory/${userInfo.id}/${category.id}|}">
                                 <i class="far fa-bell"></i>
