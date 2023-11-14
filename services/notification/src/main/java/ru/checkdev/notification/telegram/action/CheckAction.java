@@ -27,12 +27,13 @@ public class CheckAction implements Action {
     @Override
     public BotApiMethod<Message> handle(Message message) {
         var chatIdString = message.getChatId().toString();
+        var text = "";
         var out = new StringBuilder();
         String sl = System.lineSeparator();
         Optional<ChatId> chatIdOptional = chatIdService.findById(Integer.parseInt(chatIdString));
         if (chatIdOptional.isEmpty()) {
-            out.append("Данный аккаунт Telegram на сайте не зарегистрирован").append(sl);
-            return new SendMessage(chatIdString, out.toString());
+            text = "Данный аккаунт Telegram на сайте не зарегистрирован";
+            return new SendMessage(chatIdString, text);
         } else {
             try {
                 ChatId chatId = chatIdOptional.get();
@@ -54,8 +55,8 @@ public class CheckAction implements Action {
                 return new SendMessage(chatIdString, out.toString());
             } catch (Exception e) {
                 log.error("WebClient doPost error: {}", e.getMessage());
-                out.append("Сервис не доступен попробуйте позже").append(sl);
-                return new SendMessage(chatIdString, out.toString());
+                text = "Сервис не доступен попробуйте позже";
+                return new SendMessage(chatIdString, text);
             }
         }
     }

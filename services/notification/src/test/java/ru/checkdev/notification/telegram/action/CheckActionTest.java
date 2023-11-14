@@ -44,7 +44,7 @@ class CheckActionTest {
         checkAction.handle(message);
         BotApiMethod<Message> botApiMethod = checkAction.handle(message);
         SendMessage sendMessage = (SendMessage) botApiMethod;
-        String text = "Данный аккаунт Telegram на сайте не зарегистрирован\n";
+        String text = "Данный аккаунт Telegram на сайте не зарегистрирован";
         Assertions.assertEquals(text, sendMessage.getText());
     }
 
@@ -59,7 +59,7 @@ class CheckActionTest {
         CheckAction checkAction = new CheckAction(tgCall, chatIdService, messageService);
         BotApiMethod<Message> botApiMethod = checkAction.callback(message);
         SendMessage sendMessage = (SendMessage) botApiMethod;
-        String text = "Сервис не доступен попробуйте позже\n";
+        String text = "Сервис не доступен попробуйте позже";
         Assertions.assertEquals(text, sendMessage.getText());
         chatIdService.delete(1);
     }

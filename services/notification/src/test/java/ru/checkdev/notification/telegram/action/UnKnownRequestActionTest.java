@@ -16,7 +16,8 @@ class UnKnownRequestActionTest {
         UnKnownRequestAction unKnownRequestAction = new UnKnownRequestAction();
         BotApiMethod<Message> botApiMethod = unKnownRequestAction.handle(message);
         SendMessage sendMessage = (SendMessage) botApiMethod;
-        String text = "Команда не поддерживается! Список доступных команд: \n"
+        String sl = System.lineSeparator();
+        String text = "Команда не поддерживается! Список доступных команд:" + sl
                 + "/start";
         Assertions.assertEquals(text, sendMessage.getText());
     }

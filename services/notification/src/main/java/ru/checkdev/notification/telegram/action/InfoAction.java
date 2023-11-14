@@ -24,12 +24,11 @@ public class InfoAction implements Action {
     public BotApiMethod<Message> handle(Message message) {
         var chatId = message.getChatId().toString();
         String sl = System.lineSeparator();
-        var out = new StringBuilder();
-        out.append("Выберите действие:").append(sl);
+        StringBuilder text = new StringBuilder("Выберите действие:" + sl);
         for (String action : actions) {
-            out.append(action).append(sl);
+            text.append(action).append(sl);
         }
-        return new SendMessage(chatId, out.toString());
+        return new SendMessage(chatId, text.toString());
     }
 
     @Override

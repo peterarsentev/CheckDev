@@ -72,8 +72,9 @@ class RegActionTest {
         RegAction regAction = new RegAction(tgCall, chatIdService, messageService, "www");
         BotApiMethod<Message> botApiMethod = regAction.callback(message);
         SendMessage sendMessage = (SendMessage) botApiMethod;
-        String text = "Email: емайл без собачки и точки не корректный.\n"
-                + "попробуйте снова.\n"
+        String sl = System.lineSeparator();
+        String text = "Email: емайл без собачки и точки не корректный." + sl
+                + "попробуйте снова." + sl
                 + "/new";
         Assertions.assertEquals(text, sendMessage.getText());
         chatIdService.delete(1);
@@ -88,7 +89,8 @@ class RegActionTest {
         RegAction regAction = new RegAction(tgCall, chatIdService, messageService, "");
         BotApiMethod<Message> botApiMethod = regAction.callback(message);
         SendMessage sendMessage = (SendMessage) botApiMethod;
-        String text = "Сервис не доступен попробуйте позже\n"
+        String sl = System.lineSeparator();
+        String text = "Сервис не доступен попробуйте позже" + sl
                 + "/start";
         Assertions.assertEquals(text, sendMessage.getText());
     }
