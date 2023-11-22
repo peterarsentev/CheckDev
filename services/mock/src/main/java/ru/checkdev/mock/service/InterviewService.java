@@ -41,7 +41,7 @@ public class InterviewService {
         interview.setCreateDate(Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES)));
         try {
             var saveInterview = interviewRepository.save(interview);
-            rsl = Optional.of(InterviewMapper.getInterviewDTO(interview));
+            rsl = Optional.of(InterviewMapper.getInterviewDTO(saveInterview));
         } catch (DataIntegrityViolationException e) {
             LOG.error("Error!", e);
         }
