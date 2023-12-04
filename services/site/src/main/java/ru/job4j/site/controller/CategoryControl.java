@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.site.component.safety.StringEraseXssInspector;
 import ru.job4j.site.dto.CategoryDTO;
 import ru.job4j.site.service.AuthService;
 import ru.job4j.site.service.CategoriesService;
@@ -21,6 +22,7 @@ public class CategoryControl {
     private final CategoriesService categoriesService;
     private final AuthService authService;
     private final NotificationService notifications;
+    private final StringEraseXssInspector stringEraseXssInspector;
 
     @GetMapping("/createForm")
     public String createForm(Model model, HttpServletRequest req) throws JsonProcessingException {
@@ -29,7 +31,8 @@ public class CategoryControl {
         model.addAttribute("userInfo", userInfo);
         RequestResponseTools.addAttrCanManage(model, userInfo);
         if (token != null) {
-            model.addAttribute("innerMessages", notifications.findBotMessageByUserId(token, userInfo.getId()));
+            model.addAttribute("innerMessages",
+                    notifications.findBotMessageByUserId(token, userInfo.getId()));
         }
         RequestResponseTools.addAttrBreadcrumbs(model,
                 "Главная", "/index",
@@ -42,6 +45,7 @@ public class CategoryControl {
     @PostMapping("/")
     public String createCategory(@ModelAttribute CategoryDTO category, HttpServletRequest req)
             throws JsonProcessingException {
+        category.setName(stringEraseXssInspector.defuse(category.getName()));
         categoriesService.create(getToken(req), category);
         return "redirect:/categories/";
     }
@@ -53,7 +57,8 @@ public class CategoryControl {
         var token = getToken(req);
         if (token != null) {
             var userInfo = authService.userInfo(token);
-            model.addAttribute("innerMessages", notifications.findBotMessageByUserId(token, userInfo.getId()));
+            model.addAttribute("innerMessages",
+                    notifications.findBotMessageByUserId(token, userInfo.getId()));
             RequestResponseTools.addAttrCanManage(model, userInfo);
         }
         RequestResponseTools.addAttrBreadcrumbs(model,
@@ -68,6 +73,7 @@ public class CategoryControl {
     public String updateCategory(@ModelAttribute CategoryDTO category,
                                  HttpServletRequest req) throws JsonProcessingException {
         var token = getToken(req);
+        category.setName(stringEraseXssInspector.defuse(category.getName()));
         categoriesService.update(token, category);
         return "redirect:/categories/";
     }

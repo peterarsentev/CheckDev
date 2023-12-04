@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.job4j.site.component.safety.InterviewDtoXSSInspector;
 import ru.job4j.site.dto.*;
 import ru.job4j.site.enums.StatusInterview;
 import ru.job4j.site.service.*;
@@ -27,8 +28,8 @@ public class InterviewController {
     private final InterviewsService interviewsService;
     private final WisherService wisherService;
     private final NotificationService notifications;
-
     private final FeedbackService feedbackService;
+    private final InterviewDtoXSSInspector interviewXSSInspector;
 
     @GetMapping("/createForm")
     public String createForm(@ModelAttribute("topicId") int topicId,
@@ -68,6 +69,7 @@ public class InterviewController {
             interviewDTO.setAuthor(userInfo.getUsername());
         }
         interviewDTO.setTopicId(topicId);
+        interviewXSSInspector.defuse(interviewDTO);
         InterviewDTO createInterview = interviewService.create(getToken(req), interviewDTO);
         var categoryIdName = topicsService.getCategoryIdNameDTOByTopicId(topicId);
         var topicName = topicsService.getNameById(topicId);
@@ -181,7 +183,7 @@ public class InterviewController {
                                       RedirectAttributes redirectAttributes) {
         var token = getToken(request);
         try {
-            interviewService.update(token, interview);
+            interviewService.update(token, interviewXSSInspector.defuse(interview));
         } catch (Exception e) {
             log.error("Remote application not responding. Error, {}. {}, ", e.getCause(), e.getMessage());
             redirectAttributes.addFlashAttribute("error", "Собеседование не обновлено");

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.site.component.safety.StringShieldXSSInspector;
 import ru.job4j.site.dto.FeedbackDTO;
 import ru.job4j.site.dto.FeedbackNotificationDTO;
 import ru.job4j.site.dto.InterviewDTO;
@@ -32,8 +33,8 @@ public class FeedbackController {
     private FeedbackService feedbackService;
     private InterviewService interviewService;
     private ProfilesService profilesService;
-
     private NotificationService notificationService;
+    private StringShieldXSSInspector stringShieldXSSInspector;
 
     /**
      * Отображение формы для сохранения отзыв на собеседование.
@@ -54,12 +55,14 @@ public class FeedbackController {
             return "redirect:/";
         }
         ProfileDTO wisherProfileDTO = new ProfileDTO();
-        Optional<ProfileDTO> wisherProfile = profilesService.getProfileById(interviewDTO.getAgreedWisherId());
+        Optional<ProfileDTO> wisherProfile = profilesService
+                .getProfileById(interviewDTO.getAgreedWisherId());
         if (wisherProfile.isPresent()) {
             wisherProfileDTO = wisherProfile.get();
         }
         ProfileDTO authorProfileDTO = new ProfileDTO();
-        Optional<ProfileDTO> authorProfile = profilesService.getProfileById(interviewDTO.getSubmitterId());
+        Optional<ProfileDTO> authorProfile = profilesService
+                .getProfileById(interviewDTO.getSubmitterId());
         if (authorProfile.isPresent()) {
             authorProfileDTO = authorProfile.get();
         }
@@ -90,11 +93,15 @@ public class FeedbackController {
                                @ModelAttribute("interviewTitle") String interviewTitle,
                                HttpServletRequest request) {
         var token = RequestResponseTools.getToken(request);
+        feedbackDTO.setTextFeedback(stringShieldXSSInspector.defuse(feedbackDTO.getTextFeedback()));
+        name = stringShieldXSSInspector.defuse(name);
+        interviewTitle = stringShieldXSSInspector.defuse(interviewTitle);
         feedbackService.save(token, feedbackDTO, name);
         var recipientId = submitterId == userId ? agreedWisherId : submitterId;
         if (userId > 0 && recipientId > 0) {
             notificationService.sendFeedbackNotification(token,
-                    new FeedbackNotificationDTO(recipientId, name, interviewTitle, feedbackDTO.getInterviewId()));
+                    new FeedbackNotificationDTO(recipientId, name, interviewTitle,
+                            feedbackDTO.getInterviewId()));
         }
         return "redirect:/interview/" + feedbackDTO.getInterviewId();
     }

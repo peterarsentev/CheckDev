@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.job4j.site.component.safety.PersonDtoXSSInspector;
+import ru.job4j.site.component.safety.StringShieldXSSInspector;
 import ru.job4j.site.dto.PersonDTO;
 import ru.job4j.site.service.AuthService;
 import ru.job4j.site.service.ImageCompress;
@@ -39,6 +41,9 @@ public class PersonController {
     private final ImageCompress imageCompress;
     private final AuthService authService;
     private final NotificationService notifications;
+    private final StringShieldXSSInspector stringShieldXSSInspector;
+    private final PersonDtoXSSInspector personDtoXSSInspector;
+
 
     @Value("${botUserName}")
     private String botUserName;
@@ -46,13 +51,17 @@ public class PersonController {
     public PersonController(@Value("${server.site.maxSizeLoadFile}") String maxSizeFile,
                             @Value("${server.site.contentTypeFile}") String contentTypeFile,
                             PersonService personService, ImageCompress imageCompress,
-                            AuthService authService, NotificationService notifications) {
+                            AuthService authService, NotificationService notifications,
+                            StringShieldXSSInspector stringShieldXSSInspector,
+                            PersonDtoXSSInspector personDtoXSSInspector) {
         this.maxSizeFile = maxSizeFile;
         this.contentTypeFile = contentTypeFile;
         this.personService = personService;
         this.imageCompress = imageCompress;
         this.authService = authService;
         this.notifications = notifications;
+        this.stringShieldXSSInspector = stringShieldXSSInspector;
+        this.personDtoXSSInspector = personDtoXSSInspector;
     }
 
     /**
@@ -92,7 +101,8 @@ public class PersonController {
     @GetMapping("/edit")
     public String getEditPerson(HttpServletRequest request,
                                 Model model,
-                                @RequestParam(value = "error", required = false) String error) throws JsonProcessingException {
+                                @RequestParam(value = "error", required = false) String error)
+            throws JsonProcessingException {
         var personDTO = getPersonDTO(request);
         if (personDTO == null) {
             return "redirect:/";
@@ -142,7 +152,8 @@ public class PersonController {
             if (!isValidFile(file)) {
                 compressFile = imageCompress.compressImage(file);
             }
-            personService.postUpdatePerson(token, personDTO, compressFile);
+            personService.postUpdatePerson(token,
+                    personDtoXSSInspector.defuse(personDTO), compressFile);
         } catch (Exception e) {
             log.error("API post {} method error: {}", getClass().getName(), e.getMessage());
             return "redirect:/persons/edit?error=true";
@@ -153,7 +164,7 @@ public class PersonController {
     @GetMapping("/changePassword")
     public String changePassword(Model model, HttpServletRequest request,
                                  @RequestParam(required = false) String success) {
-
+        success = stringShieldXSSInspector.defuse(success);
         var personDTO = getPersonDTO(request);
         if (personDTO == null) {
             return "redirect:/login";

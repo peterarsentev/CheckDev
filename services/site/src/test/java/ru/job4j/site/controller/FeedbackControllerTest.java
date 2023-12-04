@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.job4j.site.component.safety.StringShieldXSSInspector;
 import ru.job4j.site.domain.Breadcrumb;
 import ru.job4j.site.dto.FeedbackDTO;
 import ru.job4j.site.dto.FeedbackNotificationDTO;
@@ -48,6 +49,8 @@ class FeedbackControllerTest {
     NotificationService notificationService;
     @MockBean
     ProfilesService profilesService;
+    @MockBean
+    StringShieldXSSInspector stringShieldXSSInspector;
 
 
     @Test

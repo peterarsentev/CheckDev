@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.site.component.safety.StringShieldXSSInspector;
+import ru.job4j.site.component.safety.WisherApprovedDtoInspector;
+import ru.job4j.site.component.safety.WisherNotifyDtoXSSInspector;
 import ru.job4j.site.dto.WisherApprovedDTO;
 import ru.job4j.site.dto.WisherNotifyDTO;
 import ru.job4j.site.enums.StatusInterview;
@@ -28,8 +31,9 @@ import java.util.Map;
 public class WisherController {
     private final WisherService wisherService;
     private final InterviewService interviewService;
-
     private final NotificationService notificationService;
+    private final WisherNotifyDtoXSSInspector wisherNotifyDtoXSSInspector;
+    private final WisherApprovedDtoInspector wisherApprovedDtoInspector;
 
     /**
      * Подать заявку на участие в собеседовании.
@@ -42,6 +46,7 @@ public class WisherController {
     public String createWisher(@ModelAttribute WisherNotifyDTO wisherNotifyDTO,
                                HttpServletRequest request) {
         var token = RequestResponseTools.getToken(request);
+        wisherNotifyDtoXSSInspector.defuse(wisherNotifyDTO);
         int interviewId = wisherNotifyDTO.getInterviewId();
         int userId = wisherNotifyDTO.getUserId();
         var contactBy = wisherNotifyDTO.getContactBy();
@@ -66,6 +71,7 @@ public class WisherController {
         var interviewId = param.get("interviewId");
         var wisherId = param.get("wisherId");
         var wisherUserId = param.get("wisherUserId");
+        wisherApprovedDtoInspector.defuse(wisherApprovedDTO);
         wisherService.setNewApproveByWisherInterview(
                 token, interviewId, wisherId, true);
         InterviewDTO interviewDto = interviewService.getById(token, Integer.parseInt(interviewId));

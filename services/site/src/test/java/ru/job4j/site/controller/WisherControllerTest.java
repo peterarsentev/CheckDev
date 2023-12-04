@@ -6,6 +6,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.job4j.site.component.safety.WisherApprovedDtoInspector;
+import ru.job4j.site.component.safety.WisherNotifyDtoXSSInspector;
 import ru.job4j.site.dto.InterviewDTO;
 import ru.job4j.site.dto.WisherDto;
 import ru.job4j.site.dto.WisherNotifyDTO;
@@ -34,6 +36,10 @@ class WisherControllerTest {
     private InterviewService interviewService;
     @MockBean
     private NotificationService notificationService;
+    @MockBean
+    private WisherNotifyDtoXSSInspector wisherNotifyDtoXSSInspector;
+    @MockBean
+    private WisherApprovedDtoInspector wisherApprovedDtoInspector;
 
     @Test
     void whenCreateWisherThenReturnRedirect() throws Exception {

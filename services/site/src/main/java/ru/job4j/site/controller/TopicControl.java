@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.job4j.site.component.safety.TopicDtoXSSInspector;
+import ru.job4j.site.component.safety.TopicLiteDtoXSSInspector;
 import ru.job4j.site.dto.TopicDTO;
 import ru.job4j.site.dto.TopicLiteDTO;
 import ru.job4j.site.service.AuthService;
@@ -25,6 +27,8 @@ public class TopicControl {
     private final TopicsService topicsService;
     private final AuthService authService;
     private final NotificationService notifications;
+    private final TopicLiteDtoXSSInspector topicLiteDtoXSSInspector;
+    private final TopicDtoXSSInspector topicDtoXSSInspector;
 
     @GetMapping("/{topicId}")
     public String details(@PathVariable int topicId,
@@ -77,7 +81,8 @@ public class TopicControl {
     public String createTopic(@ModelAttribute TopicLiteDTO topic, HttpServletRequest req,
                               RedirectAttributes redirectAttributes)
             throws JsonProcessingException {
-        var createdTopic = topicsService.create(getToken(req), topic);
+        var createdTopic = topicsService.create(getToken(req),
+                topicLiteDtoXSSInspector.defuse(topic));
         var notNull = createdTopic != null;
         if (notNull) {
             redirectAttributes.addAttribute("topicId", createdTopic.getId());
@@ -112,7 +117,7 @@ public class TopicControl {
 
     @PostMapping("/update")
     public String updateTopic(TopicDTO topic, HttpServletRequest req) throws JsonProcessingException {
-        topicsService.update(getToken(req), topic);
+        topicsService.update(getToken(req), topicDtoXSSInspector.defuse(topic));
         return "redirect:/topic/" + topic.getId();
     }
 

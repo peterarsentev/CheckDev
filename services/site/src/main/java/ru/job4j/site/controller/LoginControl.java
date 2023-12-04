@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.job4j.site.component.safety.StringShieldXSSInspector;
 import ru.job4j.site.dto.CredentialDTO;
 import ru.job4j.site.service.AuthService;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 @Slf4j
 public class LoginControl {
     private final AuthService authService;
+    private final StringShieldXSSInspector stringShieldXSSInspector = new StringShieldXSSInspector();
 
     @Value("${botUserName}")
     private String botUserName;
@@ -31,6 +33,9 @@ public class LoginControl {
                             @RequestParam(value = "error", required = false) String error,
                             @RequestParam(value = "interviewId", required = false) String interviewId,
                             Model model) {
+        topicId = stringShieldXSSInspector.defuse(topicId);
+        error = stringShieldXSSInspector.defuse(error);
+        interviewId = stringShieldXSSInspector.defuse(interviewId);
         RequestResponseTools.addAttrBreadcrumbs(model,
                 "Главная", "/",
                 "Авторизация", "/login"
@@ -54,6 +59,8 @@ public class LoginControl {
                          @ModelAttribute("interviewId") String interviewId,
                          RedirectAttributes redirectAttributes,
                          HttpServletRequest req) throws JsonProcessingException {
+        topicId = stringShieldXSSInspector.defuse(topicId);
+        interviewId = stringShieldXSSInspector.defuse(interviewId);
         var isLogin = authService.token(
                 Map.of("username", credentialDTO.getEmail(),
                         "password", credentialDTO.getPassword()));
